@@ -1,6 +1,7 @@
 import sys, getopt 
 import jenkins 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+import matplotlib 
 import time 
 import numpy as np
 from datetime import datetime 
@@ -9,6 +10,10 @@ class DurationMetrics:
     username = ''
     password = ''
     server = None
+    buildDurations = [] # y axis for durations
+    buildTimestamps = [] # x axis for date
+    totalNumberBuilds = 0.0
+    totalDuration = 0.0
 
     def __init__(self, username, password):
         self.username = username
@@ -21,7 +26,64 @@ class DurationMetrics:
         user = self.server.get_whoami()
         version = self.server.get_version()
         print('Hello %s from Jenkins %s' % (user['fullName'], version))
+    
+    def calculateAverageDuration(self):
+        averageDuration = (self.totalDuration / self.totalNumberBuilds)
+        print("Average Build Duration %.2f " % averageDuration)
 
+    def getJobDuration(self):
+        # return all jobs
+        jenkinsJobs = self.server.get_all_jobs()
+        # print(jenkinsJobs)
+
+        # JOB INFO
+        my_job = self.server.get_job_info('ci-simulation', 0, True)
+        # for key,value in my_job.items():
+        #     print(key," -> ", value)
+
+        # BUILD INFO
+        myJobBuilds = my_job.get('builds')
+        for build in myJobBuilds:
+            buildNumber = build.get('number')
+            buildInfo = self.server.get_build_info('ci-simulation', buildNumber)
+            # for key,value in buildInfo.items(): 
+                # print(key, ' -> ', value)
+            buildTimestamp = buildInfo.get('timestamp')
+            buildDuration = (buildInfo.get('duration'))/1000 # convert to seconds
+            self.buildDurations.append(buildDuration)
+            self.buildTimestamps.append(buildTimestamp)
+            self.totalDuration += buildDuration
+            self.totalNumberBuilds += 1.0 
+        # print('Timestamps: ', self.buildTimestamps)
+        # print('Durations: ', self.buildDurations)
+    
+    def convertTimestamps(self):
+        # convert to human readable 
+        dates = []
+        # iterate timestamps 
+        for timestamp in self.buildTimestamps: 
+            # create new date/time obj
+            dateTimeObj = datetime.fromtimestamp((timestamp/1000))
+            dates.append(dateTimeObj)
+        return dates
+    
+    def plotJobDuration(self):
+        dateTimeObjs = self.convertTimestamps()
+        dates = matplotlib.dates.date2num(dateTimeObjs)
+        # npArr = self.runningMean()
+        plt.plot_date(dates, self.buildDurations, '-')
+        plt.xlabel('Time of Execution')
+        plt.ylabel('Build Duration (Seconds)')
+        plt.title('Build Durations Over Time')
+        plt.gcf().autofmt_xdate()
+        plt.show()
+
+    def runningMean(self):
+        ''' Helps us identify trends in the data by convolving 
+        Sacrificing exact time of the jobs -> to see trends
+        '''
+        npArr = np.convolve(self.buildDurations, np.ones((10,))/10, mode='valid')
+        return npArr
 
 def main(argv): 
 
@@ -47,6 +109,10 @@ def main(argv):
 
     durationMetrics = DurationMetrics(username, password)
     durationMetrics.connectToJenkins()
+    durationMetrics.getJobDuration()
+    durationMetrics.calculateAverageDuration()
+    durationMetrics.plotJobDuration()
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
