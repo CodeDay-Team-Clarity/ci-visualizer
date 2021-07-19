@@ -6,10 +6,13 @@ import time
 import numpy as np
 from datetime import datetime 
 
-class DurationMetrics: 
+class BuildMetrics: 
     username = ''
     password = ''
     server = None
+    buildFailures = 0
+    buildSuccesses = 0
+    allResults = []
     buildDurations = [] # y axis for durations
     buildTimestamps = [] # x axis for date
     totalNumberBuilds = 0.0
@@ -27,11 +30,17 @@ class DurationMetrics:
         version = self.server.get_version()
         print('Hello %s from Jenkins %s' % (user['fullName'], version))
     
-    def calculateAverageDuration(self):
+    
+    def getStats(self):
+        print('------------ Build Stats ---------------')
+        print('Total Failures: ', self.buildFailures)
+        print('Total Successes: ', self.buildSuccesses)
+        print('All Results: ', self.allResults)
+
         averageDuration = (self.totalDuration / self.totalNumberBuilds)
         print("Average Build Duration %.2f " % averageDuration)
 
-    def getJobDuration(self):
+    def getJobStats(self):
         # return all jobs
         jenkinsJobs = self.server.get_all_jobs()
         # print(jenkinsJobs)
@@ -46,14 +55,23 @@ class DurationMetrics:
         for build in myJobBuilds:
             buildNumber = build.get('number')
             buildInfo = self.server.get_build_info('ci-simulation', buildNumber)
-            # for key,value in buildInfo.items(): 
-                # print(key, ' -> ', value)
+            for key,value in buildInfo.items(): 
+                print(key, ' -> ', value)
+
+            buildResult = buildInfo.get('result')
+            self.allResults.append(buildResult)
+            if buildResult == "FAILURE": 
+                self.buildFailures += 1
+            elif buildResult == "SUCCESS": 
+                self.buildSuccess += 1
+
             buildTimestamp = buildInfo.get('timestamp')
             buildDuration = (buildInfo.get('duration'))/1000 # convert to seconds
             self.buildDurations.append(buildDuration)
             self.buildTimestamps.append(buildTimestamp)
             self.totalDuration += buildDuration
             self.totalNumberBuilds += 1.0 
+
         # print('Timestamps: ', self.buildTimestamps)
         # print('Durations: ', self.buildDurations)
     
@@ -107,11 +125,12 @@ def main(argv):
         elif opt == '-p':
             password = arg
 
-    durationMetrics = DurationMetrics(username, password)
-    durationMetrics.connectToJenkins()
-    durationMetrics.getJobDuration()
-    durationMetrics.calculateAverageDuration()
-    durationMetrics.plotJobDuration()
+    job = BuildMetrics(username, password)
+    job.connectToJenkins()
+    job.getJobStats()
+    job.getStats()
+    # job.plotJobDuration()
+
 
 
 if __name__ == "__main__":
