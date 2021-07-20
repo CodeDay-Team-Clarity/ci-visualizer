@@ -1,2 +1,3 @@
-# FrontEnd
-This holds the front end code for the CI visualizer
+# CI visualizer
+
+This holds the frontend code and the backend code.
