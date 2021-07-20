@@ -59,8 +59,9 @@ class BuildMetrics:
             # for key,value in buildInfo.items(): 
             #     print(key, ' -> ', value)
 
+            buildName = buildInfo.get('fullDisplayName')
             buildResult = buildInfo.get('result')
-            self.allResults.append(buildResult)
+            self.allResults.append([buildName, buildResult])
             if buildResult == "FAILURE": 
                 self.buildFailures += 1
             elif buildResult == "SUCCESS": 
