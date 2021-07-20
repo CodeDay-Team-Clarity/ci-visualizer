@@ -55,8 +55,9 @@ class BuildMetrics:
         for build in myJobBuilds:
             buildNumber = build.get('number')
             buildInfo = self.server.get_build_info('ci-simulation', buildNumber)
-            for key,value in buildInfo.items(): 
-                print(key, ' -> ', value)
+            # UNCOMMENT TO SEE FULL BUILD INFO
+            # for key,value in buildInfo.items(): 
+            #     print(key, ' -> ', value)
 
             buildResult = buildInfo.get('result')
             self.allResults.append(buildResult)
