@@ -30,10 +30,8 @@ def getStats():
         "Average": buildAvg
     }
 
-    # stats = main(USER, PASS)
-    print(stats)
-    # return json.dumps(stats)
-    return stats
+    # return stats
+    return json.dumps(stats)
 
 if __name__ == "__main__":
     app.run(debug=True)
