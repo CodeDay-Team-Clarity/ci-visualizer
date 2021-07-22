@@ -10,6 +10,7 @@ class BuildMetrics:
     username = ''
     password = ''
     server = None
+    # ALL STATS: 
     buildFailures = 0
     buildSuccesses = 0
     allResults = []
@@ -32,18 +33,19 @@ class BuildMetrics:
     
     
     def getStats(self):
-        print('------------ Build Stats ---------------')
-        print('Total Failures: ', self.buildFailures)
-        print('Total Successes: ', self.buildSuccesses)
-        print('All Results: ', self.allResults)
+        # print('------------ Build Stats ---------------')
+        # print('Total Failures: ', self.buildFailures)
+        # print('Total Successes: ', self.buildSuccesses)
+        # print('All Results: ', self.allResults)
 
         averageDuration = (self.totalDuration / self.totalNumberBuilds)
-        print("Average Build Duration %.2f " % averageDuration)
+        # print("Average Build Duration %.2f " % averageDuration)
+        return [self.buildFailures, self.buildSuccess, self.allResults, averageDuration]
 
-    def getJobStats(self):
+    def populateStats(self):
         # return all jobs
         jenkinsJobs = self.server.get_all_jobs()
-        # print(jenkinsJobs)
+        print(jenkinsJobs)
 
         # JOB INFO
         my_job = self.server.get_job_info('ci-simulation', 0, True)
@@ -129,7 +131,7 @@ def main(argv):
 
     job = BuildMetrics(username, password)
     job.connectToJenkins()
-    job.getJobStats()
+    job.populateStats()
     job.getStats()
     # job.plotJobDuration()
 
