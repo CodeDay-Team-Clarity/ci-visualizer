@@ -34,18 +34,18 @@ class BuildMetrics:
     
     def getStats(self):
         # print('------------ Build Stats ---------------')
-        # print('Total Failures: ', self.buildFailures)
-        # print('Total Successes: ', self.buildSuccesses)
-        # print('All Results: ', self.allResults)
+        print('Total Failures: ', self.buildFailures)
+        print('Total Successes: ', self.buildSuccesses)
+        print('All Results: ', self.allResults)
 
         averageDuration = (self.totalDuration / self.totalNumberBuilds)
         # print("Average Build Duration %.2f " % averageDuration)
-        return [self.buildFailures, self.buildSuccess, self.allResults, averageDuration]
+        return [self.buildFailures, self.buildSuccesses, self.allResults, averageDuration]
 
     def populateStats(self):
         # return all jobs
         jenkinsJobs = self.server.get_all_jobs()
-        print(jenkinsJobs)
+        # print(jenkinsJobs)
 
         # JOB INFO
         my_job = self.server.get_job_info('ci-simulation', 0, True)
@@ -107,7 +107,14 @@ class BuildMetrics:
         npArr = np.convolve(self.buildDurations, np.ones((10,))/10, mode='valid')
         return npArr
 
-def main(argv): 
+def main(username, password):
+    job = BuildMetrics(username, password)
+    job.connectToJenkins()
+    job.populateStats()
+    stats = job.getStats()
+    return stats
+
+def test(argv): 
 
     # store username and pword as arg variables
     username = '' 

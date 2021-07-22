@@ -1,6 +1,9 @@
 from flask import Flask 
 import json
-from pull_data import BuildMetrics
+from pull_data import BuildMetrics, main
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -8,13 +11,16 @@ app = Flask(__name__)
 def index():
     return "Hello, API User"
 
-@app.route('/getStats/')
+@app.route('/stats')
 def getStats():
     ''' Returns as JSON file of all build statistics '''
-    job = BuildMetrics(username, password)
+    USER = os.getenv('USERNAME')
+    PASS = os.getenv('PASSWORD')
+
+    job = BuildMetrics(USER, PASS)
     job.connectToJenkins()
     job.populateStats()
-    fails, success, allresults, avg = job.getStats()
+    failures, successes, allResults, buildAvg = job.getStats()
     print(failures, successes, allResults, buildAvg)
 
     stats = {
@@ -24,7 +30,10 @@ def getStats():
         "Average": buildAvg
     }
 
-    return json.dumps(stats)
+    # stats = main(USER, PASS)
+    print(stats)
+    # return json.dumps(stats)
+    return stats
 
 if __name__ == "__main__":
     app.run(debug=True)
