@@ -10,9 +10,10 @@ class BuildMetrics:
     username = ''
     password = ''
     server = None
-    # ALL STATS: 
+    # METRICS: 
     buildFailures = 0
     buildSuccesses = 0
+    buildCancels = 0
     allResults = []
     buildDurations = [] # y axis for durations
     buildTimestamps = [] # x axis for date
@@ -36,11 +37,12 @@ class BuildMetrics:
         # print('------------ Build Stats ---------------')
         print('Total Failures: ', self.buildFailures)
         print('Total Successes: ', self.buildSuccesses)
+        print('Total Cancels: ', self.buildCancels)
         print('All Results: ', self.allResults)
 
         averageDuration = (self.totalDuration / self.totalNumberBuilds)
         # print("Average Build Duration %.2f " % averageDuration)
-        return [self.buildFailures, self.buildSuccesses, self.allResults, averageDuration]
+        return [self.buildFailures, self.buildSuccesses, self.buildCancels, self.allResults, averageDuration]
 
     def populateStats(self):
         # return all jobs
@@ -68,6 +70,8 @@ class BuildMetrics:
                 self.buildFailures += 1
             elif buildResult == "SUCCESS": 
                 self.buildSuccess += 1
+            else: # CANCELLED ?????
+                self.buildCancels += 1
 
             buildTimestamp = buildInfo.get('timestamp')
             buildDuration = (buildInfo.get('duration'))/1000 # convert to seconds
@@ -114,8 +118,9 @@ def main(username, password):
     stats = job.getStats()
     return stats
 
-def test(argv): 
 
+def test(argv): 
+    ''' Takes command line arguments -u and -p for username and password '''
     # store username and pword as arg variables
     username = '' 
     password = ''
@@ -141,8 +146,9 @@ def test(argv):
     job.populateStats()
     job.getStats()
     # job.plotJobDuration()
+    return
 
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    test(sys.argv[1:])

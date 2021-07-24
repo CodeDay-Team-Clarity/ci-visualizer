@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return "Hello, API User"
+    return "Hello, ci-visualizer user"
 
 @app.route('/stats')
 def getStats():
@@ -20,12 +20,13 @@ def getStats():
     job = BuildMetrics(USER, PASS)
     job.connectToJenkins()
     job.populateStats()
-    failures, successes, allResults, buildAvg = job.getStats()
-    print(failures, successes, allResults, buildAvg)
+    failures, successes, cancels, allResults, buildAvg = job.getStats()
+    print(failures, successes, cancels, allResults, buildAvg)
 
     stats = {
         "Failures": failures, 
         "Successes": successes, 
+        "Cancels": cancels,
         "All Results:": allResults,
         "Average": buildAvg
     }
