@@ -111,7 +111,7 @@ class BuildMetrics:
         npArr = np.convolve(self.buildDurations, np.ones((10,))/10, mode='valid')
         return npArr
 
-def main(username, password):
+def runInstance(username, password):
     job = BuildMetrics(username, password)
     job.connectToJenkins()
     job.populateStats()

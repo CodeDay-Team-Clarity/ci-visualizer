@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask("__main__")
 
 @app.route('/')
 def index():
@@ -34,5 +34,4 @@ def getStats():
     # return stats
     return json.dumps(stats)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+app.run(debug=True)
