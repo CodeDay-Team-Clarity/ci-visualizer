@@ -15,6 +15,10 @@ function Login() {
                     <p>password</p>
                     <input type = "password" />
                 </label>
+                <label>
+                    <p>url</p>
+                    <input type = "url" />
+                </label>
                 <div>
                     <button type = "submit">Submit</button>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
@@ -11,9 +11,9 @@ import Preferences from './Component/Preferences';
 function App() {
   const [token, setToken] = useState();
 
-  // if (!token) {
-  //   return <Login setToken = {setToken} />
-  // }
+  if (!token) {
+    return <Login setToken = {setToken} />
+  }
 
   return (
     <div className = "wrapper">
