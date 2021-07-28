@@ -52,7 +52,7 @@ class BuildMetrics:
         # print(jenkinsJobs)
 
         # JOB INFO
-        my_job = self.server.get_job_info('ci-simulation', 0, True)
+        my_job = self.server.get_job_info('sleeper_simulation-1', 0, True)
         # for key,value in my_job.items():
         #     print(key," -> ", value)
 
@@ -60,7 +60,7 @@ class BuildMetrics:
         myJobBuilds = my_job.get('builds')
         for build in myJobBuilds:
             buildNumber = build.get('number')
-            buildInfo = self.server.get_build_info('ci-simulation', buildNumber)
+            buildInfo = self.server.get_build_info('sleeper_simulation-1', buildNumber)
             # UNCOMMENT TO SEE FULL BUILD INFO
             # for key,value in buildInfo.items(): 
             #     print(key, ' -> ', value)

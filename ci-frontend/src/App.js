@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     // for your instances, replace username, password, and url to match your setup
-    fetch('/stats?username=admin&password=password&url=http://localhost:8080/').then(
+    fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
       response => response.json()
     ).then(data => setInitialData(data))
   }, []);
