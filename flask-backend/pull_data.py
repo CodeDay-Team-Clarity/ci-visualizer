@@ -10,6 +10,7 @@ class BuildMetrics:
     username = ''
     password = ''
     server = None
+    url = ''
     # METRICS: 
     buildFailures = 0
     buildSuccesses = 0
@@ -20,25 +21,26 @@ class BuildMetrics:
     totalNumberBuilds = 0.0
     totalDuration = 0.0
 
-    def __init__(self, username, password):
+    def __init__(self, url, username, password):
         self.username = username
         self.password = password 
+        self.url = url
 
     def connectToJenkins(self):
         # new connection to Jenkins server
-        self.server = jenkins.Jenkins('http://localhost:8080', self.username, self.password)
+        self.server = jenkins.Jenkins(self.url, self.username, self.password)
         # verify logged in 
         user = self.server.get_whoami()
         version = self.server.get_version()
         print('Hello %s from Jenkins %s' % (user['fullName'], version))
-    
+        return 
     
     def getStats(self):
         # print('------------ Build Stats ---------------')
-        print('Total Failures: ', self.buildFailures)
-        print('Total Successes: ', self.buildSuccesses)
-        print('Total Cancels: ', self.buildCancels)
-        print('All Results: ', self.allResults)
+        # print('Total Failures: ', self.buildFailures)
+        # print('Total Successes: ', self.buildSuccesses)
+        # print('Total Cancels: ', self.buildCancels)
+        # print('All Results: ', self.allResults)
 
         averageDuration = (self.totalDuration / self.totalNumberBuilds)
         # print("Average Build Duration %.2f " % averageDuration)
