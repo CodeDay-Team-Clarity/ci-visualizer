@@ -71,7 +71,7 @@ class BuildMetrics:
             if buildResult == "FAILURE": 
                 self.buildFailures += 1
             elif buildResult == "SUCCESS": 
-                self.buildSuccess += 1
+                self.buildSuccesses += 1
             else: # CANCELLED ?????
                 self.buildCancels += 1
 
