@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import json
 from pull_data import BuildMetrics, runInstance
 import os
-from dotenv import load_dotenv
+from dotendsv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
