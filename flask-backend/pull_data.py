@@ -6,11 +6,20 @@ import time
 import numpy as np
 from datetime import datetime 
 
-class BuildMetrics: 
-    username = ''
-    password = ''
+class JenkinsConnection:
     server = None
-    url = ''
+
+    def __init__(self, url, username, password):
+        # new connection to Jenkins server
+        self.server = jenkins.Jenkins(url, username, password)
+        # verify logged in 
+        user = self.server.get_whoami()
+        version = self.server.get_version()
+        print('Hello %s from Jenkins %s' % (user['fullName'], version))
+
+class BuildMetrics: 
+    server = None
+    
     # METRICS: 
     buildFailures = 0
     buildSuccesses = 0
@@ -21,19 +30,8 @@ class BuildMetrics:
     totalNumberBuilds = 0.0
     totalDuration = 0.0
 
-    def __init__(self, url, username, password):
-        self.username = username
-        self.password = password 
-        self.url = url
-
-    def connectToJenkins(self):
-        # new connection to Jenkins server
-        self.server = jenkins.Jenkins(self.url, self.username, self.password)
-        # verify logged in 
-        user = self.server.get_whoami()
-        version = self.server.get_version()
-        print('Hello %s from Jenkins %s' % (user['fullName'], version))
-        return 
+    def __init__(self, jenkinsConnection):
+        self.server = jenkinsConnection.server
     
     def getStats(self):
         # print('------------ Build Stats ---------------')
@@ -112,45 +110,3 @@ class BuildMetrics:
         '''
         npArr = np.convolve(self.buildDurations, np.ones((10,))/10, mode='valid')
         return npArr
-
-def runInstance(username, password):
-    job = BuildMetrics(username, password)
-    job.connectToJenkins()
-    job.populateStats()
-    stats = job.getStats()
-    return stats
-
-
-def test(argv): 
-    ''' Takes command line arguments -u and -p for username and password '''
-    # store username and pword as arg variables
-    username = '' 
-    password = ''
-
-    try: 
-        # -h help, -u user, -p pword
-        opts, args = getopt.getopt(argv, "hu:p:", ["username:", "password:"])
-    except getopt.GetopError:
-        print('python Job-Duration-Metrics -u <username> -p <password>')
-        sys.exit(2)
-    # get username and password from input
-    for opt, arg in opts: 
-        if opt == '-h':
-            print('python Job-Duration-Metrics -u <username> -p <password>')
-            sys.exit()
-        elif opt == '-u':
-            username = arg
-        elif opt == '-p':
-            password = arg
-
-    job = BuildMetrics(username, password)
-    job.connectToJenkins()
-    job.populateStats()
-    job.getStats()
-    # job.plotJobDuration()
-    return
-
-
-
-if __name__ == "__main__":
-    test(sys.argv[1:])
