@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Bar } from 'react-chartjs-2';
 
 const Chart = () => {
+    const [initialData, setInitialData] = useState([{}])
+
+    useEffect(() => {
+        fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
+        response => response.json()
+        ).then(data => setInitialData(data))
+    }, []);
+
     const data = {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [
@@ -45,6 +53,10 @@ const Chart = () => {
     return (
         <div>
             <Bar data={data} options={options} />
+            <h2>Number of Successes: {initialData.Successes}</h2>
+            <h2>Number of Failures: {initialData.Failures}</h2>
+            <h2>Number of Cancels: {initialData.Cancels}</h2>
+            <h2>Average build time: {initialData.Average}</h2>
         </div>
     );
 }
