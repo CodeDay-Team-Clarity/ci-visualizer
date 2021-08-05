@@ -6,12 +6,14 @@ import './App.css';
 import Login from './Component/Login';
 import Dashboard from './Component/Dashboard';
 import Preferences from './Component/Preferences';
+import Test from './Component/Test';
+import Fetch from './Component/Fetch';
+import SideNav from './Component/SideNav';
 
 
 function App() {
   return (
     <div className = "wrapper">
-      <h1>Application</h1>
       <BrowserRouter>
         <Switch>
           <Route path="/login">
@@ -25,6 +27,15 @@ function App() {
           </Route> */}
           <Route path="/preferences">
             <Preferences />
+          </Route>
+          <Route path="/Test">
+            <Test />
+          </Route>
+          <Route path="/SideNav">
+            <SideNav />
+          </Route>
+          <Route path="/Fetch">
+            <Fetch />
           </Route>
         </Switch>
       </BrowserRouter>

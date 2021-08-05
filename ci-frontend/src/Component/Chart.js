@@ -3,15 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Fetch from './Fetch';
 
-<<<<<<< HEAD
-const Chart = (props) => {
-    const data = {
-        labels: ['Green', 'Red','Yellow','Gray'],
-        datasets: [
-            {
-                label: '# of Jobs',
-                data: [props.Successes,props.Failures,props.Unstable,props.Cancels],
-=======
 const Chart = () => {
     const [initialData, setInitialData] = useState([{}])
 
@@ -27,7 +18,7 @@ const Chart = () => {
             {
                 label: '# of Votes',
                 data: [initialData.Successes, initialData.Failures, initialData.Cancels],
->>>>>>> f60b748aca52b085978b91001c3e061cf55ddada
+
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
