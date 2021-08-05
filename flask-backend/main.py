@@ -13,7 +13,7 @@ def jenkinsConnectionFromRequest(request):
         args = request.args
         if "username" in args and "password" in args and "url" in args: 
             return JenkinsConnection(args["url"], args["username"], args["password"])
-        else: 
+        else:
             raise Exception("Insufficient credentials")
     elif (request.method == 'POST'):
         args = request.json
@@ -46,8 +46,8 @@ def getStats():
     # print(failures, successes, cancels, allResults, buildAvg)
 
     stats = {
-        "Failures": failures, 
-        "Successes": successes, 
+        "Failures": failures,
+        "Successes": successes,
         "Cancels": cancels,
         "All Results:": allResults,
         "Average": buildAvg
