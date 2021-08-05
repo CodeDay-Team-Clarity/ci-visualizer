@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 import json
 from pull_data import JenkinsConnection, BuildMetrics
 import os
-from dotendsv import load_dotenv
+from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
