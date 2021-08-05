@@ -6,6 +6,9 @@ import './App.css';
 // import Login from './Component/Login';
 import Dashboard from './Component/Dashboard';
 import Preferences from './Component/Preferences';
+import Test from './Component/Test';
+import Fetch from './Component/Fetch';
+import SideNav from './Component/SideNav';
 
 
 function App() {
@@ -16,12 +19,12 @@ function App() {
   //   return <Login setToken = {setToken} />
   // }
 
-  // useEffect(() => {
+ // useEffect(() => {
   //   // for your instances, replace username, password, and url to match your setup
-  //   fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
-  //     response => response.json()
-  //   ).then(data => setInitialData(data))
-  // }, []);
+    // fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
+    //   response => response.json()
+   // ).then(data => setInitialData(data))
+   //}, []);
 
 
   useEffect(() => {
@@ -43,12 +46,8 @@ function App() {
   }, []);
 
   return (
-    <div className = "wrapper">
-      <h1>Application</h1>
-      <h2>Number of Successes: {initialData.Successes}</h2>
-      <h2>Number of Failures: {initialData.Failures}</h2>
-      <h2>Number of Cancels: {initialData.Cancels}</h2>
-      <h2>Average build time: {initialData.Average}</h2>
+ <div className = "wrapper">
+      
       <BrowserRouter>
         <Switch>
           <Route path="/dashboard">
@@ -56,6 +55,15 @@ function App() {
           </Route>
           <Route path="/preferences">
             <Preferences />
+          </Route>
+          <Route path="/Test">
+            <Test />
+          </Route>
+          <Route path="/SideNav">
+            <SideNav />
+          </Route>
+          <Route path="/Fetch">
+            <Fetch />
           </Route>
         </Switch>
       </BrowserRouter>

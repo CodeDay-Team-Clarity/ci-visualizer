@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Bar } from 'react-chartjs-2';
+import Fetch from './Fetch';
 
-const Chart = () => {
+const Chart = (props) => {
     const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['Green', 'Red','Yellow','Gray'],
         datasets: [
             {
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: '# of Jobs',
+                data: [props.Successes,props.Failures,props.Unstable,props.Cancels],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
