@@ -6,7 +6,7 @@ import { Bar } from 'react-chartjs-2';
 
 
 const Chart = () => {
-
+   const [initialData, setInitialData] = useState([{}])
     const credentials = JSON.parse(localStorage.getItem('credentials'));
 
     useEffect(() => {

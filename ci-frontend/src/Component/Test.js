@@ -26,7 +26,7 @@ export default function Test() {
         labels: ['Successes', 'unstable', 'Failures'],
         datasets: [
             {
-                label: '# of Votes',
+                label: '# of Jobs',
                 data: [4,5,6],
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.2)',
