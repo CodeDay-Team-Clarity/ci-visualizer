@@ -20,5 +20,20 @@ link: "/Dashboard"
     title:"title2",
     ican:<BarChartIcon/>,
     link: "/Test"
-    }
+    },
+    {
+        title:"home",
+        ican:<HomeIcon/>,
+        link: "/home"
+        },
+        {
+            title:"home",
+            ican:<HomeIcon/>,
+            link: "/home"
+            },
+            {
+                title:"home",
+                ican:<HomeIcon/>,
+                link: "/home"
+                },
 ]

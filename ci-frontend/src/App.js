@@ -9,6 +9,7 @@ import Preferences from './Component/Preferences';
 import Test from './Component/Test';
 import Fetch from './Component/Fetch';
 import SideNav from './Component/SideNav';
+import Chart from './Component/Chart';
 
 
 function App() {
@@ -18,42 +19,26 @@ function App() {
   //   return <Login setToken = {setToken} />
   // }
 
-<<<<<<< HEAD
- // useEffect(() => {
-  //   // for your instances, replace username, password, and url to match your setup
-    // fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
-    //   response => response.json()
-   // ).then(data => setInitialData(data))
-   //}, []);
-
-
-=======
->>>>>>> f60b748aca52b085978b91001c3e061cf55ddada
-  useEffect(() => {
-    const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: 'jenkins', password: 'codeday', url: 'http://builds.ci-visualizer.com:8080' })
-};
-    fetch('/login', requestOptions).then(
-      response => {
-        if (response.status === 200){
-          return response.json()
-        } else {
-          return {"message":"connection failed"}
-        }
-      }
-    ).then(data => console.log(data))
-  }, []);
+//   useEffect(() => {
+//     const requestOptions = {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({ username: 'jenkins', password: 'codeday', url: 'http://builds.ci-visualizer.com:8080' })
+// };
+//     fetch('/login', requestOptions).then(
+//       response => {
+//         if (response.status === 200){
+//           return response.json()
+//         } else {
+//           return {"message":"connection failed"}
+//         }
+//       }
+//     ).then(data => console.log(data))
+//   }, []);
 
   return (
-<<<<<<< HEAD
- <div className = "wrapper">
-      
-=======
     <div className = "wrapper">
       <h1>Application</h1>
->>>>>>> f60b748aca52b085978b91001c3e061cf55ddada
       <BrowserRouter>
         <Switch>
           <Route path="/stats">
@@ -68,8 +53,15 @@ function App() {
           <Route path="/SideNav">
             <SideNav />
           </Route>
+          <Route path="/DashBoard">
+            <Dashboard />
+          </Route>
           <Route path="/Fetch">
-            <Fetch />
+            <Fetch/>
+          </Route>
+          
+          <Route path="/Chart">
+            <Chart/>
           </Route>
         </Switch>
       </BrowserRouter>

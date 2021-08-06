@@ -11,7 +11,7 @@ export default function Fetch() {
              response => response.json()
           ).then(data => setInitialData(data))
          }, []);
-         console.log(initialData.Successes,initialData.Failures,initialData.Cancels);
+        
          
          
     return (
@@ -22,8 +22,8 @@ export default function Fetch() {
       <h2>Number of Failures: {initialData.Failures}</h2>
       <h2>Number of Cancels: {initialData.Cancels}</h2>
       <h2>Average build time: {initialData.Average}</h2>
-
-      <Chart Successes = {initialData.Successes} Average={initialData.Average} Cancels={initialData.Cancels}/>
+         {/* <Chart Successes={initialData.Successes}/>
+       */}
         </div>
     )
 }
