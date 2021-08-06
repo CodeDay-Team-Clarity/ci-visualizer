@@ -7,9 +7,9 @@ import Chart from './Chart';
 function Dashboard() {
     return (
         <div >
-            <h2>Dashboard</h2>
+           
           <div>
-            {/* <div style = {{height:"400px" , width:"1000px"}}>    */}
+           
             <Chart Successes = {5} Unstable={2} Failures={3} Cancels ={0}/>
                 
                   </div>
