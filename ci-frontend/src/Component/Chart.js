@@ -1,26 +1,28 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+// import { logout } from './helpers';
 
 import { Bar } from 'react-chartjs-2';
 // import Fetch from './Fetch';
 
 
-
 const Chart = () => {
 
-    const[initialData,setInitialData]= useState([{}]);
+    const credentials = JSON.parse(localStorage.getItem('credentials'));
+
     useEffect(() => {
-        //   // for your instances, replace username, password, and url to match your setup
-           fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
-             response => response.json()
-          ).then(data => setInitialData(data))
-         }, []);
+        fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
+        response => response.json(),
+        console.log(credentials)
+        ).then(data => setInitialData(data))
+    }, []);
 
     const data = {
         labels: ['Green', 'Red','Yellow','Gray'],
         datasets: [
             {
-                label: '# of Jobs',
-                data: [initialData.Successes],
+                label: '# of Votes',
+                data: [initialData.Successes, initialData.Failures, initialData.Cancels],
+
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -57,6 +59,15 @@ const Chart = () => {
     return (
         <div>
             <Bar data={data} options={options} />
+            <h2>Number of Successes: {initialData.Successes}</h2>
+            <h2>Number of Failures: {initialData.Failures}</h2>
+            <h2>Number of Cancels: {initialData.Cancels}</h2>
+            <h2>Average build time: {initialData.Average}</h2>
+            {/* <button 
+                onClick = {logout}
+                >
+                Logout
+            </button> */}
         </div>
     );
 }
