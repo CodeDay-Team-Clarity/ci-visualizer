@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
+// import { logout } from './helpers';
 
 import { Bar } from 'react-chartjs-2';
-import Fetch from './Fetch';
+// import Fetch from './Fetch';
+
 
 const Chart = () => {
     const [initialData, setInitialData] = useState([{}])
 
+    const credentials = JSON.parse(localStorage.getItem('credentials'));
+
     useEffect(() => {
         fetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/').then(
-        response => response.json()
+        response => response.json(),
+        console.log(credentials)
         ).then(data => setInitialData(data))
     }, []);
 
@@ -53,6 +58,11 @@ const Chart = () => {
             <h2>Number of Failures: {initialData.Failures}</h2>
             <h2>Number of Cancels: {initialData.Cancels}</h2>
             <h2>Average build time: {initialData.Average}</h2>
+            {/* <button 
+                onClick = {logout}
+                >
+                Logout
+            </button> */}
         </div>
     );
 }

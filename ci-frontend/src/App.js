@@ -1,34 +1,41 @@
-import React from 'react';
+import React, { Redirect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 
 import Login from './Component/Login';
 import Dashboard from './Component/Dashboard';
-import Preferences from './Component/Preferences';
-import Test from './Component/Test';
-import Fetch from './Component/Fetch';
-import SideNav from './Component/SideNav';
+// import Preferences from './Component/Preferences';
+// import Test from './Component/Test';
+// import Fetch from './Component/Fetch';
+// import SideNav from './Component/SideNav';
 
 
 function App() {
+  const loggedIn = localStorage.getItem('logged');
   return (
     <div className = "wrapper">
       <BrowserRouter>
         <Switch>
-          <Route path="/login">
-            <Login />
+          <Route exact path="/">
+            {loggedIn ? <Redirect to="/dashboard" /> : <Login />}
           </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
+          {/* <Route path="/dashboard">
+            {loggedIn ? <Dashboard /> : <Login />}
+          </Route> */}
           {/* <Route path="/stats">
             <Dashboard />
           </Route> */}
-          <Route path="/preferences">
-            <Preferences />
+          <Route path="/Login">
+            <Login />
           </Route>
-          <Route path="/Test">
+          <Route path="/Dashboard">
+            <Dashboard />
+          </Route>
+          {/* <Route path="/preferences">
+            <Preferences />
+          </Route> */}
+          {/* <Route path="/Test">
             <Test />
           </Route>
           <Route path="/SideNav">
@@ -36,7 +43,7 @@ function App() {
           </Route>
           <Route path="/Fetch">
             <Fetch />
-          </Route>
+          </Route> */}
         </Switch>
       </BrowserRouter>
     </div>
