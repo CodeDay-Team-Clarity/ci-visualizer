@@ -8,35 +8,39 @@ load_dotenv()
 
 app = Flask(__name__)
 
+
 def jenkinsConnectionFromRequest(request):
     if (request.method == 'GET'):
         args = request.args
-        if "username" in args and "password" in args and "url" in args: 
+        if "username" in args and "password" in args and "url" in args:
             return JenkinsConnection(args["url"], args["username"], args["password"])
         else:
             raise Exception("Insufficient credentials")
     elif (request.method == 'POST'):
         args = request.json
         print(args)
-        if "username" in args and "password" in args and "url" in args: 
+        if "username" in args and "password" in args and "url" in args:
             return JenkinsConnection(args["url"], args["username"], args["password"])
-        else: 
+        else:
             raise Exception("Insufficient credentials")
     else:
         raise Exception("No credentials")
 
-@app.route('/login', methods = ['POST'])
+
+@app.route('/login', methods=['POST'])
 def login():
     # If this function call fails, the route will throw an exception, and the response won't have status code 200 i.e. login failed.
     # If this function call succeeds, the login succeeded, and we'll return a 200 status code with response body {"response": "ok"}
     jenkinsConnectionFromRequest(request)
     return '{"response": "ok"}'
 
+
 @app.route('/')
 def index():
     return render_template("index.html", token="Hello, ci-visualizer user from Flask+React")
 
-@app.route('/stats', methods = ['GET'])
+
+@app.route('/stats', methods=['GET'])
 def getStats():
     ''' Returns as JSON file of all build statistics '''
     connection = jenkinsConnectionFromRequest(request)
@@ -49,11 +53,12 @@ def getStats():
         "Failures": failures,
         "Successes": successes,
         "Cancels": cancels,
-        "All Results:": allResults,
+        "AllResults": allResults,
         "Average": buildAvg
     }
 
     # return stats
     return json.dumps(stats)
+
 
 app.run(debug=True)

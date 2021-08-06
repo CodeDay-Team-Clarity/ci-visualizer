@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import './Login.css';
 
 const Login = () => {
+    const isLoggedIn = localStorage.getItem('loggedIn');
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     // use this for url for now: 'http://builds.ci-visualizer.com:8080'
     const [url, setUrl] = useState("");
+    const history = useHistory();
+
+    if(isLoggedIn){
+        history.push('/dashboard')
+    };
 
     const login = async (username, password, url) => {
         const requestOptions = {
@@ -31,6 +38,10 @@ const Login = () => {
             const data = await response.json();
             console.log(data);
             localStorage.setItem("loggedIn", true);
+            localStorage.setItem("credentials", JSON.stringify({
+                'username': username, 
+                'password': password, 
+                'url': url}));
             history.push("/dashboard");
             return true;
         }
@@ -40,7 +51,6 @@ const Login = () => {
     };
 
 
-    const history = useHistory();
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -50,9 +60,6 @@ const Login = () => {
     return (
         <div className = "login-wrapper">
             <h1>Please Log In</h1>
-            {localStorage.getItem('loggedIn', true) ? (
-                history.push('/dashboard')
-                ) : (
                 <form>
                     <label>
                         <p>Username</p>
@@ -84,14 +91,12 @@ const Login = () => {
                     <div>
                         <button 
                             type = "submit" 
-                            onClick = {handleClick} 
+                            onClick = {handleClick}
                             >
                             Submit
                         </button>
                     </div>
                 </form>
-                )
-            }
         </div>
     )
 }
