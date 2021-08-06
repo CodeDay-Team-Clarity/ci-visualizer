@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { Redirect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 
 import Login from './Component/Login';
 import Dashboard from './Component/Dashboard';
-import Preferences from './Component/Preferences';
+// import Preferences from './Component/Preferences';
 // import Test from './Component/Test';
 // import Fetch from './Component/Fetch';
 // import SideNav from './Component/SideNav';
 
 
 function App() {
+  const loggedIn = localStorage.getItem('logged');
   return (
     <div className = "wrapper">
       <BrowserRouter>
         <Switch>
-          {/* <Route exact path="/">
+          <Route exact path="/">
             {loggedIn ? <Redirect to="/dashboard" /> : <Login />}
           </Route>
-          <Route path="/dashboard">
+          {/* <Route path="/dashboard">
             {loggedIn ? <Dashboard /> : <Login />}
           </Route> */}
           {/* <Route path="/stats">
@@ -31,9 +32,9 @@ function App() {
           <Route path="/Dashboard">
             <Dashboard />
           </Route>
-          <Route path="/preferences">
+          {/* <Route path="/preferences">
             <Preferences />
-          </Route>
+          </Route> */}
           {/* <Route path="/Test">
             <Test />
           </Route>

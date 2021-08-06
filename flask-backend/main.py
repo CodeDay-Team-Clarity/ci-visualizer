@@ -12,6 +12,7 @@ app = Flask(__name__)
 def jenkinsConnectionFromRequest(request):
     if (request.method == 'GET'):
         args = request.args
+        print(args)
         if "username" in args and "password" in args and "url" in args:
             return JenkinsConnection(args["url"], args["username"], args["password"])
         else:
