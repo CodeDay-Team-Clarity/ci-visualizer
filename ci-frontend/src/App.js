@@ -7,7 +7,7 @@ import Login from './Component/Login';
 import Dashboard from './Component/Dashboard';
 // import Preferences from './Component/Preferences';
 // import Test from './Component/Test';
-import Fetch from './Component/Fetch';
+// import Fetch from './Component/Fetch';
 // import SideNav from './Component/SideNav';
 
 
@@ -23,9 +23,9 @@ function App() {
           {/* <Route path="/dashboard">
             {loggedIn ? <Dashboard /> : <Login />}
           </Route> */}
-          {/* <Route path="/stats">
+          <Route path="/stats">
             <Dashboard />
-          </Route> */}
+          </Route>
           <Route path="/Login">
             <Login />
           </Route>
@@ -40,10 +40,10 @@ function App() {
           </Route>
           <Route path="/SideNav">
             <SideNav />
-          </Route> */}
+          </Route>
           <Route path="/Fetch">
             <Fetch />
-          </Route>
+          </Route> */}
         </Switch>
       </BrowserRouter>
     </div>

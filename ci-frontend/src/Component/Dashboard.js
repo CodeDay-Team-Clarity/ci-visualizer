@@ -6,7 +6,7 @@ function Dashboard() {
     return (
         <div>
             <h2>Dashboard</h2>
-            <Chart Successes = {5} Unstable={2} Failures={3} Cancels ={0}/>
+            <Chart />
         </div>
     )
 }
