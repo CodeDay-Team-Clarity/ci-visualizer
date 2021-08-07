@@ -4,6 +4,7 @@ import useFetch from './useFetch';
 
 import { Bar } from 'react-chartjs-2';
 // import Fetch from './Fetch';
+import './SideData.css'
 
 
 const Chart = () => {
@@ -44,6 +45,7 @@ const Chart = () => {
                 },
             ],
         },
+       
     };
 
     return (
@@ -51,10 +53,14 @@ const Chart = () => {
             { error && <div>{ error }</div>}
             { info && (
                 <div>
+                    
                     <h2>Number of Successes: {info.Successes}</h2>
                     <h2>Number of Failures: {info.Failures}</h2>
                     <h2>Number of Cancels: {info.Cancels}</h2>
                     <h2>Average build time: {info.Average}</h2>
+               
+                    <h2 className='chartTitle'>Build Status</h2>
+                    
                     <Bar data={data} options={options} />
                 </div>
             )}
