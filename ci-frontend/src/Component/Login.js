@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import './Login.css';
 
@@ -9,10 +8,9 @@ const Login = () => {
     const [password, setPassword] = useState("");
     // use this for url for now: 'http://builds.ci-visualizer.com:8080'
     const [url, setUrl] = useState("");
-    const history = useHistory();
 
     if(isLoggedIn){
-        history.push('/dashboard')
+        window.location.href = "/dashboard";
     };
 
     const login = async (username, password, url) => {
@@ -42,7 +40,7 @@ const Login = () => {
                 'username': username, 
                 'password': password, 
                 'url': url}));
-            history.push("/dashboard");
+            window.location.href = "/dashboard";
             return true;
         }
         catch(error){
