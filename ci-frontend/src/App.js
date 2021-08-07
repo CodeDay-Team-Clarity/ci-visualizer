@@ -23,9 +23,9 @@ function App() {
           {/* <Route path="/dashboard">
             {loggedIn ? <Dashboard /> : <Login />}
           </Route> */}
-          {/* <Route path="/stats">
+          <Route path="/stats">
             <Dashboard />
-          </Route> */}
+          </Route>
           <Route path="/Login">
             <Login />
           </Route>

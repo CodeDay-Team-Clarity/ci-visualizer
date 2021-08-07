@@ -9,14 +9,14 @@ import './SideData.css'
 
 const Chart = () => {
 
-    const { data: info, error } = useFetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/')
+    const { data: stats, error } = useFetch('/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/')
 
     const data = {
         labels: ['Successes', 'Failures', 'Unstable'],
         datasets: [
             {
                 label: ['# of jobs'],
-                data: [info.Successes, info.Failures, info.Cancels],
+                data: [stats.Successes, stats.Failures, stats.Cancels],
 
                backgroundColor: [
                     'rgba(75, 192, 192, 0.2)',
@@ -50,14 +50,15 @@ const Chart = () => {
 
     return (
         <div>
+            <Bar data={data} options={options} />
             { error && <div>{ error }</div>}
-            { info && (
+            { stats && (
                 <div>
                     
-                    <h2>Number of Successes: {info.Successes}</h2>
-                    <h2>Number of Failures: {info.Failures}</h2>
-                    <h2>Number of Cancels: {info.Cancels}</h2>
-                    <h2>Average build time: {info.Average}</h2>
+                    <h2>Number of Successes: {stats.Successes}</h2>
+                    <h2>Number of Failures: {stats.Failures}</h2>
+                    <h2>Number of Cancels: {stats.Cancels}</h2>
+                    <h2>Average build time: {stats.Average}</h2>
                
                     <h2 className='chartTitle'>Build Status</h2>
                     
