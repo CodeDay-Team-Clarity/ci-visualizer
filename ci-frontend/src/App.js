@@ -1,10 +1,10 @@
 import React, { Redirect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import './App.css';
+import './Styles/App.css';
 
-import Login from './Component/Login';
-import Dashboard from './Component/Dashboard';
+import Login from './Pages/Login';
+import Dashboard from './Pages/Dashboard';
 // import Preferences from './Component/Preferences';
 // import Test from './Component/Test';
 // import Fetch from './Component/Fetch';

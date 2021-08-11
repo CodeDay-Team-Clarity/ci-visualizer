@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Logout from './logout';
-import Chart from './Chart';
+import Logout from '../Component/logout';
+import Chart from '../Component/Chart';
 // import SideNav from './SideNav';
 
 
