@@ -50,7 +50,7 @@ const Chart = () => {
 
     return (
         <div>
-            <Bar data={data} options={options} />
+         
             { error && <div>{ error }</div>}
             { stats && (
                 <div>
