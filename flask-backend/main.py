@@ -16,16 +16,19 @@ def jenkinsConnectionFromRequest(request):
         if "username" in args and "password" in args and "url" in args:
             return JenkinsConnection(args["url"], args["username"], args["password"])
         else:
-            raise Exception("Insufficient credentials")
+            # raise Exception("Insufficient credentials")
+            return '{"response": "Error: Insufficient Credentials"}'
     elif (request.method == 'POST'):
         args = request.json
         print(args)
         if "username" in args and "password" in args and "url" in args:
             return JenkinsConnection(args["url"], args["username"], args["password"])
         else:
-            raise Exception("Insufficient credentials")
+            # raise Exception("Insufficient credentials")
+            return '{"response": "Error: Insufficient Credentials"}'
     else:
-        raise Exception("No credentials")
+        # raise Exception("No credentials")
+        return '{"response": "Error: neither POST nor GET at jenkinsConnectionFromRequest"}'
 
 
 @app.route('/login', methods=['POST'])
