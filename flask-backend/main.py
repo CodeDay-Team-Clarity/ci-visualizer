@@ -43,15 +43,31 @@ def login():
 def index():
     return render_template("index.html", token="Hello, ci-visualizer user from Flask+React")
 
-
 @app.route('/stats', methods=['GET'])
 def getStats():
-    ''' Returns as JSON file of all build statistics '''
+    ''' Returns JSON of all build statistics of one job '''
+    currentJob = None
+
+    # connect and get all jobs
     connection = jenkinsConnectionFromRequest(request)
-    job = BuildMetrics(connection)
-    job.populateStats()
-    failures, successes, cancels = job.getStatusCounts()
-    avgDuration, buildTimestamps, buildDurations, allResults = job.getDurationTimeStatus()
+    jenkinsInstance = BuildMetrics(connection)
+
+    # all jobs, if no Jobs, return no jobs
+    jobNames = jenkinsInstance.getJobNames()
+    if len(jobNames) <= 0:
+        error = {"response": "no jobs"}
+        return error
+
+    # if a job name was not specified, get info for first job
+    args = request.args()
+    if "job" in args:
+        currentJob = args["job"]
+    else:
+        currentJob = jobNames[0]
+
+    jenkinsInstance.populateStats(currentJob)
+    failures, successes, cancels = jenkinsInstance.getStatusCounts()
+    avgDuration, buildTimestamps, buildDurations, allResults = jenkinsInstance.getDurationTimeStatus()
     # print(failures, successes, cancels, allResults, buildAvg)
 
     stats = {
