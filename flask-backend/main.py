@@ -100,7 +100,7 @@ def getStats():
     # return data
     print('DATA ---- ')
     print(data)
-    print(' --------')
+    print(' -------- ')
     return json.dumps(data)
 
 
