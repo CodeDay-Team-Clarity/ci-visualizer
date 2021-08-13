@@ -66,7 +66,6 @@ class BuildMetrics:
             # UNCOMMENT TO SEE FULL BUILD INFO
             # for key,value in buildInfo.items():
             #     print(key, ' -> ', value)
-
             buildName = buildInfo.get('fullDisplayName')
             buildResult = buildInfo.get('result')
             self.allResults.append([buildName, buildResult])
