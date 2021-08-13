@@ -48,10 +48,10 @@ def getStats():
     ''' Returns JSON of all build statistics of one job 
     in the query string, specify a username=, password=, url=, and job=
     '''
-    currentJob = None
+    currentJobName = None
 
     # connect and get all jobs
-    connection, currentJob = jenkinsConnectionFromRequest(request)
+    connection, currentJobName = jenkinsConnectionFromRequest(request)
     jenkinsInstance = BuildMetrics(connection)
 
     # all jobs, if no Jobs, return no jobs
@@ -60,7 +60,7 @@ def getStats():
         error = {"response": "no jobs"}
         return error
 
-    jenkinsInstance.populateStats(currentJob)
+    jenkinsInstance.populateStats(currentJobName)
     failures, successes, cancels = jenkinsInstance.getStatusCounts()
     avgDuration, buildTimestamps, buildDurations, allResults = jenkinsInstance.getDurationTimeStatus()
     # print(failures, successes, cancels, allResults, buildAvg)
@@ -68,6 +68,7 @@ def getStats():
     data = {
     "allJobNames": allJobNames,
     "stats": {
+        "CurrentJobName": currentJobName,
         "Failures": failures, # for chart 1
         "Successes": successes, # for chart 1
         "Cancels": cancels, # for chart 1
