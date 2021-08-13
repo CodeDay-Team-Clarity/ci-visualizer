@@ -36,16 +36,20 @@ class BuildMetrics:
     def __init__(self, jenkinsConnection):
         self.server = jenkinsConnection.server
 
-    def getStats(self):
+    def getStatusCounts(self):
         # print('------------ Build Stats ---------------')
         # print('Total Failures: ', self.buildFailures)
         # print('Total Successes: ', self.buildSuccesses)
         # print('Total Cancels: ', self.buildCancels)
         # print('All Results: ', self.allResults)
 
-        averageDuration = (self.totalDuration / self.totalNumberBuilds)
         # print("Average Build Duration %.2f " % averageDuration)
-        return [self.buildFailures, self.buildSuccesses, self.buildCancels, self.allResults, averageDuration]
+        return [self.buildFailures, self.buildSuccesses, self.buildCancels]
+    
+    def getDurationTimeStatus(self):
+        ''' Gives us the status of each build how long it took and when it was run '''
+        averageDuration = (self.totalDuration / self.totalNumberBuilds)
+        return [averageDuration, self.buildTimestamps, self.buildDurations, self.allResults]
 
     def populateStats(self):
         # return all jobs

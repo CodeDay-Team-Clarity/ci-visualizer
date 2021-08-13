@@ -50,15 +50,18 @@ def getStats():
     connection = jenkinsConnectionFromRequest(request)
     job = BuildMetrics(connection)
     job.populateStats()
-    failures, successes, cancels, allResults, buildAvg = job.getStats()
+    failures, successes, cancels = job.getStatusCounts()
+    avgDuration, buildTimestamps, buildDurations, allResults = job.getDurationTimeStatus()
     # print(failures, successes, cancels, allResults, buildAvg)
 
     stats = {
-        "Failures": failures,
-        "Successes": successes,
-        "Cancels": cancels,
-        "AllResults": allResults,
-        "Average": buildAvg
+        "Failures": failures, # for chart 1
+        "Successes": successes, # for chart 1
+        "Cancels": cancels, # for chart 1
+        "AverageDuration": avgDuration, # for chart 2
+        "BuildTimestamps": buildTimestamps, # for chart 2
+        "BuildDurations": buildDurations, # for chart 2
+        "AllResults": allResults # for chart 2
     }
 
     # return stats
