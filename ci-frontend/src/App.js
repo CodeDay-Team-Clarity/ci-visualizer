@@ -1,20 +1,21 @@
-import React, { Redirect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { Redirect } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import './App.css';
+import "./App.css";
 
-import Login from './Component/Login';
-import Dashboard from './Component/Dashboard';
+import Login from "./Component/Login";
+import Dashboard from "./Component/Dashboard";
+import TopNav from "./Component/TopNav";
+import Test from "./Component/Test";
 // import Preferences from './Component/Preferences';
 // import Test from './Component/Test';
 // import Fetch from './Component/Fetch';
-// import SideNav from './Component/SideNav';
-
+import SideNav from "./Component/SideNav";
 
 function App() {
-  const loggedIn = localStorage.getItem('logged');
+  const loggedIn = localStorage.getItem("logged");
   return (
-    <div className = "wrapper">
+    <div className="wrapper">
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
@@ -32,6 +33,9 @@ function App() {
           <Route path="/Dashboard">
             <Dashboard />
           </Route>
+          <Route path="/SideNav">
+            <SideNav />
+          </Route>
           {/* <Route path="/preferences">
             <Preferences />
           </Route> */}
@@ -44,6 +48,7 @@ function App() {
           <Route path="/DashBoard">
             <Dashboard />
           </Route>
+          
           <Route path="/Fetch">
             <Fetch />
           </Route> */}
