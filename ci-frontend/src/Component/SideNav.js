@@ -1,8 +1,8 @@
 import React from "react";
 import { SideNavData } from "./SideNavData";
 //import "../Styles/SideData.css";
-import t from "../Image/t.jpg";
-// import DashBoard from "./DashBoard.css";
+import t from "../Images/t.jpg";
+// import DashBoard from "../Styles/DashBoard.css";
 
 function SideNav() {
   return (
