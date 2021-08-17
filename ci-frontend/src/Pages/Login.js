@@ -112,6 +112,7 @@ const Login = () => {
                         onChange = {handleChange}
                     />
                     {errors.url && <p className = "error">{errors.url}</p>}
+                    {!valid && <p className = "lead text-danger fw-bold">Invalid login credentials</p>}
                 </div>
                 <div className = "col-md-2 offset-md-5 p-2">
                     <button 
