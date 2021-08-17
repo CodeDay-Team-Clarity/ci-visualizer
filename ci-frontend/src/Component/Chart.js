@@ -1,11 +1,6 @@
-// import React, { useState, useEffect } from 'react';
-// import { logout } from './helpers';
 import useFetch from './useFetch';
 
 import { Bar } from 'react-chartjs-2';
-// import Fetch from './Fetch';
-// import '../Styles/SideData.css';
-
 
 const Chart = () => {
 
@@ -64,11 +59,6 @@ const Chart = () => {
                     <Bar data={data} options={options} />
                 </div>
             )}
-            {/* <button 
-                onClick = {logout}
-                >
-                Logout
-            </button> */}
         </div>
     );
 }

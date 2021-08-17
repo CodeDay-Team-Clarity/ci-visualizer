@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo.svg';
 import validation from '../Component/validation';
 
-// import '../Styles/Login.css';
+// import '../Styles/login.css';
 
 const Login = () => {
     const isLoggedIn = localStorage.getItem('loggedIn');
@@ -45,7 +45,6 @@ const Login = () => {
         try{
             const response = await fetch('/login', requestOptions)
                 if (response.status !== 200){
-                    // alert("there has been a murder!!!");
                     setValid(_valid => false);
                     console.log({"message":"connection failed"});
                     return false;

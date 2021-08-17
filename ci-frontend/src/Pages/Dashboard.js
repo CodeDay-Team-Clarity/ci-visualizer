@@ -2,8 +2,8 @@ import React from 'react'
 
 import Logout from '../Component/logout';
 import Chart from '../Component/Chart';
-// import SideNav from './SideNav';
-
+// import SideNav from '../Component/SideNav';
+// import SideNav from '../Component/TopNav';
 
 
 function Dashboard() {
@@ -17,5 +17,3 @@ function Dashboard() {
 }
 
 export default Dashboard
-
-
