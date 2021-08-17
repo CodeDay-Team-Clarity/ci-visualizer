@@ -1,15 +1,32 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
+import { Nav, Navbar } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Dropdown } from "react-bootstrap";
 
 function TopNav() {
-    return (
-        <>
-            <nav className = "topnav">
-                <div className = "topnav-container">
-                    
-                </div>
-            </nav>  
-        </>
-    )
+  return (
+    <>
+      <Navbar bg="light" variant="light">
+        <Container>
+          <Navbar.Brand href="#DashBoard">
+            <Dropdown>
+              <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                Jobs
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item href="/Dashboard">job1</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">job2</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">job3</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Navbar.Brand>
+          <Nav className="me-auto"></Nav>
+        </Container>
+      </Navbar>
+    </>
+  );
 }
 
-export default TopNav
+export default TopNav;
