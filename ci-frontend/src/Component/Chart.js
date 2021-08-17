@@ -4,7 +4,7 @@ import useFetch from './useFetch';
 
 import { Bar } from 'react-chartjs-2';
 // import Fetch from './Fetch';
-import '../Styles/SideData.css';
+// import '../Styles/SideData.css';
 
 
 const Chart = () => {
