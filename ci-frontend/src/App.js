@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 // import './Styles/style.css';
 
-import Login from './Pages/Login';
-import Dashboard from './Pages/Dashboard';
+import Login from "./Pages/Login";
+import Dashboard from "./Pages/Dashboard";
 // import Preferences from './Component/Preferences';
 // import Test from './Component/Test';
 // import Fetch from './Component/Fetch';
@@ -31,9 +31,9 @@ function App() {
           <Route path="/Dashboard">
             <Dashboard />
           </Route>
-          <Route path="/TopNav">
+          {/* <Route path="/TopNav">
             <TopNav />
-          </Route>
+          </Route> */}
           <Route path="/SideNav">
             <SideNav />
           </Route>

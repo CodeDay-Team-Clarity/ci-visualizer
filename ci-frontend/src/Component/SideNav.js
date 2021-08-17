@@ -1,6 +1,6 @@
 import React from "react";
 import { SideNavData } from "./SideNavData";
-import "./SideData.css";
+//import "./SideData.css";
 import t from "../Image/t.jpg";
 import DashBoard from "./DashBoard.css";
 
