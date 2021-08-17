@@ -4,8 +4,8 @@
   background-color: lightsteelblue;
 }
 .navSideList {
-  height: auto;
-  padding: 0;
+  height: 100%;
+  padding: 0.5;
   width: 100%;
 }
 .navSideList .row {

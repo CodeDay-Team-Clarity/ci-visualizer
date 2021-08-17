@@ -33,9 +33,13 @@ function App() {
           <Route path="/Dashboard">
             <Dashboard />
           </Route>
+          <Route path="/TopNav">
+            <TopNav />
+          </Route>
           <Route path="/SideNav">
             <SideNav />
           </Route>
+
           {/* <Route path="/preferences">
             <Preferences />
           </Route> */}

@@ -1,11 +1,17 @@
 import React from "react";
 import { SideNavData } from "./SideNavData";
 import "./SideData.css";
+import t from "../Image/t.jpg";
+import DashBoard from "./DashBoard.css";
 
 function SideNav() {
   return (
     <div className="navSide">
       <ul className="navSideList">
+        <div>
+          <img src={t} alt="Jenkins" />
+        </div>
+        <br />
         {SideNavData.map((val, key) => {
           return (
             <li
@@ -15,8 +21,6 @@ function SideNav() {
                 window.location.pathname = val.link;
               }}
             >
-              <image src="https://www.example.com/foo.jpg" />
-              <div>{val.ican}</div>
               <div>{val.title}</div>
             </li>
           );

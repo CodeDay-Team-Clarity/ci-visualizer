@@ -51,10 +51,10 @@ const Chart = () => {
       {error && <div>{error}</div>}
       {stats && (
         <div>
-          <h2>Number of Successes: {stats.Successes}</h2>
+          {/* <h2>Number of Successes: {stats.Successes}</h2>
           <h2>Number of Failures: {stats.Failures}</h2>
           <h2>Number of Cancels: {stats.Cancels}</h2>
-          <h2>Average build time: {stats.Average}</h2>
+          <h2>Average build time: {stats.Average}</h2> */}
 
           <h2 className="chartTitle">Build Status</h2>
 
