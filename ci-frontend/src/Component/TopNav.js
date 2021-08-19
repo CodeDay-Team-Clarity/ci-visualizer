@@ -7,7 +7,7 @@ import { Dropdown } from "react-bootstrap";
 function TopNav() {
   return (
     <>
-      <Navbar bg="light" variant="light">
+      <Navbar bg="dark" variant="light">
         <Container>
           <Navbar.Brand href="#DashBoard">
             <Dropdown>
