@@ -1,6 +1,6 @@
-import useFetch from './useFetch';
+import useFetch from "./useFetch";
 
-import { Bar } from 'react-chartjs-2';
+import { Bar } from "react-chartjs-2";
 
 const Chart = () => {
   const { data: stats, error } = useFetch(
@@ -44,22 +44,21 @@ const Chart = () => {
 
   return (
     <div>
-        { error && <div>{ error }</div>}
-        { stats && (
-            <div>
-                
-                <h2>Number of Successes: {stats.Successes}</h2>
+      {error && <div>{error}</div>}
+      {stats && (
+        <div>
+          {/* <h2>Number of Successes: {stats.Successes}</h2>
                 <h2>Number of Failures: {stats.Failures}</h2>
                 <h2>Number of Cancels: {stats.Cancels}</h2>
-                <h2>Average build time: {stats.Average}</h2>
-            
-                <h2 className='chartTitle'>Build Status</h2>
-                
-                <Bar data={data} options={options} />
-            </div>
-        )}
+                <h2>Average build time: {stats.Average}</h2> */}
+
+          <h2 className="chartTitle">Build Status</h2>
+
+          <Bar data={data} options={options} />
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Chart;
