@@ -46,16 +46,18 @@ const Chart = () => {
     <div>
         { error && <div>{ error }</div>}
         { stats && (
-            <div>
+            <div className = "row">
+              <div className = "col-auto col-md-4 col-lg-3 col-xl-2">
                 
                 <h2>Number of Successes: {stats.Successes}</h2>
                 <h2>Number of Failures: {stats.Failures}</h2>
                 <h2>Number of Cancels: {stats.Cancels}</h2>
                 <h2>Average build time: {stats.Average}</h2>
-            
+              </div>
+              <div className = "col-auto col-md-8 col-lg-9 col-xl-10">
                 <h2 className='chartTitle'>Build Status</h2>
-                
                 <Bar data={data} options={options} />
+              </div>
             </div>
         )}
     </div>
