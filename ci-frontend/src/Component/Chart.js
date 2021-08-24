@@ -54,7 +54,7 @@ const Chart = () => {
                 <h2>Number of Cancels: {stats.Cancels}</h2>
                 <h2>Average build time: {stats.Average}</h2>
               </div>
-              <div className = "col-auto col-md-8 col-lg-9 col-xl-10">
+              <div className = "col-auto col-md-6 col-lg-7 col-xl-8">
                 <h2 className='chartTitle'>Build Status</h2>
                 <Bar data={data} options={options} />
               </div>

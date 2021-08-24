@@ -7,7 +7,7 @@ import Dashboard from './Pages/Dashboard';
 function App() {
   const loggedIn = localStorage.getItem("logged");
   return (
-    <div className="wrapper">
+    <div className = "container-fluid p-0">
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
