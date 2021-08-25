@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo.svg';
+import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo-no-text.svg';
 import validation from '../Component/validation';
 
 // import '../Styles/login.css';
@@ -71,14 +71,17 @@ const Login = () => {
     };
 
     return ( 
-        <div className = "container-fluid align-items-center p-5">
-            <form className = "container-fluid text-center p-5">
+        <div className = "container-fluid align-items-center pt-5 pb-5">
+            <form className = "container-fluid text-center">
                 <h1 className = "p-4">
                     Please Log In
                 </h1>
-                <picture>
-                    <JenkinsSvg className = "p-3"/>
-                </picture>
+                <div>
+                    <JenkinsSvg/>
+                </div>
+                <h2 className = "fw-bold text-uppercase">
+                    Ci-Visualizer
+                </h2>
                 <div className = "col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-2 m-auto text-center">
                     <input 
                         className = {`form-control ${valid ? '' : 'is-invalid'}`}

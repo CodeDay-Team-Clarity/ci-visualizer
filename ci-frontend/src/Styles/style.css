@@ -1,0 +1,39 @@
+:root {
+  --offcanvas-width: 215px;
+  --topNavBarHeight: 65px;
+}
+
+.sidebar-nav {
+  width: var(--offcanvas-width);
+}
+
+.main-content {
+  margin-top: var(--topNavBarHeight);
+  padding: 5px;
+}
+
+@media (min-width: 992px) {
+  body {
+    overflow: auto !important;
+  }
+
+  .navbar {
+    height: var(--topNavBarHeight);
+  }
+
+  .offcanvas-backdrop::before {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: var(--offcanvas-width);
+    /* width: calc(100% - var(--offcanvas-width)); */
+  }
+
+  .sidebar-nav {
+    transform: none;
+    visibility: visible !important;
+    top: var(--topNavBarHeight);
+    height: calc(100% - var(--topNavBarHeight));
+  }
+}
