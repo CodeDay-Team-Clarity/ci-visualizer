@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Container } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Dropdown } from "react-bootstrap";
 
 function TopNav() {

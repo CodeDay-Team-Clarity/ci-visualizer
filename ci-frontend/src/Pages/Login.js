@@ -79,7 +79,7 @@ const Login = () => {
                 <picture>
                     <JenkinsSvg className = "p-3"/>
                 </picture>
-                <div className = "col-md-6 offset-md-3 col-lg-4 offset-lg-4 p-2 text-center">
+                <div className = "col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-2 m-auto text-center">
                     <input 
                         className = {`form-control ${valid ? '' : 'is-invalid'}`}
                         type = "text"
@@ -90,7 +90,7 @@ const Login = () => {
                     />
                     {errors.username && <p className = "error">{errors.username}</p>}
                 </div>
-                <div className = "col-md-6 offset-md-3 col-lg-4 offset-lg-4 p-2 text-center">
+                <div className = "col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-2 m-auto text-center">
                     <input
                         className = {`form-control ${valid ? '' : 'is-invalid'}`}
                         type = "password"
@@ -101,7 +101,7 @@ const Login = () => {
                     />
                     {errors.password && <p className = "error">{errors.password}</p>}
                 </div>
-                <div className = "col-md-6 offset-md-3 col-lg-4 offset-lg-4 p-2 text-center">
+                <div className = "col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-2 m-auto text-center">
                     <input 
                         className = {`form-control ${valid ? '' : 'is-invalid'}`}
                         type = "text"
@@ -113,7 +113,7 @@ const Login = () => {
                     {errors.url && <p className = "error">{errors.url}</p>}
                     {!valid && <p className = "lead text-danger fw-bold">Invalid login credentials</p>}
                 </div>
-                <div className = "col-md-2 offset-md-5 p-2">
+                <div className = "col-md-2 m-auto p-2">
                     <button 
                         className = "btn btn-primary text-center"
                         type = "submit" 

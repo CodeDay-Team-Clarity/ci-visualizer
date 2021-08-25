@@ -1,10 +1,14 @@
 import React from 'react';
+import Logout from '../Component/logout';
 import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo-no-text.svg';
 
 const SideNav = () => {
     return (
-        <div className="col-auto col-md-3 col-lg-2 col-xl-1 px-sm-2 px-0 bg-dark">
-            <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+        <div 
+        className = 
+        "px-sm-2 px-0 bg-dark"
+        >
+            <div className="d-flex flex-column justify-content-center px-3 pt-2 text-white min-vh-100">
                 <JenkinsSvg alt="Jenkins logo" width="75%" height="75%" className="align-self-center pt-4"/>
                 <div className="dropdown p-4">
                     
@@ -72,8 +76,7 @@ const SideNav = () => {
                         </ul>
                     </li>
                     <li>
-                        <a href="#" className="nav-link px-0 align-middle">
-                            <i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Customers</span> </a>
+                        <Logout />
                     </li>
                 </ul>
                 <hr/>
