@@ -27,7 +27,6 @@ function Dashboard() {
         <div
         //  className = "col-auto col-md-9 col-lg-10 col-xl-11"
         >
-          <Logout />
           <Chart />
         </div>
       </div>
