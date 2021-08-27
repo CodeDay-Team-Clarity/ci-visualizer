@@ -7,13 +7,12 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 export const SideNavData = [
   {
     title: "Graph",
-    ican: <DashboardIcon />,
-    link: "/Dashboard",
+    icon: <DashboardIcon />,
+    link: "/dashboard",
   },
   {
     title: "home",
-    ican: <HomeIcon />,
+    icon: <HomeIcon />,
     link: "/home",
-  },
-  //
+  }
 ];

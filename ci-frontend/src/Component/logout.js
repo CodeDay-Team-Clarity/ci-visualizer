@@ -7,7 +7,13 @@ const Logout = () => {
         window.location.href = "/login";
     }
     return (
-        <button onClick = {logout}>Logout</button>
+        <button 
+            type = "button" 
+            className = "btn btn-secondary col-6 mx-auto" 
+            onClick = {logout}
+        >
+            Logout
+        </button>
     )
 }
 
