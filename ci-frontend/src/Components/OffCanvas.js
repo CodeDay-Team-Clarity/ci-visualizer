@@ -1,5 +1,5 @@
 import React from 'react';
-import Logout from '../Component/logout';
+import Logout from './logout';
 import { SideNavData } from "./OffCanvasData";
 import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo-no-text.svg';
 

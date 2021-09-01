@@ -1,7 +1,7 @@
 import React from "react";
-import Chart from '../Component/Chart';
-import TopNav from '../Component/TopNav';
-import OffCanvas from "../Component/OffCanvas";
+import Chart from '../Components/Chart';
+import TopNav from '../Components/TopNav';
+import OffCanvas from "../Components/OffCanvas";
 
 const Dashboard = () => {
     return (

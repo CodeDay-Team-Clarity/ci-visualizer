@@ -1,29 +1,30 @@
-import React, { Redirect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Login from './Pages/Login';
-import Dashboard from './Pages/Dashboard';
+import { Login, Dashboard } from './Pages';
 
 function App() {
-  const loggedIn = localStorage.getItem("logged");
+  const loggedIn = localStorage.getItem('loggedIn');
+
+  if(!loggedIn) {
+    return <Login/>
+  }
+
   return (
-    <div className = "container-fluid p-0">
-      <BrowserRouter>
+    <div>
+      <Router>
         <Switch>
           <Route exact path="/">
-            {loggedIn ? <Redirect to="/dashboard" /> : <Login />}
+            <Dashboard/>
           </Route>
-          <Route path="/stats">
+          <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/Login">
-            <Login />
-          </Route>
-          <Route path="/Dashboard">
-            <Dashboard />
+          <Route path = "/">
+            <Dashboard/>
           </Route>
         </Switch>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }
