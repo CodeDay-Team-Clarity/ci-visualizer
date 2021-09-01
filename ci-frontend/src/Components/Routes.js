@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Dashboard from '../Pages/Dashboard';
-import Navigation from './Navigation';
+import Navigation from './Navigation/Navs';
 
 function Routes() {
     return (

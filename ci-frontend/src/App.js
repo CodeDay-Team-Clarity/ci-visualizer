@@ -1,9 +1,7 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Login, Dashboard } from './Pages';
 
-function App() {
+const App = () => {
   const loggedIn = localStorage.getItem('loggedIn');
 
   if(!loggedIn) {

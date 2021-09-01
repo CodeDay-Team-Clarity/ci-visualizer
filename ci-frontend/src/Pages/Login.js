@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo-no-text.svg';
 import validation from '../Components/validation';
 

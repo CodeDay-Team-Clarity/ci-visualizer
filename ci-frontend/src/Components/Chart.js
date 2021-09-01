@@ -1,11 +1,7 @@
-import useFetch from './useFetch';
-
 import { Bar } from 'react-chartjs-2';
 
-const Chart = () => {
-  const { data: stats, error } = useFetch(
-    "/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/"
-  );
+const Chart = ({stats, error}) => {
+  
 
   const data = {
     labels: ["Successes", "Failures", "Unstable"],
