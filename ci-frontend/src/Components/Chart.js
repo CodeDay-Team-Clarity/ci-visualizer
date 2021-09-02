@@ -1,7 +1,7 @@
 import { Bar } from 'react-chartjs-2';
 
 const Chart = ({stats, error}) => {
-  
+  console.log(stats);
 
   const data = {
     labels: ["Successes", "Failures", "Unstable"],
