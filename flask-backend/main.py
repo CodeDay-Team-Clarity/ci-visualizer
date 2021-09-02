@@ -24,8 +24,8 @@ def jenkinsConnectionFromRequest(request):
     elif (request.method == 'POST'):
         args = request.json
         print(args)
-        if "username" in args and "password" in args and "url" in args and "job" in args:
-            return JenkinsConnection(args["url"], args["username"], args["password"]), args["job"]
+        if "username" in args and "password" in args and "url" in args in args:
+            return JenkinsConnection(args["url"], args["username"], args["password"])
         else:
             raise Exception("Insufficient credentials")
             # return '{"response": "Error: Insufficient Credentials"}'
