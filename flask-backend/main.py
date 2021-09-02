@@ -24,7 +24,7 @@ def jenkinsConnectionFromRequest(request):
     elif (request.method == 'POST'):
         args = request.json
         print(args)
-        if "username" in args and "password" in args and "url" in args in args:
+        if "username" in args and "password" in args and "url" in args:
             return JenkinsConnection(args["url"], args["username"], args["password"])
         else:
             raise Exception("Insufficient credentials")
@@ -45,6 +45,7 @@ def login():
 @app.route('/')
 def index():
     return render_template("index.html", token="Hello, ci-visualizer user from Flask+React")
+
 
 @app.route('/jobs', methods=['GET'])
 def jobs():
@@ -84,17 +85,17 @@ def getStats():
     # print(failures, successes, cancels, allResults, buildAvg)
 
     data = {
-    "allJobNames": allJobNames,
-    "stats": {
-        "CurrentJobName": currentJobName,
-        "Failures": failures, 
-        "Successes": successes, 
-        "Cancels": cancels, 
-        "AverageDuration": avgDuration, 
-        "BuildTimestamps": buildTimestamps, 
-        "BuildDurations": buildDurations, 
-        "AllResults": allResults 
-        }   
+        "allJobNames": allJobNames,
+        "stats": {
+            "CurrentJobName": currentJobName,
+            "Failures": failures,
+            "Successes": successes,
+            "Cancels": cancels,
+            "AverageDuration": avgDuration,
+            "BuildTimestamps": buildTimestamps,
+            "BuildDurations": buildDurations,
+            "AllResults": allResults
+        }
     }
 
     # return data
