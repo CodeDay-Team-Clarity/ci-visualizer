@@ -13,7 +13,7 @@ const Chart = () => {
     labels: ["Successes", "Failures", "Unstable"],
     datasets: [
       {
-        label: ["# of jobs"],
+        label: ["Number of jobs"],
         data: [stats.Successes, stats.Failures, stats.Cancels],
 
         backgroundColor: [
@@ -34,41 +34,54 @@ const Chart = () => {
 
   const options = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
+      y: {
+        beginAtZero: true,
+        type: "linear",
+        ticks: {
+          stepSize: 1,
+          title: {
+            display: true,
+            text: "Custom Chart Title",
           },
         },
-      ],
+      },
     },
   };
 
   return (
-    <div>
-      {error && <div>{error}</div>}
-      {stats && (
-        <div className="row">
-          <div className="col-auto col-md-4 col-lg-3 col-xl-2">
-            <Card style={{ width: "15pc" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title>jobs data</Card.Title>
-                <Card.Text>
-                  <h4>Number of Successes: {stats.Successes}</h4>
-                  <h4>Number of Failures: {stats.Failures}</h4>
-                  <h4>Number of Cancels: {stats.Cancels}</h4>
-                  <h4>Average build time: {stats.Average}</h4>
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </div>
-          <div className="col-auto col-md-6 col-lg-7 col-xl-8">
-            <h2 className="chartTitle">Build Status</h2>
-            <Bar data={data} options={options} />
-          </div>
+    <div className="container-fluid">
+      <div class="row justify-content-start">
+        {/* <Bar data={data} options={options} width={"1000%"} height={"50%"} /> */}
+        <div class="row align-items-start">
+          {/* <Card style={{ width: "15pc" }}>
+            <Card.Body>
+              <Card.Title>jobs data</Card.Title>
+              <Card.Text>
+                <h5>Number of Successes: {stats.Successes}</h5>
+                <h5>Number of Failures: {stats.Failures}</h5>
+                <h5>Number of Cancels: {stats.Cancels}</h5>
+                <h5>Average build time: {stats.Average}</h5>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          {""}
+          <Card style={{ width: "15pc" }}>
+            <Card.Body>
+              <Card.Title>jobs data</Card.Title>
+              <Card.Text>
+                <h5>Number of Successes: {stats.Successes}</h5>
+                <h5>Number of Failures: {stats.Failures}</h5>
+                <h5>Number of Cancels: {stats.Cancels}</h5>
+                <h5>Average build time: {stats.Average}</h5>
+              </Card.Text>
+            </Card.Body>
+          </Card> */}
         </div>
-      )}
+        <div class="col align-self-end">
+          <h2 className="chartTitle">Build Status</h2>
+          <Bar data={data} options={options} width={450} height={150} />
+        </div>
+      </div>
     </div>
   );
 };

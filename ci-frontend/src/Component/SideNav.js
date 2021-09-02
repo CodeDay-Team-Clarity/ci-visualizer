@@ -1,7 +1,7 @@
 import React from "react";
-import { SideNavData } from "./SideNavData";
-import SideDatas from "../Styles/SideDatas.css";
-import t from "../images/t.jpg";
+// import { SideNavData } from "./SideNavData";
+// import SideDatas from "../Styles/SideDatas.css";
+// import Jenkins from "../images/Jenkins.png";
 import { Nav } from "react-bootstrap";
 //import DashBoard from "./DashBoard.css";
 
