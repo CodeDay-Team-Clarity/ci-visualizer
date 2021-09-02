@@ -1,33 +1,30 @@
-import React, { Redirect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Login, Dashboard } from "./Pages";
 
-import Login from "./Pages/Login";
-import Dashboard from "./Pages/Dashboard";
-import SideNav from "./Component/SideNav";
-//import SideNavData from "./Pages/SideNavData.css";
+const App = () => {
+  const loggedIn = localStorage.getItem("loggedIn");
 
-function App() {
-  const loggedIn = localStorage.getItem("logged");
+  if (!loggedIn) {
+    return <Login />;
+  }
+
   return (
-    <div className="container-fluid p-0">
-      <BrowserRouter>
+    <div>
+      <Router>
         <Switch>
           <Route exact path="/">
-            {loggedIn ? <Redirect to="/dashboard" /> : <Login />}
-          </Route>
-          <Route path="/stats">
             <Dashboard />
           </Route>
-          <Route path="/SideNav">
-            <SideNav />
+          <Route path="/dashboard">
+            <Dashboard />
           </Route>
-          <Route path="/Dashboard">
+          <Route path="/">
             <Dashboard />
           </Route>
         </Switch>
-      </BrowserRouter>
+      </Router>
     </div>
   );
-}
+};
 
 export default App;

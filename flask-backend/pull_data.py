@@ -23,6 +23,9 @@ class JenkinsConnection:
 class BuildMetrics:
     server = None
 
+    # Jenkins jobs:
+    allJobNames = []
+
     # METRICS:
     buildFailures = 0
     buildSuccesses = 0
@@ -35,25 +38,39 @@ class BuildMetrics:
 
     def __init__(self, jenkinsConnection):
         self.server = jenkinsConnection.server
+    
+    def getJobNames(self):
+        # return names of all jobs
+        jenkinsJobs = self.server.get_all_jobs()
 
-    def getStats(self):
+        if len(self.allJobNames) <= 0:
+            for job in jenkinsJobs:
+                self.allJobNames.append(str(job['name']))
+
+        return self.allJobNames
+        
+
+    def getStatusCounts(self):
         # print('------------ Build Stats ---------------')
         # print('Total Failures: ', self.buildFailures)
         # print('Total Successes: ', self.buildSuccesses)
         # print('Total Cancels: ', self.buildCancels)
         # print('All Results: ', self.allResults)
 
-        averageDuration = (self.totalDuration / self.totalNumberBuilds)
         # print("Average Build Duration %.2f " % averageDuration)
-        return [self.buildFailures, self.buildSuccesses, self.buildCancels, self.allResults, averageDuration]
+        return [self.buildFailures, self.buildSuccesses, self.buildCancels]
+    
+    def getDurationTimeStatus(self):
+        ''' Gives us the status of each build how long it took and when it was run '''
+        averageDuration = (self.totalDuration / self.totalNumberBuilds)
+        return [averageDuration, self.buildTimestamps, self.buildDurations, self.allResults]
 
-    def populateStats(self):
-        # return all jobs
-        jenkinsJobs = self.server.get_all_jobs()
-        # print(jenkinsJobs)
-
+    def populateStats(self, currentJob):
         # JOB INFO
-        my_job = self.server.get_job_info('sleeper_simulation-1', 0, True)
+        
+        # jenkinsJobs = self.server.get_all_jobs()
+
+        my_job = self.server.get_job_info(str(currentJob), 0, True)
         # for key,value in my_job.items():
         #     print(key," -> ", value)
 

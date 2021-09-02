@@ -1,13 +1,15 @@
+<<<<<<< HEAD:ci-frontend/src/Component/Chart.js
 import useFetch from "./useFetch";
 
 import { Bar } from "react-chartjs-2";
 import { Card } from "react-bootstrap";
 import { height } from "@material-ui/system";
+=======
+import { Bar } from 'react-chartjs-2';
+>>>>>>> 7d29070e3d41747232d6bea0975f0d45a681ad05:ci-frontend/src/Components/Chart.js
 
-const Chart = () => {
-  const { data: stats, error } = useFetch(
-    "/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/"
-  );
+const Chart = ({stats, error}) => {
+  console.log(stats);
 
   const data = {
     labels: ["Successes", "Failures", "Unstable"],

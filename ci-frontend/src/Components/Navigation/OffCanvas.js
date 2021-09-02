@@ -1,7 +1,7 @@
-import React from 'react';
-import Logout from '../Component/logout';
+import { NavLink } from "react-router-dom";
 import { SideNavData } from "./OffCanvasData";
-import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo-no-text.svg';
+import { ReactComponent as JenkinsSvg } from '../../images/jenkins-logo-no-text.svg';
+import Logout from '../logout';
 
 const OffCanvas = () => {
     return (
@@ -33,6 +33,9 @@ const OffCanvas = () => {
                                         </li>
                                     );
                                 })}
+                            </li>
+                            <li>
+                                <NavLink to = "/dashboard/chart">Chart</NavLink>
                             </li>
                             <hr/>
                         </ul>
