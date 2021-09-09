@@ -2,6 +2,7 @@ import useFetch from "../Components/useFetch";
 import { Switch, Route } from "react-router-dom";
 import { TopNav, OffCanvas } from "../Components/Navigation";
 import Chart from "../Components/Chart";
+import LineChart from "../Components/Durartion";
 
 const Dashboard = () => {
   const { data: stats, error } = useFetch(
@@ -18,6 +19,7 @@ const Dashboard = () => {
         <Switch>
           <Route path="/dashboard/chart">
             <Chart stats={stats} error={error} />
+            <LineChart stats={stats} error={error} />
           </Route>
           <Route path="/dashboard" render={() => <div>Hello</div>} />
         </Switch>
