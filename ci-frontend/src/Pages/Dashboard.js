@@ -19,7 +19,7 @@ const Dashboard = () => {
         <Switch>
           <Route path="/dashboard/chart">
             <Chart stats={stats} error={error} />
-            <LineChart stats={stats} error={error} />
+            <LineChart stats={stats} />
           </Route>
           <Route path="/dashboard" render={() => <div>Hello</div>} />
         </Switch>
