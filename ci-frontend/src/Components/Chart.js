@@ -45,32 +45,6 @@ const Chart = ({ stats, error }) => {
   return (
     <div className="container-fluid">
       <div class="row justify-content-start">
-        {/* <Bar data={data} options={options} width={"1000%"} height={"50%"} /> */}
-        <div class="row align-items-start">
-          {/* <Card style={{ width: "15pc" }}>
-            <Card.Body>
-              <Card.Title>jobs data</Card.Title>
-              <Card.Text>
-                <h5>Number of Successes: {stats.Successes}</h5>
-                <h5>Number of Failures: {stats.Failures}</h5>
-                <h5>Number of Cancels: {stats.Cancels}</h5>
-                <h5>Average build time: {stats.Average}</h5>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          {""}
-          <Card style={{ width: "15pc" }}>
-            <Card.Body>
-              <Card.Title>jobs data</Card.Title>
-              <Card.Text>
-                <h5>Number of Successes: {stats.Successes}</h5>
-                <h5>Number of Failures: {stats.Failures}</h5>
-                <h5>Number of Cancels: {stats.Cancels}</h5>
-                <h5>Average build time: {stats.Average}</h5>
-              </Card.Text>
-            </Card.Body>
-          </Card> */}
-        </div>
         <div class="col align-self-end">
           <h2 className="chartTitle">Build Status</h2>
           <Bar data={data} options={options} width={450} height={150} />
