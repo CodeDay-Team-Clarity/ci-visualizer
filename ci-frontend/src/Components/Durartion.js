@@ -1,10 +1,11 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-// const [data, setData] = this;
+// const [datas, setData] = [];
+// const [state, setstate] = useState(initialState);
 
 const data = {
-  labels: [stats.Successes],
+  labels: ["1", "2", "3", "4", "5", "6"],
   datasets: [
     {
       label: "Duration",
@@ -28,7 +29,7 @@ const options = {
   },
 };
 
-const LineChart = (stats) => (
+const LineChart = () => (
   <>
     <div className="Duration">
       <h1 className="title">Line Chart</h1>
