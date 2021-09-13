@@ -8,7 +8,34 @@ load_dotenv()
 
 app = Flask(__name__)
 
+class JenkinsConnection():
 
+    def __init__(self, request=None):
+        self.request = request
+    
+    def getJobs(self):
+        if self.request != None and (self.request.method == 'GET'):
+            args = self.request.args
+            print(args)
+            if "username" in args and "password" in args and "url" in args and "job" in args:
+                return JenkinsConnection(args["url"], args["username"], args["password"]), args["job"]
+            else:
+                raise Exception("Insufficient credentials")
+        else:
+            print('getJobs function : Invalid -> request = None (or POST instead of GET request)')
+    
+    def getStats(self):
+        if self.request != None and (self.request.method == 'GET'):
+            args = self.request.args
+            print(args)
+            if "username" in args and "password" in args and "url" in args:
+                return JenkinsConnection(args["url"], args["username"], args["password"])
+            else:
+                raise Exception("Insufficient credentials")
+        else:
+            print('getStats function : Invalid -> request=None (or POST instead of GET request)')
+
+        
 def jenkinsConnectionFromRequest(request):
     if (request.method == 'GET'):
         args = request.args
@@ -35,7 +62,7 @@ def jenkinsConnectionFromRequest(request):
 
 
 @app.route('/login', methods=['POST'])
-def login():
+def loginRoute():
     # If this function call fails, the route will throw an exception, and the response won't have status code 200 i.e. login failed.
     # If this function call succeeds, the login succeeded, and we'll return a 200 status code with response body {"response": "ok"}
     jenkinsConnectionFromRequest(request)
@@ -43,12 +70,12 @@ def login():
 
 
 @app.route('/')
-def index():
+def indexRoute():
     return render_template("index.html", token="Hello, ci-visualizer user from Flask+React")
 
 
 @app.route('/jobs', methods=['GET'])
-def jobs():
+def jobsRoute():
     ''' needs url, user, pwrd in the request '''
     connection = jenkinsConnectionFromRequest(request)
     jenkinsInstance = BuildMetrics(connection)
@@ -62,7 +89,7 @@ def jobs():
 
 
 @app.route('/stats', methods=['GET'])
-def getStats():
+def statsRoute():
     ''' Returns JSON of all build statistics of one job 
     in the query string, specify a username=, password=, url=, and job=
     Example: http://127.0.0.1:5000/stats?job=sleeper_simulation-1&username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/
