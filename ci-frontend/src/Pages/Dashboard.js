@@ -2,13 +2,13 @@ import useFetch from "../Components/useFetch";
 import { Switch, Route } from "react-router-dom";
 import { TopNav, OffCanvas } from "../Components/Navigation";
 import Chart from "../Components/Chart";
-import LineChart from "../Components/Durartion";
+import Durartion from "../Components/Durartion";
 
 const Dashboard = () => {
   const { data: stats, error } = useFetch(
-    "/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/"
+    "/stats?job=sleeper_simulation-1&username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/"
   );
-
+  console.log(stats);
   return (
     <div>
       <div>
@@ -19,7 +19,7 @@ const Dashboard = () => {
         <Switch>
           <Route path="/dashboard/chart">
             <Chart stats={stats} error={error} />
-            <LineChart stats={stats} />
+            <Durartion stats={stats} />
           </Route>
           <Route path="/dashboard" render={() => <div>Hello</div>} />
         </Switch>
