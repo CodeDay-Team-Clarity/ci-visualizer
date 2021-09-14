@@ -8,7 +8,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-class JenkinsConnection():
+class JenkinsConnection_WIP:
 
     def __init__(self, request=None):
         self.request = request
@@ -42,8 +42,6 @@ def jenkinsConnectionFromRequest(request):
         print(args)
         # if a job is specified in the request, include the job name, else don't
         if "username" in args and "password" in args and "url" in args and "job" in args:
-            return JenkinsConnection(args["url"], args["username"], args["password"]), args["job"]
-        elif "username" in args and "password" in args and "url" in args:
             return JenkinsConnection(args["url"], args["username"], args["password"])
         else:
             raise Exception("Insufficient credentials")
@@ -97,7 +95,8 @@ def statsRoute():
     currentJobName = None
 
     # connect and get all jobs
-    connection, currentJobName = jenkinsConnectionFromRequest(request)
+    currentJobName = request.args["job"]
+    connection = jenkinsConnectionFromRequest(request)
     jenkinsInstance = BuildMetrics(connection)
 
     # all jobs, if no Jobs, return no jobs
