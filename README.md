@@ -9,7 +9,7 @@ In the repository's root directory, run these commands:
 ```
 pip install virtualenv
 virtualenv venv # This should create a `venv` directory
-source venv/bin/activate
+source venv/bin/activate # For windows users it will be source venv/scripts/activate
 pip install -r requirements.txt
 ```
 
