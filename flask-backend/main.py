@@ -1,7 +1,8 @@
 from logging import raiseExceptions
+import jenkins
 from flask import Flask, render_template, request
 import json
-from pull_data import JenkinsConnection, BuildMetrics
+from pull_data import JobMetrics, BuildMetrics
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -12,6 +13,16 @@ class JenkinsCalls():
 
     def __init__(self, request=None):
         self.request = request
+        server = None
+    
+    def jenkinsConnection(self, url, username, password):
+        # setup a connection to Jenkins server
+        self.server = jenkins.Jenkins(url, username, password)
+        # verify logged in
+        user = self.server.get_whoami()
+        version = self.server.get_version()
+        print('Hello %s from Jenkins %s' % (user['fullName'], version))
+        return self.server
 
     def doLogin(self):
         # checks if logged in with POST method -> returns status code
@@ -19,7 +30,7 @@ class JenkinsCalls():
             args = self.request.json
             print(args)
             if "username" in args and "password" in args and "url" in args:
-                return JenkinsConnection(args["url"], args["username"], args["password"])
+                return self.jenkinsConnection(args["url"], args["username"], args["password"])
             else:
                 raise Exception("Insufficient credentials")
         return '{"response": "ok"}'
@@ -29,12 +40,12 @@ class JenkinsCalls():
             args = self.request.args
             print(args)
             if "username" in args and "password" in args and "url" in args:
-                # Get jobs
-                connection = JenkinsConnection(args["url"], args["username"], args["password"])
-                jenkinsInstance = BuildMetrics(connection)
+                # establish connection
+                connection = self.jenkinsConnection(args["url"], args["username"], args["password"])
+                jenkinsInstance = JobMetrics(connection)
 
                 # consolidate all jobs, if no Jobs, return no jobs
-                allJobNames = jenkinsInstance.getJobNames()
+                allJobNames = jenkinsInstance.getAllJobNames()
                 if len(allJobNames) <= 0:
                     return {"response": "no jobs"}
 
@@ -49,47 +60,29 @@ class JenkinsCalls():
             args = self.request.args
             print(args)
             if "username" in args and "password" in args and "url" in args and "job" in args:
-                # establish connection, establish current job if it's given in the args
-                connection = JenkinsConnection(args["url"], args["username"], args["password"])
-                currentJobName = None
-                if request.args["job"]:
-                    currentJobName = self.request.args["job"]
-                else: 
-                    return 'Job not specified getJobStats main.py'
-
+                # establish connection
+                connection = self.jenkinsConnection(args["url"], args["username"], args["password"])
+                # establish current job 
+                current_job_name = self.request.args["job"]
                 # connect and get all jobs
-                jenkinsInstance = BuildMetrics(connection)
+                pipeline_instance = BuildMetrics(connection, current_job_name)
+                # get job data
+                results_counts = pipeline_instance.getResultsCounts()
+                duration_data = pipeline_instance.getBuildDurations()
+                # compile job data
+                data = {}
+                data.update(results_counts)
+                data.update(duration_data)
 
-                # all jobs, if no Jobs, return no jobs
-                allJobNames = jenkinsInstance.getJobNames()
-                if len(allJobNames) <= 0:
-                    error = {"response": "no jobs"}
-                    return error
+                # if len(allJobNames) <= 0:
+                #     error = {"response": "no jobs"}
+                #     return error
 
-                jenkinsInstance.populateStats(currentJobName)
-                failures, successes, cancels = jenkinsInstance.getStatusCounts()
-                avgDuration, buildTimestamps, buildDurations, allResults = jenkinsInstance.getDurationTimeStatus()
-                # print(failures, successes, cancels, allResults, buildAvg)
-
-                data = {
-                    "allJobNames": allJobNames,
-                    "stats": {
-                        "CurrentJobName": currentJobName,
-                        "Failures": failures,
-                        "Successes": successes,
-                        "Cancels": cancels,
-                        "AverageDuration": avgDuration,
-                        "BuildTimestamps": buildTimestamps,
-                        "BuildDurations": buildDurations,
-                        "AllResults": allResults
-                    }
-                }
-
-                # return data
-                print('DATA ---- ')
+                print('BUILD DATA FOR A JOB ---- ')
                 print(data)
-                print(' -------- ')
-                return json.dumps(data)
+                print(' ----------------------- ')
+                # return json.dumps(data)
+                return data
             else:
                 raise Exception("Insufficient credentials for getJobStats (user, pword, url)")
         else:
@@ -105,6 +98,7 @@ def loginRoute():
 @app.route('/')
 def indexRoute():
     # Test connection to server
+    # http://127.0.0.1:5000/
     return "Hello, ci-visualizer user from Flask+React"
 
 @app.route('/jobs', methods=['GET'])
