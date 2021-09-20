@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { Login, Dashboard } from './Pages';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Login, Dashboard } from "./Pages";
 
 const App = () => {
-  const loggedIn = localStorage.getItem('loggedIn');
+  const loggedIn = localStorage.getItem("loggedIn");
 
-  if(!loggedIn) {
-    return <Login/>
+  if (!loggedIn) {
+    return <Login />;
   }
 
   return (
@@ -13,18 +13,18 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Dashboard/>
+            <Dashboard />
           </Route>
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path = "*">
-            <Redirect to = "/dashboard"/>
+          <Route path="/">
+            <Dashboard />
           </Route>
         </Switch>
       </Router>
     </div>
   );
-}
+};
 
 export default App;

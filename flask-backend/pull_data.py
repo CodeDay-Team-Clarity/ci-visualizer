@@ -1,35 +1,113 @@
 import sys
 import getopt
-import jenkins
 import matplotlib.pyplot as plt
 import matplotlib
 import time
 import numpy as np
 from datetime import datetime
 
+class JobMetrics: 
 
-class JenkinsConnection:
-    server = None
+    def __init__(self, jenkins_connection, limit=10):
+        self.server = jenkins_connection # jenkinsConnection instance from main.py
+        self.limit = limit # limit on number of jobs
+        self.all_job_names = []
+        self.all_job_stats = {} # summary of all jobs for dashboard
+    
+    def getAllJobNames(self):
+        ''' Returns names of all jobs '''
+        jenkins_jobs = self.server.get_all_jobs()
+        # reset the list of names
+        self.all_job_names = []
+        for job in jenkins_jobs:
+            self.all_job_names.append(str(job['name']))
+        return self.all_job_names[:self.limit]
 
-    def __init__(self, url, username, password):
-        # new connection to Jenkins server
-        self.server = jenkins.Jenkins(url, username, password)
-        # verify logged in
-        user = self.server.get_whoami()
-        version = self.server.get_version()
-        print('Hello %s from Jenkins %s' % (user['fullName'], version))
+    def getAllJobStats(self):
+        ''' Returns names AND stats of all jobs passed in '''
+        for job in self.all_job_names: 
+            # TODO: create a dict for the job stats
+            # TODO: get job succcess/fail & avg. duration
+            # TODO: add to dictionary as value for job name
+            pass
+        return self.all_job_stats
 
+class BuildMetrics: 
 
-class BuildMetrics:
+    def __init__(self, server, job_name):
+        self.server = server
+        self.job_name = job_name 
+        self.results_counts = {'success':0, 'failure':0, 'cancel':0}
+        self.duration_data = {'all data':{}, 'total duration':None, 'total build count':None}
+        self.total_duration = 0
+        self.total_build_count = 0
+
+    def getResultsCounts(self):
+        # JOB INFO 
+        current_job = self.server.get_job_info(str(self.job_name), 0, True)
+        # for key,value in current_job.items():
+        #     print(key," -> ", value)
+
+        # BUILD INFO
+        job_builds = current_job.get('builds')
+        # loop builds for current job
+        for build in job_builds:
+            build_number = build.get('number')
+            build_info = self.server.get_build_info(self.job_name, build_number)
+            build_result = build_info.get('result')
+            # tally the results in the dictionary
+            if build_result == "FAILURE":
+                self.results_counts['failure'] += 1
+            elif build_result == "SUCCESS":
+                self.results_counts['success'] += 1
+            else:  
+                self.results_counts['cancel'] += 1
+
+        return {'results':self.results_counts}
+    
+    def getBuildDurations(self):
+        # JOB INFO 
+        current_job = self.server.get_job_info(str(self.job_name), 0, True)
+        # for key,value in current_job.items():
+        #     print(key," -> ", value)
+
+        # BUILD INFO
+        job_builds = current_job.get('builds')
+        for build in job_builds:
+            build_number = build.get('number')
+            build_info = self.server.get_build_info(self.job_name, build_number)
+
+            build_name = build_info.get('fullDisplayName')
+
+            build_timestamp = self.convertTimestamps(build_info.get('timestamp'))
+            build_duration = (build_info.get('duration')) / 1000 # convert to seconds
+            # new dictionary entry for all durations
+            self.duration_data['all data'][build_name] = {'duration':build_duration, 'timestamp': build_timestamp}
+
+            self.total_duration += int(build_duration)
+            self.total_build_count += 1
+
+        self.duration_data['total duration'] = self.total_duration
+        self.duration_data['total build count'] = self.total_build_count
+        return {'durations':self.duration_data}
+
+    def convertTimestamps(self, timestamp):
+        ''' convert to human readable '''
+        dateTimeObj = datetime.fromtimestamp((timestamp/1000))
+        return dateTimeObj
+
+class BuildMetrics_Old:
     server = None
 
     # Jenkins jobs:
     allJobNames = []
+    allJobSummaries = []
 
     # METRICS:
-    buildFailures = 0
+    buildFailures = 0 # move these from static to init
     buildSuccesses = 0
     buildCancels = 0
+
     allResults = []
     buildDurations = []  # y axis for durations
     buildTimestamps = []  # x axis for date
@@ -37,7 +115,7 @@ class BuildMetrics:
     totalDuration = 0.0
 
     def __init__(self, jenkinsConnection):
-        self.server = jenkinsConnection.server
+        self.server = jenkinsConnection
     
     def getJobNames(self):
         # return names of all jobs
@@ -49,7 +127,6 @@ class BuildMetrics:
 
         return self.allJobNames
         
-
     def getStatusCounts(self):
         # print('------------ Build Stats ---------------')
         # print('Total Failures: ', self.buildFailures)

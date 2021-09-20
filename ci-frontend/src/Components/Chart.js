@@ -1,13 +1,13 @@
-import { Bar } from 'react-chartjs-2';
+import { Bar } from "react-chartjs-2";
 
-const Chart = ({stats, error}) => {
+const Chart = ({ stats, error }) => {
   console.log(stats);
 
   const data = {
     labels: ["Successes", "Failures", "Unstable"],
     datasets: [
       {
-        label: ["# of jobs"],
+        label: ["Number of jobs"],
         data: [stats.Successes, stats.Failures, stats.Cancels],
 
         backgroundColor: [
@@ -28,36 +28,30 @@ const Chart = ({stats, error}) => {
 
   const options = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
+      y: {
+        beginAtZero: true,
+        type: "linear",
+        ticks: {
+          stepSize: 1,
+          title: {
+            display: true,
+            text: "Custom Chart Title",
           },
         },
-      ],
+      },
     },
   };
 
   return (
-    <div>
-        { error && <div>{ error }</div>}
-        { stats && (
-            <div>
-              <div>
-                
-                <h2>Number of Successes: {stats.Successes}</h2>
-                <h2>Number of Failures: {stats.Failures}</h2>
-                <h2>Number of Cancels: {stats.Cancels}</h2>
-                <h2>Average build time: {stats.Average}</h2>
-              </div>
-              <div>
-                <h2 className='chartTitle'>Build Status</h2>
-                <Bar data={data} options={options} />
-              </div>
-            </div>
-        )}
+    <div className="container-fluid">
+      <div class="row justify-content-start">
+        <div class="col align-self-end">
+          <h2 className="chartTitle">Build Status</h2>
+          <Bar data={data} options={options} width={450} height={150} />
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default Chart;
