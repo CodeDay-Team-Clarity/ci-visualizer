@@ -36,7 +36,9 @@ class JenkinsCalls():
         return '{"response": "ok"}'
     
     def getAllJobs(self):
-        ''' Returns a list of all Job names AND their dashboard data ( calls getJobStats )'''
+        ''' Returns to /jobs a list of all Job names AND their dashboard data ( calls getJobStats )
+        Dashboard data includes: Avg duration of all builds, cumulative results, and SOON: failure rate.
+        '''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)
@@ -58,7 +60,7 @@ class JenkinsCalls():
             print('getJobs function : Invalid -> request = None (or POST instead of GET request)')
     
     def getJobStats(self):
-        ''' helper function - gets stats for job for getAllJobs '''
+        ''' Returns the /stats for a Job (job is baseed into query argument) '''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)
