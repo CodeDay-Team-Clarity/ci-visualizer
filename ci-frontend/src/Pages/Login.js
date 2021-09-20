@@ -36,9 +36,9 @@ const Login = () => {
                 'Content-Type': 'application/json' 
             },
             body: JSON.stringify({ 
-                'username': username, 
-                'password': password, 
-                'url': url 
+                username: username, 
+                password: password, 
+                url: url 
             })
         };
         
@@ -53,9 +53,9 @@ const Login = () => {
             console.log(data);
             localStorage.setItem("loggedIn", true);
             localStorage.setItem("credentials", JSON.stringify({
-                'username': username, 
-                'password': password, 
-                'url': url}));
+                username: username, 
+                password: password, 
+                url: url}));
             window.location.href = "/dashboard";
             return true;
         }
