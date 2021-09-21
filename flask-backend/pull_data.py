@@ -24,17 +24,18 @@ class JobMetrics:
         return self.all_job_names[:self.limit] # LIMIT
 
     def getAllJobStats(self):
-        ''' Returns names, results counts, and avg duration of all jobs passed in '''
+        ''' Returns for the jobs dashboard: names, results counts, and avg duration of all jobs passed in '''
         self.all_job_names = self.getAllJobNames()
         jenkins_jobs = self.server.get_all_jobs()
         for job in jenkins_jobs:
+            # given each individual job, create a build metrics for each job
             build_metrics = BuildMetrics(self.server, job['name'])
             results_counts = build_metrics.getResultsCounts()
             duration_data = build_metrics.getBuildDurations()
             average_duration = int(duration_data['durations']['total duration']) / int(duration_data['durations']['total build count'])
             self.all_job_stats[job['name']] = {}
             self.all_job_stats[job['name']].update(results_counts)
-            self.all_job_stats[job['name']]['Avg duration'] = average_duration
+            self.all_job_stats[job['name']]['avg duration'] = average_duration
         return self.all_job_stats
 
 class BuildMetrics: 
