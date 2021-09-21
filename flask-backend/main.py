@@ -36,6 +36,9 @@ class JenkinsCalls():
         return '{"response": "ok"}'
     
     def getAllJobs(self):
+        ''' Returns to /jobs a list of all Job names AND their dashboard data ( calls getJobStats )
+        Dashboard data includes: Avg duration of all builds, cumulative results, and SOON: failure rate.
+        '''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)
@@ -46,16 +49,18 @@ class JenkinsCalls():
 
                 # consolidate all jobs, if no Jobs, return no jobs
                 allJobNames = jenkinsInstance.getAllJobNames()
-                if len(allJobNames) <= 0:
+                if len(allJobNames) <= 0: # Check if jobs exist
                     return {"response": "no jobs"}
 
-                return {'allJobNames': allJobNames}
+                allJobStats = jenkinsInstance.getAllJobStats()
+                return {'Job Stats': allJobStats}
             else:
                 raise Exception("Insufficient credentials Jobs")
         else:
             print('getJobs function : Invalid -> request = None (or POST instead of GET request)')
     
     def getJobStats(self):
+        ''' Returns the /stats for a Job (job is baseed into query argument) '''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)

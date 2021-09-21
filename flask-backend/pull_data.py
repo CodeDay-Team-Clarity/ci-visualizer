@@ -21,15 +21,20 @@ class JobMetrics:
         self.all_job_names = []
         for job in jenkins_jobs:
             self.all_job_names.append(str(job['name']))
-        return self.all_job_names[:self.limit]
+        return self.all_job_names[:self.limit] # LIMIT
 
     def getAllJobStats(self):
-        ''' Returns names AND stats of all jobs passed in '''
-        for job in self.all_job_names: 
-            # TODO: create a dict for the job stats
-            # TODO: get job succcess/fail & avg. duration
-            # TODO: add to dictionary as value for job name
-            pass
+        ''' Returns names, results counts, and avg duration of all jobs passed in '''
+        self.all_job_names = self.getAllJobNames()
+        jenkins_jobs = self.server.get_all_jobs()
+        for job in jenkins_jobs:
+            build_metrics = BuildMetrics(self.server, job['name'])
+            results_counts = build_metrics.getResultsCounts()
+            duration_data = build_metrics.getBuildDurations()
+            average_duration = int(duration_data['durations']['total duration']) / int(duration_data['durations']['total build count'])
+            self.all_job_stats[job['name']] = {}
+            self.all_job_stats[job['name']].update(results_counts)
+            self.all_job_stats[job['name']]['Avg duration'] = average_duration
         return self.all_job_stats
 
 class BuildMetrics: 
@@ -86,7 +91,7 @@ class BuildMetrics:
 
             self.total_duration += int(build_duration)
             self.total_build_count += 1
-
+        
         self.duration_data['total duration'] = self.total_duration
         self.duration_data['total build count'] = self.total_build_count
         return {'durations':self.duration_data}
