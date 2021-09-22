@@ -1,4 +1,5 @@
-from logging import raiseExceptions
+import logging
+import waitress
 import jenkins
 from flask import Flask, render_template, request
 import json
@@ -125,4 +126,11 @@ def statsRoute():
     connection = JenkinsCalls(request)
     return connection.getJobStats()
 
-app.run(debug=True)
+if __name__ == "__main__":
+    env = os.getenv("ENV")
+    if env == "PROD":
+        serverPort = int(os.getenv("PORT", "5000"))
+        logging.getLogger('waitress').setLevel(logging.INFO)
+        waitress.serve(app, host="0.0.0.0", port=serverPort)
+    else:
+        app.run(debug=True)
