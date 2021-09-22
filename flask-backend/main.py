@@ -1,7 +1,8 @@
+import sys
 import logging
 import waitress
 import jenkins
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 import json
 from pull_data import JobMetrics, BuildMetrics
 import os
@@ -29,10 +30,8 @@ class JenkinsCalls():
         # checks if logged in with POST method -> returns status code
         if (self.request.method == 'POST'):
             args = self.request.json
-            print(args)
-            if "username" in args and "password" in args and "url" in args:
-                return self.jenkinsConnection(args["url"], args["username"], args["password"])
-            else:
+            logging.info(f"Received request with data '{args}'")
+            if not ("username" in args and "password" in args and "url" in args):
                 raise Exception("Insufficient credentials")
         return '{"response": "ok"}'
     
@@ -61,7 +60,7 @@ class JenkinsCalls():
             print('getJobs function : Invalid -> request = None (or POST instead of GET request)')
     
     def getJobStats(self):
-        ''' Returns the /stats for a Job (job is baseed into query argument) '''
+        ''' Returns the /stats for a Job (job is based into query argument) '''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)
@@ -94,18 +93,23 @@ class JenkinsCalls():
         else:
             print('getStats function : Invalid -> request=None (or POST instead of GET request)')
 
+def corsResponse(responseBody):
+    response = Response(responseBody)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
 @app.route('/login', methods=['POST'])
 def loginRoute():
     # If this function call fails, the route will throw an exception, and the response won't have status code 200 i.e. login failed.
     # If this function call succeeds, the login succeeded, and we'll return a 200 status code with response body {"response": "ok"}
     connection = JenkinsCalls(request)
-    return connection.doLogin()
+    return corsResponse(connection.doLogin())
 
 @app.route('/')
 def indexRoute():
     # Test connection to server
     # http://127.0.0.1:5000/
-    return "Hello, ci-visualizer user from Flask+React"
+    return corsResponse("Hello, ci-visualizer user from Flask+React")
 
 @app.route('/jobs', methods=['GET'])
 def jobsRoute():
@@ -115,7 +119,7 @@ def jobsRoute():
     http://127.0.0.1:5000/jobs?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/
     '''
     connection = JenkinsCalls(request)
-    return connection.getAllJobs()
+    return corsResponse(connection.getAllJobs())
 
 @app.route('/stats', methods=['GET'])
 def statsRoute():
@@ -124,12 +128,14 @@ def statsRoute():
     http://127.0.0.1:5000/stats?job=sleeper_simulation-1&username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/
     '''
     connection = JenkinsCalls(request)
-    return connection.getJobStats()
+    return corsResponse(connection.getJobStats())
 
 if __name__ == "__main__":
     env = os.getenv("ENV")
     if env == "PROD":
         serverPort = int(os.getenv("PORT", "5000"))
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+        logging.info('Configured ci-visualizer backend logging')
         logging.getLogger('waitress').setLevel(logging.INFO)
         waitress.serve(app, host="0.0.0.0", port=serverPort)
     else:
