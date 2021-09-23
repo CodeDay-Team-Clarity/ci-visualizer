@@ -9,9 +9,11 @@ import Card from "../Components/Card";
 
 const Dashboard = () => {
   const { data: stats, error } = useFetch(
-    backendUrl("/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/")
+    backendUrl(
+      "/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/"
+    )
   );
-
+  console.log(stats);
   return (
     <div>
       <div>

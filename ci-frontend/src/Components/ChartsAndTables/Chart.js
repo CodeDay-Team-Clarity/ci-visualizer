@@ -8,7 +8,11 @@ const Chart = ({ stats, error }) => {
     datasets: [
       {
         label: ["Number of jobs"],
-        data: [stats.Successes, stats.Failures, stats.Cancels],
+        data: [
+          stats.results.success,
+          stats.results.failure,
+          stats.results.cancel,
+        ],
 
         backgroundColor: [
           "rgba(75, 192, 192, 0.2)",
