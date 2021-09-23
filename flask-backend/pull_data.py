@@ -1,12 +1,6 @@
-import sys
-import getopt
-import matplotlib.pyplot as plt
-import matplotlib
-import time
-import numpy as np
 from datetime import datetime
 
-class JobMetrics: 
+class JobMetrics:
 
     def __init__(self, jenkins_connection, limit=10):
         self.server = jenkins_connection # jenkinsConnection instance from main.py
@@ -21,15 +15,21 @@ class JobMetrics:
         self.all_job_names = []
         for job in jenkins_jobs:
             self.all_job_names.append(str(job['name']))
-        return self.all_job_names[:self.limit]
+        return self.all_job_names[:self.limit] # LIMIT
 
     def getAllJobStats(self):
-        ''' Returns names AND stats of all jobs passed in '''
-        for job in self.all_job_names: 
-            # TODO: create a dict for the job stats
-            # TODO: get job succcess/fail & avg. duration
-            # TODO: add to dictionary as value for job name
-            pass
+        ''' Returns for the jobs dashboard: names, results counts, and avg duration of all jobs passed in '''
+        self.all_job_names = self.getAllJobNames()
+        jenkins_jobs = self.server.get_all_jobs()
+        for job in jenkins_jobs:
+            # given each individual job, create a build metrics for each job
+            build_metrics = BuildMetrics(self.server, job['name'])
+            results_counts = build_metrics.getResultsCounts()
+            duration_data = build_metrics.getBuildDurations()
+            average_duration = int(duration_data['durations']['total duration']) / int(duration_data['durations']['total build count'])
+            self.all_job_stats[job['name']] = {}
+            self.all_job_stats[job['name']].update(results_counts)
+            self.all_job_stats[job['name']]['avg duration'] = average_duration
         return self.all_job_stats
 
 class BuildMetrics: 
@@ -86,7 +86,7 @@ class BuildMetrics:
 
             self.total_duration += int(build_duration)
             self.total_build_count += 1
-
+        
         self.duration_data['total duration'] = self.total_duration
         self.duration_data['total build count'] = self.total_build_count
         return {'durations':self.duration_data}
@@ -191,21 +191,29 @@ class BuildMetrics_Old:
             dates.append(dateTimeObj)
         return dates
 
-    def plotJobDuration(self):
-        dateTimeObjs = self.convertTimestamps()
-        dates = matplotlib.dates.date2num(dateTimeObjs)
-        # npArr = self.runningMean()
-        plt.plot_date(dates, self.buildDurations, '-')
-        plt.xlabel('Time of Execution')
-        plt.ylabel('Build Duration (Seconds)')
-        plt.title('Build Durations Over Time')
-        plt.gcf().autofmt_xdate()
-        plt.show()
-
-    def runningMean(self):
-        ''' Helps us identify trends in the data by convolving 
-        Sacrificing exact time of the jobs -> to see trends
-        '''
-        npArr = np.convolve(self.buildDurations,
-                            np.ones((10,))/10, mode='valid')
-        return npArr
+### Extra code for debugging
+#
+# import sys
+# import getopt
+# import matplotlib.pyplot as plt
+# import matplotlib
+# import time
+# import numpy as np
+#     def plotJobDuration(self):
+#         dateTimeObjs = self.convertTimestamps()
+#         dates = matplotlib.dates.date2num(dateTimeObjs)
+#         # npArr = self.runningMean()
+#         plt.plot_date(dates, self.buildDurations, '-')
+#         plt.xlabel('Time of Execution')
+#         plt.ylabel('Build Duration (Seconds)')
+#         plt.title('Build Durations Over Time')
+#         plt.gcf().autofmt_xdate()
+#         plt.show()
+#
+#     def runningMean(self):
+#         ''' Helps us identify trends in the data by convolving
+#         Sacrificing exact time of the jobs -> to see trends
+#         '''
+#         npArr = np.convolve(self.buildDurations,
+#                             np.ones((10,))/10, mode='valid')
+#         return npArr
