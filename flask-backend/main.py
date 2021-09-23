@@ -42,7 +42,7 @@ class JenkinsCalls():
         return '{"response": "ok"}'
 
     def getAllJobs(self):
-        ''' Returns to /jobs a list of all Job names AND their dashboard data ( calls getJobStats )
+        ''' Returns to /jobs a list of all Job names AND their dashboard data ( calls getAllJobStats )
         Dashboard data includes: Avg duration of all builds, cumulative results, and SOON: failure rate.
         '''
         if self.request != None and (self.request.method == 'GET'):
@@ -50,7 +50,8 @@ class JenkinsCalls():
             print(args)
             if "username" in args and "password" in args and "url" in args:
                 # establish connection
-                connection = self.jenkinsConnection(args["url"], args["username"], args["password"])
+                connection = self.jenkinsConnection(
+                    args["url"], args["username"], args["password"])
                 jenkinsInstance = JobMetrics(connection)
 
                 # consolidate all jobs, if no Jobs, return no jobs
@@ -63,7 +64,8 @@ class JenkinsCalls():
             else:
                 raise Exception("Insufficient credentials Jobs")
         else:
-            print('getJobs function : Invalid -> request = None (or POST instead of GET request)')
+            print(
+                'getJobs function : Invalid -> request = None (or POST instead of GET request)')
 
     def getJobStats(self):
         ''' Returns the /stats for a Job (job is based into query argument) '''
@@ -72,8 +74,9 @@ class JenkinsCalls():
             print(args)
             if "username" in args and "password" in args and "url" in args and "job" in args:
                 # establish connection
-                connection = self.jenkinsConnection(args["url"], args["username"], args["password"])
-                # establish current job 
+                connection = self.jenkinsConnection(
+                    args["url"], args["username"], args["password"])
+                # establish current job
                 current_job_name = self.request.args["job"]
                 # connect and get all jobs
                 pipeline_instance = BuildMetrics(connection, current_job_name)
@@ -94,9 +97,11 @@ class JenkinsCalls():
                 print(' ----------------------- ')
                 return data
             else:
-                raise Exception("Insufficient credentials for getJobStats (user, pword, url)")
+                raise Exception(
+                    "Insufficient credentials for getJobStats (user, pword, url)")
         else:
-            print('getStats function : Invalid -> request=None (or POST instead of GET request)')
+            print(
+                'getStats function : Invalid -> request=None (or POST instead of GET request)')
 
 
 @app.route('/login', methods=['POST'])

@@ -1,13 +1,14 @@
 from datetime import datetime
 
+
 class JobMetrics:
 
     def __init__(self, jenkins_connection, limit=10):
-        self.server = jenkins_connection # jenkinsConnection instance from main.py
-        self.limit = limit # limit on number of jobs
+        self.server = jenkins_connection  # jenkinsConnection instance from main.py
+        self.limit = limit  # limit on number of jobs
         self.all_job_names = []
-        self.all_job_stats = {} # summary of all jobs for dashboard
-    
+        self.all_job_stats = {}  # summary of all jobs for dashboard
+
     def getAllJobNames(self):
         ''' Returns names of all jobs '''
         jenkins_jobs = self.server.get_all_jobs()
@@ -15,7 +16,7 @@ class JobMetrics:
         self.all_job_names = []
         for job in jenkins_jobs:
             self.all_job_names.append(str(job['name']))
-        return self.all_job_names[:self.limit] # LIMIT
+        return self.all_job_names[:self.limit]  # LIMIT
 
     def getAllJobStats(self):
         ''' Returns for the jobs dashboard: names, results counts, and avg duration of all jobs passed in '''
@@ -26,24 +27,27 @@ class JobMetrics:
             build_metrics = BuildMetrics(self.server, job['name'])
             results_counts = build_metrics.getResultsCounts()
             duration_data = build_metrics.getBuildDurations()
-            average_duration = int(duration_data['durations']['total duration']) / int(duration_data['durations']['total build count'])
+            average_duration = int(duration_data['durations']['total duration']) / int(
+                duration_data['durations']['total build count'])
             self.all_job_stats[job['name']] = {}
             self.all_job_stats[job['name']].update(results_counts)
             self.all_job_stats[job['name']]['avg duration'] = average_duration
         return self.all_job_stats
 
-class BuildMetrics: 
+
+class BuildMetrics:
 
     def __init__(self, server, job_name):
         self.server = server
-        self.job_name = job_name 
-        self.results_counts = {'success':0, 'failure':0, 'cancel':0}
-        self.duration_data = {'all data':{}, 'total duration':None, 'total build count':None}
+        self.job_name = job_name
+        self.results_counts = {'success': 0, 'failure': 0, 'cancel': 0}
+        self.duration_data = {'all data': {},
+                              'total duration': None, 'total build count': None}
         self.total_duration = 0
         self.total_build_count = 0
 
     def getResultsCounts(self):
-        # JOB INFO 
+        # JOB INFO
         current_job = self.server.get_job_info(str(self.job_name), 0, True)
         # for key,value in current_job.items():
         #     print(key," -> ", value)
@@ -53,20 +57,21 @@ class BuildMetrics:
         # loop builds for current job
         for build in job_builds:
             build_number = build.get('number')
-            build_info = self.server.get_build_info(self.job_name, build_number)
+            build_info = self.server.get_build_info(
+                self.job_name, build_number)
             build_result = build_info.get('result')
             # tally the results in the dictionary
             if build_result == "FAILURE":
                 self.results_counts['failure'] += 1
             elif build_result == "SUCCESS":
                 self.results_counts['success'] += 1
-            else:  
+            else:
                 self.results_counts['cancel'] += 1
 
-        return {'results':self.results_counts}
-    
+        return {'results': self.results_counts}
+
     def getBuildDurations(self):
-        # JOB INFO 
+        # JOB INFO
         current_job = self.server.get_job_info(str(self.job_name), 0, True)
         # for key,value in current_job.items():
         #     print(key," -> ", value)
@@ -75,26 +80,31 @@ class BuildMetrics:
         job_builds = current_job.get('builds')
         for build in job_builds:
             build_number = build.get('number')
-            build_info = self.server.get_build_info(self.job_name, build_number)
+            build_info = self.server.get_build_info(
+                self.job_name, build_number)
 
             build_name = build_info.get('fullDisplayName')
 
-            build_timestamp = self.convertTimestamps(build_info.get('timestamp'))
-            build_duration = (build_info.get('duration')) / 1000 # convert to seconds
+            build_timestamp = self.convertTimestamps(
+                build_info.get('timestamp'))
+            build_duration = (build_info.get('duration')) / \
+                1000  # convert to seconds
             # new dictionary entry for all durations
-            self.duration_data['all data'][build_name] = {'duration':build_duration, 'timestamp': build_timestamp}
+            self.duration_data['all data'][build_name] = {
+                'duration': build_duration, 'timestamp': build_timestamp}
 
             self.total_duration += int(build_duration)
             self.total_build_count += 1
-        
+
         self.duration_data['total duration'] = self.total_duration
         self.duration_data['total build count'] = self.total_build_count
-        return {'durations':self.duration_data}
+        return {'durations': self.duration_data}
 
     def convertTimestamps(self, timestamp):
         ''' convert to human readable '''
         dateTimeObj = datetime.fromtimestamp((timestamp/1000))
         return dateTimeObj
+
 
 class BuildMetrics_Old:
     server = None
@@ -104,7 +114,7 @@ class BuildMetrics_Old:
     allJobSummaries = []
 
     # METRICS:
-    buildFailures = 0 # move these from static to init
+    buildFailures = 0  # move these from static to init
     buildSuccesses = 0
     buildCancels = 0
 
@@ -116,7 +126,7 @@ class BuildMetrics_Old:
 
     def __init__(self, jenkinsConnection):
         self.server = jenkinsConnection
-    
+
     def getJobNames(self):
         # return names of all jobs
         jenkinsJobs = self.server.get_all_jobs()
@@ -126,7 +136,7 @@ class BuildMetrics_Old:
                 self.allJobNames.append(str(job['name']))
 
         return self.allJobNames
-        
+
     def getStatusCounts(self):
         # print('------------ Build Stats ---------------')
         # print('Total Failures: ', self.buildFailures)
@@ -136,7 +146,7 @@ class BuildMetrics_Old:
 
         # print("Average Build Duration %.2f " % averageDuration)
         return [self.buildFailures, self.buildSuccesses, self.buildCancels]
-    
+
     def getDurationTimeStatus(self):
         ''' Gives us the status of each build how long it took and when it was run '''
         averageDuration = (self.totalDuration / self.totalNumberBuilds)
@@ -144,7 +154,7 @@ class BuildMetrics_Old:
 
     def populateStats(self, currentJob):
         # JOB INFO
-        
+
         # jenkinsJobs = self.server.get_all_jobs()
 
         my_job = self.server.get_job_info(str(currentJob), 0, True)
@@ -191,7 +201,7 @@ class BuildMetrics_Old:
             dates.append(dateTimeObj)
         return dates
 
-### Extra code for debugging
+# Extra code for debugging
 #
 # import sys
 # import getopt

@@ -1,9 +1,11 @@
 import useFetch from "../Components/useFetch";
 import { Switch, Route } from "react-router-dom";
 import { TopNav, OffCanvas } from "../Components/Navigation";
-import Chart from "../Components/Chart";
-import LineChart from "../Components/Durartion";
+import JobsTable from "../Components/ChartsAndTables/JobsTable";
+import Chart from "../Components/ChartsAndTables/Chart";
+// import LineChart from "../Components/Durartion";
 import {backendUrl} from "../Components/backendRoute";
+import Card from "../Components/Card";
 
 const Dashboard = () => {
   const { data: stats, error } = useFetch(
@@ -19,11 +21,11 @@ const Dashboard = () => {
       <div className="main-content">
         <Switch>
           <Route path="/dashboard/chart">
-            <Chart stats={stats} error={error} />
-            <Duration stats={stats} />
+            <Card {...{"component": <Chart stats={stats} error={error}/>, "size": 6, "title": "Build Status"}}/>
+            {/* <Duration stats={stats} /> */}
           </Route>
           <Route path="/">
-            <JobsTable />
+            <Card {...{"component": <JobsTable />, "size": 12, "title": "Jobs List"}}/>
           </Route>
         </Switch>
       </div>

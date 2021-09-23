@@ -43,9 +43,9 @@ const Chart = ({ stats, error }) => {
   };
 
   return (
-    <div className="container-fluid">
-      <div class="row justify-content-start">
-        <div class="col align-self-end">
+    <div className = "container-fluid">
+      <div className = "row justify-content-start">
+        <div className = "col align-self-end">
           <h2 className="chartTitle">Build Status</h2>
           <Bar data={data} options={options} width={450} height={150} />
         </div>
