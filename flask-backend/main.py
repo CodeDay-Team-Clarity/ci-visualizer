@@ -7,12 +7,14 @@ import jenkins
 import waitress
 from dotenv import load_dotenv
 from flask import Flask, request, Response
+from flask_cors import CORS
 
 from pull_data import JobMetrics, BuildMetrics
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 
 
 class JenkinsCalls():
@@ -97,25 +99,19 @@ class JenkinsCalls():
             print('getStats function : Invalid -> request=None (or POST instead of GET request)')
 
 
-def corsResponse(responseBody):
-    response = Response(responseBody)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
-
-
 @app.route('/login', methods=['POST'])
 def loginRoute():
     # If this function call fails, the route will throw an exception, and the response won't have status code 200 i.e. login failed.
     # If this function call succeeds, the login succeeded, and we'll return a 200 status code with response body {"response": "ok"}
     connection = JenkinsCalls(request)
-    return corsResponse(connection.doLogin())
+    return connection.doLogin()
 
 
 @app.route('/')
 def indexRoute():
     # Test connection to server
     # http://127.0.0.1:5000/
-    return corsResponse("Hello, ci-visualizer user from Flask+React")
+    return "Hello, ci-visualizer user from Flask+React"
 
 
 @app.route('/jobs', methods=['GET'])
@@ -126,7 +122,7 @@ def jobsRoute():
     http://127.0.0.1:5000/jobs?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/
     '''
     connection = JenkinsCalls(request)
-    return corsResponse(connection.getAllJobs())
+    return connection.getAllJobs()
 
 
 @app.route('/stats', methods=['GET'])
@@ -136,7 +132,7 @@ def statsRoute():
     http://127.0.0.1:5000/stats?job=sleeper_simulation-1&username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/
     '''
     connection = JenkinsCalls(request)
-    return corsResponse(connection.getJobStats())
+    return connection.getJobStats()
 
 
 @app.errorhandler(404)
@@ -149,9 +145,10 @@ if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     logging.info('Configured ci-visualizer backend logging')
     env = os.getenv("ENV")
+    serverPort = int(os.getenv("PORT", "5000"))
     if env == "PROD":
-        serverPort = int(os.getenv("PORT", "5000"))
+        logging.getLogger('flask_cors').setLevel(logging.DEBUG)
         logging.getLogger('waitress').setLevel(logging.INFO)
         waitress.serve(app, host="0.0.0.0", port=serverPort)
     else:
-        app.run(debug=True)
+        app.run(debug=True, port=serverPort)
