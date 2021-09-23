@@ -4,7 +4,7 @@ import { Line } from "react-chartjs-2";
 // const [datas, setData] = [];
 // const [state, setstate] = useState(initialState);
 
-export default function Durartion(stats) {
+export default function Duration(stats) {
   const data = {
     labels: [stats.BuildTimestamps],
     // labels: ["1", "2", "3", "4", "5", "6"], // delet after backend works

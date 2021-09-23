@@ -19,21 +19,21 @@ const OffCanvas = () => {
                                 <div className = "d-flex flex-column">
                                     <JenkinsSvg alt="Jenkins logo" width="50%" height="50%" className="align-self-center my-3"/> 
                                 </div>
-                                {SideNavData.map((val, key) => {
-                                    return (
-                                        <li
-                                            key={key}
-                                            onClick={() => {
-                                                window.location.pathname = val.link;
-                                            }}
-                                        >
-                                            <div>
-                                                {val.title}
-                                            </div>
-                                        </li>
-                                    );
-                                })}
                             </li>
+                            {SideNavData.map((val, key) => {
+                                return (
+                                    <li
+                                        key={key}
+                                        onClick={() => {
+                                            window.location.pathname = val.link;
+                                        }}
+                                    >
+                                        <div>
+                                            {val.title}
+                                        </div>
+                                    </li>
+                                );
+                            })}
                             <li>
                                 <NavLink to = "/dashboard/chart">Chart</NavLink>
                             </li>
