@@ -9,9 +9,9 @@ const Chart = ({ stats, error }) => {
       {
         label: ["Number of jobs"],
         data: [
-          stats.stats.Successes,
-          stats.stats.Failures,
-          stats.stats.Cancels,
+          stats.results.success,
+          stats.results.failure,
+          stats.results.cancel,
         ],
 
         backgroundColor: [
