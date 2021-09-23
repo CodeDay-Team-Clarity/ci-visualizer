@@ -16,7 +16,7 @@
 
 - Run `./deployment/ec2/deployToEC2.sh`, which puts the installation script onto the box.
 - SSH into the ci-visualizer machine with `ssh -i deployment/ec2_key.pem ubuntu@app.ci-visualizer.com` and run
-`./dockerStartEC2.sh`
+`./dockerStartEC2.sh` which pulls and starts the containers.
 
 ## Notes on infrastructure
 
