@@ -1,35 +1,20 @@
 #!/bin/bash
 
-function isContainerRunning() {
+function killIfRunning() {
   local CONTAINER_NAME=$1
   if [[ $(docker ps --filter "name=$CONTAINER_NAME" --filter "status=running" --format "{{.Names}}") == $CONTAINER_NAME ]]; then
-    echo "1"
-  else
-    echo "0"
+    docker kill $CONTAINER_NAME
   fi
 }
 
-function isContainerCreated() {
+function removeIfCreated() {
   local CONTAINER_NAME=$1
   if [[ $(docker ps -a --filter "name=$CONTAINER_NAME" --format "{{.Names}}") == $CONTAINER_NAME ]]; then
-    echo "1"
-  else
-    echo "0"
+    docker rm $CONTAINER_NAME
   fi
 }
 
-FLASK_CONTAINER_NAME="flask-backend"
-if [[ $(isContainerRunning $FLASK_CONTAINER_NAME) == "1" ]]; then
-  docker kill $FLASK_CONTAINER_NAME
-fi
-if [[ $(isContainerCreated $FLASK_CONTAINER_NAME) == "1" ]]; then
-  docker rm $FLASK_CONTAINER_NAME
-fi
-
-REACT_CONTAINER_NAME="react-frontend"
-if [[ $(isContainerRunning $REACT_CONTAINER_NAME) == "1" ]]; then
-  docker kill $REACT_CONTAINER_NAME
-fi
-if [[ $(isContainerCreated $REACT_CONTAINER_NAME) == "1" ]]; then
-  docker rm $REACT_CONTAINER_NAME
-fi
+killIfRunning "flask-backend"
+removeIfCreated "flask-backend"
+killIfRunning "react-frontend"
+removeIfCreated "react-frontend"
