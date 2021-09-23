@@ -33,8 +33,3 @@ fi
 if [[ $(isContainerCreated $REACT_CONTAINER_NAME) == "1" ]]; then
   docker rm $REACT_CONTAINER_NAME
 fi
-
-NETWORK_NAME="ci-visualizer-network"
-if [[ $(docker network ls --filter "name=$NETWORK_NAME" --format "{{.Name}}") == $NETWORK_NAME ]]; then
-  docker network rm $NETWORK_NAME
-fi
