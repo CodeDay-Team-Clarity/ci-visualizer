@@ -1,12 +1,6 @@
-import sys
-import getopt
-import matplotlib.pyplot as plt
-import matplotlib
-import time
-import numpy as np
 from datetime import datetime
 
-class JobMetrics: 
+class JobMetrics:
 
     def __init__(self, jenkins_connection, limit=10):
         self.server = jenkins_connection # jenkinsConnection instance from main.py
@@ -197,21 +191,29 @@ class BuildMetrics_Old:
             dates.append(dateTimeObj)
         return dates
 
-    def plotJobDuration(self):
-        dateTimeObjs = self.convertTimestamps()
-        dates = matplotlib.dates.date2num(dateTimeObjs)
-        # npArr = self.runningMean()
-        plt.plot_date(dates, self.buildDurations, '-')
-        plt.xlabel('Time of Execution')
-        plt.ylabel('Build Duration (Seconds)')
-        plt.title('Build Durations Over Time')
-        plt.gcf().autofmt_xdate()
-        plt.show()
-
-    def runningMean(self):
-        ''' Helps us identify trends in the data by convolving 
-        Sacrificing exact time of the jobs -> to see trends
-        '''
-        npArr = np.convolve(self.buildDurations,
-                            np.ones((10,))/10, mode='valid')
-        return npArr
+### Extra code for debugging
+#
+# import sys
+# import getopt
+# import matplotlib.pyplot as plt
+# import matplotlib
+# import time
+# import numpy as np
+#     def plotJobDuration(self):
+#         dateTimeObjs = self.convertTimestamps()
+#         dates = matplotlib.dates.date2num(dateTimeObjs)
+#         # npArr = self.runningMean()
+#         plt.plot_date(dates, self.buildDurations, '-')
+#         plt.xlabel('Time of Execution')
+#         plt.ylabel('Build Duration (Seconds)')
+#         plt.title('Build Durations Over Time')
+#         plt.gcf().autofmt_xdate()
+#         plt.show()
+#
+#     def runningMean(self):
+#         ''' Helps us identify trends in the data by convolving
+#         Sacrificing exact time of the jobs -> to see trends
+#         '''
+#         npArr = np.convolve(self.buildDurations,
+#                             np.ones((10,))/10, mode='valid')
+#         return npArr

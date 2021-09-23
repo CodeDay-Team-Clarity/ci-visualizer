@@ -1,13 +1,13 @@
 import useFetch from "../Components/useFetch";
 import { Switch, Route } from "react-router-dom";
 import { TopNav, OffCanvas } from "../Components/Navigation";
-import Chart from "../Components/ChartsAndTables/Chart";
-import Duration from "../Components/ChartsAndTables/Duration";
-import JobsTable from "../Components/ChartsAndTables/JobsTable";
+import Chart from "../Components/Chart";
+import LineChart from "../Components/Durartion";
+import {backendUrl} from "../Components/backendRoute";
 
 const Dashboard = () => {
   const { data: stats, error } = useFetch(
-    "/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/"
+    backendUrl("/stats?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/")
   );
 
   return (

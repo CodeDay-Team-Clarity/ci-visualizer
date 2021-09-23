@@ -1,20 +1,28 @@
-from logging import raiseExceptions
-import jenkins
-from flask import Flask, render_template, request
-import json
-from pull_data import JobMetrics, BuildMetrics
+import logging
 import os
+import sys
+from http import HTTPStatus
+
+import jenkins
+import waitress
 from dotenv import load_dotenv
+from flask import Flask, request, Response
+from flask_cors import CORS
+
+from pull_data import JobMetrics, BuildMetrics
+
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
+
 
 class JenkinsCalls():
 
     def __init__(self, request=None):
         self.request = request
         server = None
-    
+
     def jenkinsConnection(self, url, username, password):
         # setup a connection to Jenkins server
         self.server = jenkins.Jenkins(url, username, password)
@@ -28,13 +36,11 @@ class JenkinsCalls():
         # checks if logged in with POST method -> returns status code
         if (self.request.method == 'POST'):
             args = self.request.json
-            print(args)
-            if "username" in args and "password" in args and "url" in args:
-                return self.jenkinsConnection(args["url"], args["username"], args["password"])
-            else:
+            logging.info(f"Received request with data '{args}'")
+            if not ("username" in args and "password" in args and "url" in args):
                 raise Exception("Insufficient credentials")
         return '{"response": "ok"}'
-    
+
     def getAllJobs(self):
         ''' Returns to /jobs a list of all Job names AND their dashboard data ( calls getJobStats )
         Dashboard data includes: Avg duration of all builds, cumulative results, and SOON: failure rate.
@@ -49,7 +55,7 @@ class JenkinsCalls():
 
                 # consolidate all jobs, if no Jobs, return no jobs
                 allJobNames = jenkinsInstance.getAllJobNames()
-                if len(allJobNames) <= 0: # Check if jobs exist
+                if len(allJobNames) <= 0:  # Check if jobs exist
                     return {"response": "no jobs"}
 
                 allJobStats = jenkinsInstance.getAllJobStats()
@@ -58,9 +64,9 @@ class JenkinsCalls():
                 raise Exception("Insufficient credentials Jobs")
         else:
             print('getJobs function : Invalid -> request = None (or POST instead of GET request)')
-    
+
     def getJobStats(self):
-        ''' Returns the /stats for a Job (job is baseed into query argument) '''
+        ''' Returns the /stats for a Job (job is based into query argument) '''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)
@@ -86,12 +92,12 @@ class JenkinsCalls():
                 print('BUILD DATA FOR A JOB ---- ')
                 print(data)
                 print(' ----------------------- ')
-                # return json.dumps(data)
                 return data
             else:
                 raise Exception("Insufficient credentials for getJobStats (user, pword, url)")
         else:
             print('getStats function : Invalid -> request=None (or POST instead of GET request)')
+
 
 @app.route('/login', methods=['POST'])
 def loginRoute():
@@ -100,11 +106,13 @@ def loginRoute():
     connection = JenkinsCalls(request)
     return connection.doLogin()
 
+
 @app.route('/')
 def indexRoute():
     # Test connection to server
     # http://127.0.0.1:5000/
     return "Hello, ci-visualizer user from Flask+React"
+
 
 @app.route('/jobs', methods=['GET'])
 def jobsRoute():
@@ -116,6 +124,7 @@ def jobsRoute():
     connection = JenkinsCalls(request)
     return connection.getAllJobs()
 
+
 @app.route('/stats', methods=['GET'])
 def statsRoute():
     ''' Returns JSON of all build statistics of one job 
@@ -125,4 +134,21 @@ def statsRoute():
     connection = JenkinsCalls(request)
     return connection.getJobStats()
 
-app.run(debug=True)
+
+@app.errorhandler(404)
+def not_found(_e):
+    logging.warning('Not found: {0}'.format(request.url))
+    return Response('Not found.', HTTPStatus.NOT_FOUND)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    logging.info('Configured ci-visualizer backend logging')
+    env = os.getenv("ENV")
+    serverPort = int(os.getenv("PORT", "5000"))
+    if env == "PROD":
+        logging.getLogger('flask_cors').setLevel(logging.DEBUG)
+        logging.getLogger('waitress').setLevel(logging.INFO)
+        waitress.serve(app, host="0.0.0.0", port=serverPort)
+    else:
+        app.run(debug=True, port=serverPort)
