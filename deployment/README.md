@@ -16,3 +16,6 @@ Deploys the app to an EC2 instance as a Docker container.
 - Build and start with `./deployment/dockerStart.sh`
 - Put process into the background with `CTRL-Z` (CTRL-C won't work!)
 - Stop and clean up with `./deployment/dockerStop.sh`
+- Check with Docker images are created with `docker image ls`
+- Check which Docker containers are running with `docker ps`. There is a column for the name(s) of containers.
+- Look at Docker container logs with `docker logs <container name>`. For example, `docker logs flask-backend`.
