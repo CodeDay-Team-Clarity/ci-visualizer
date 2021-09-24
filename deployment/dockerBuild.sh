@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $(pwd | xargs basename) != "ci-visualizer" ]]; then
-  echo "Run this from the repository root i.e. ./deployment/dockerBuild.sh"
+  echo "Run this from the repository root i.e. ./deployment/dockerBuild.sh --flask-backend-origin <deployed flask-backend origin>"
   exit 1
 fi
 
