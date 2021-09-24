@@ -8,7 +8,11 @@ const Chart = ({ stats, error }) => {
     datasets: [
       {
         label: ["Number of jobs"],
-        data: [stats.Successes, stats.Failures, stats.Cancels],
+        data: [
+          stats.results.success,
+          stats.results.failure,
+          stats.results.cancel,
+        ],
 
         backgroundColor: [
           "rgba(75, 192, 192, 0.2)",
@@ -43,9 +47,9 @@ const Chart = ({ stats, error }) => {
   };
 
   return (
-    <div className="container-fluid">
-      <div class="row justify-content-start">
-        <div class="col align-self-end">
+    <div className = "container-fluid">
+      <div className = "row justify-content-start">
+        <div className = "col align-self-end">
           <h2 className="chartTitle">Build Status</h2>
           <Bar data={data} options={options} width={450} height={150} />
         </div>

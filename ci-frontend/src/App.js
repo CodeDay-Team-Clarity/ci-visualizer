@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { Login, Dashboard } from "./Pages";
 
 const App = () => {
@@ -12,14 +12,14 @@ const App = () => {
     <div>
       <Router>
         <Switch>
-          <Route exact path="/">
+          <Route exact path = "/">
             <Dashboard />
           </Route>
-          <Route path="/dashboard">
+          <Route path = "/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/">
-            <Dashboard />
+          <Route path = "*">
+            <Redirect to = "/dashboard" />
           </Route>
         </Switch>
       </Router>

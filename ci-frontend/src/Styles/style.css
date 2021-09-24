@@ -1,8 +1,15 @@
 :root {
   --offcanvas-width: 215px;
   --topNavBarHeight: 65px;
+  --red: #d33834;
+  --darkBlue: #335061;
+  --medBlue: #48728b;
+  --lightBlue: #80b0c4;
+  --beige: #f0d6b7;
+  --gray: #6d6b6d;
 }
 
+/* navigation bars start */
 .sidebar-nav {
   width: var(--offcanvas-width);
 }
@@ -37,3 +44,22 @@
     height: calc(100% - var(--topNavBarHeight));
   }
 }
+/* navigation bars end */
+
+/* pagination start */
+.page-item .page-link {
+  color: var(--darkBlue);
+}
+.page-item.active .page-link {
+  background-color: var(--medBlue);
+  border-color: var(--medBlue);
+  color: var(--beige);
+}
+.pagination > li > button:focus {
+  box-shadow: none;
+  background-color: white;
+}
+.pagination > li > button:hover {
+  background-color: rgb(251, 251, 251);
+}
+/* pagination end */
