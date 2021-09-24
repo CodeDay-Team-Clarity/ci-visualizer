@@ -60,7 +60,7 @@ class JenkinsCalls():
                     return {"response": "no jobs"}
 
                 allJobStats = jenkinsInstance.getAllJobStats()
-                return {'Job Stats': allJobStats}
+                return allJobStats
             else:
                 raise Exception("Insufficient credentials Jobs")
         else:

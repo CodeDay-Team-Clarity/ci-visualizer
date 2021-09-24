@@ -7,7 +7,7 @@ class JobMetrics:
         self.server = jenkins_connection  # jenkinsConnection instance from main.py
         self.limit = limit  # limit on number of jobs
         self.all_job_names = []
-        self.all_job_stats = {}  # summary of all jobs for dashboard
+        self.all_job_stats = {'All Jobs':{}}  # summary of all jobs for dashboard
 
     def getAllJobNames(self):
         ''' Returns names of all jobs '''
