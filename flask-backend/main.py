@@ -60,16 +60,14 @@ class JenkinsCalls():
             print('getJobs function : Invalid -> request = None (or POST instead of GET request)')
     
     def getJobStats(self):
-        ''' Returns the /stats for a Job (job is baseed into query argument) '''
+        ''' Returns the /stats for a Job (job is baseed into query argument) : Results counts, Build Durations, soon Failure Rate chart data'''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)
             if "username" in args and "password" in args and "url" in args and "job" in args:
-                # establish connection
+                # establish connection, establish current job, connect and get all jobs
                 connection = self.jenkinsConnection(args["url"], args["username"], args["password"])
-                # establish current job 
                 current_job_name = self.request.args["job"]
-                # connect and get all jobs
                 pipeline_instance = BuildMetrics(connection, current_job_name)
                 # get job data
                 results_counts = pipeline_instance.getResultsCounts()

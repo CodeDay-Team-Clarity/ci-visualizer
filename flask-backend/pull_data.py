@@ -1,9 +1,3 @@
-import sys
-import getopt
-import matplotlib.pyplot as plt
-import matplotlib
-import time
-import numpy as np
 from datetime import datetime
 
 class JobMetrics: 
@@ -98,9 +92,17 @@ class BuildMetrics:
         return {'durations':self.duration_data}
 
     def convertTimestamps(self, timestamp):
-        ''' convert to human readable '''
+        ''' helper function - convert to human readable'''
         dateTimeObj = datetime.fromtimestamp((timestamp/1000))
         return dateTimeObj
+
+    def getFailureRate(self):
+        ''' returns as an array the percentage of jobs that failed / day each day for each day in the past two weeks'''
+        pass
+    
+    def dailyAverage(self, get_average, timestamps):
+        ''' helper function - takes array of <some value> & timestamp, returns daily average'''
+        for 
 
 class BuildMetrics_Old:
     server = None
