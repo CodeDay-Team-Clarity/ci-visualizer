@@ -71,6 +71,8 @@ class BuildMetrics:
         return {'results': self.results_counts}
 
     def getBuildDurations(self):
+        ''' Should send an array with the daily average durations 
+        for past two weeks'''
         # JOB INFO
         current_job = self.server.get_job_info(str(self.job_name), 0, True)
         # for key,value in current_job.items():
@@ -111,7 +113,25 @@ class BuildMetrics:
     
     def dailyAverage(self, get_average, timestamps):
         ''' helper function - takes array of <some value> & timestamp, returns daily average'''
+        # Given [duration : timestamp]
+        # save starting timestamp, and keep a counter
+        # if duration in same day as current timestamp(day), add to running total in dict for that timestamp(day)
+        # if new timestamp (day), save new timestamp in dict and start running total
+        # Now we're left with the total durations for each timestamp(day)
+        daily_avgs = {}
+        current_date = None
+        build_counter = 0
+        for index in range(len(timestamps)-1): 
+            t_date = timestamps[index].date()
+            if current_date not in daily_avgs.keys():
+                current_date = t_date
+                daily_avgs[t_date] = 0
+                print('Current date: ', current_date)
+            if t_date == current_date:
+                build_counter += 1
+                daily_avgs[t_date] += get_average[index]
         pass
+
 
 class BuildMetrics_Old:
     server = None
