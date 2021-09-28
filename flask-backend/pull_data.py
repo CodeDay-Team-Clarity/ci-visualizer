@@ -42,7 +42,7 @@ class BuildMetrics:
         self.job_name = job_name
         self.results_counts = {'success': 0, 'failure': 0, 'cancel': 0}
         self.duration_data = {'all data': {},
-                              'daily averages': None, 'total duration': None, 'total build count': None}
+                              'total duration': None, 'total build count': None}
         self.total_duration = 0
         self.total_build_count = 0
 
@@ -103,7 +103,7 @@ class BuildMetrics:
             self.total_build_count += 1
 
         dailyAverages = self.dailyAverage(durations, timestamps)
-        self.duration_data['daily averages'] = dailyAverages
+        self.duration_data['average durations'] = dailyAverages
         self.duration_data['total duration'] = self.total_duration
         self.duration_data['total build count'] = self.total_build_count
         return {'durations': self.duration_data}
@@ -133,19 +133,19 @@ class BuildMetrics:
             print('T_DATE: ', t_date)
             if not current_date:
                 current_date = t_date
-                daily_avgs[current_date] = {'total':0, 'build count':0, 'avg':None}
+                daily_avgs[current_date] = {'total sec':0, 'build count':0, 'avg duration':None}
             print('Current date: ', current_date)
             if t_date == current_date:
                 daily_avgs[current_date]['build count'] += 1
-                daily_avgs[current_date]['total'] += get_average[index]
+                daily_avgs[current_date]['total sec'] += get_average[index]
             else: # once the date no longer matches the previous /current date
                 # assign the average
-                daily_avgs[current_date]['avg'] = \
-                    daily_avgs[current_date]['total'] / daily_avgs[current_date]['build count']
+                daily_avgs[current_date]['avg duration'] = \
+                    daily_avgs[current_date]['total sec'] / daily_avgs[current_date]['build count']
                 current_date = t_date 
-                daily_avgs[current_date] = {'total':get_average[index], 'build count':1, 'avg':None}
-        daily_avgs[current_date]['avg'] = \
-                    daily_avgs[current_date]['total'] / daily_avgs[current_date]['build count']
+                daily_avgs[current_date] = {'total sec':get_average[index], 'build count':1, 'avg duration':None}
+        daily_avgs[current_date]['avg duration'] = \
+                    daily_avgs[current_date]['total sec'] / daily_avgs[current_date]['build count']
         return daily_avgs
 
 class BuildMetrics_Old:
