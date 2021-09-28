@@ -44,6 +44,7 @@ class BuildMetrics:
         self.duration_data = {'all data': {}}
         self.total_duration = 0
         self.total_build_count = 0
+        self.fail_rates = {}
 
     def getResultsCounts(self):
         # JOB INFO
@@ -107,15 +108,35 @@ class BuildMetrics:
         self.duration_data['total build count'] = self.total_build_count
         return {'durations': self.duration_data}
 
-    # def convertTimestamps(self, timestamp):
-    #     ''' helper function - convert to human readable'''
-    #     dateTimeObj = datetime.fromtimestamp((timestamp/1000))
-    #     return dateTimeObj
-
     def getFailureRate(self):
-        ''' returns as an array the percentage of jobs that failed / day each day for each day in the past two weeks'''
-        pass
-    
+        ''' returns for a job, the number of builds that failed / day '''
+        current_job = self.server.get_job_info(str(self.job_name), 0, True)
+        job_builds = current_job.get('builds')
+        # loop builds for current job
+        for build in job_builds:
+            build_number = build.get('number')
+            build_info = self.server.get_build_info(
+                self.job_name, build_number)
+            # get name, time, result
+            dateTimeObj = datetime.fromtimestamp(build_info.get('timestamp')/1000)
+            build_timestamp = dateTimeObj.strftime("%m/%d/%Y")
+            build_result = build_info.get('result')
+            # print(build_timestamp, build_result)
+            # ADD TO FAIL RATES
+            if build_timestamp not in self.fail_rates.keys():
+                self.fail_rates[build_timestamp] = {'fail rate':None, 'total fails':0, 'total builds':0}
+            if build_result == 'FAILURE':
+                self.fail_rates[build_timestamp]['total fails'] += 1
+            self.fail_rates[build_timestamp]['total builds'] += 1
+
+        # Get failure rate / day
+        for key, value in self.fail_rates.items():
+            # print(key, value)
+            value['fail rate'] = value['total fails'] / value['total builds']
+
+        # print('final fail_rates: ', self.fail_rates)
+        return {'failure rate': self.fail_rates}
+
     def dailyAverage(self, get_average, timestamps):
         ''' helper function - takes array of <some value> & timestamp, returns daily average'''
         # Given [duration : timestamp]
@@ -126,14 +147,14 @@ class BuildMetrics:
         daily_avgs = {}
         current_date = None
         for index in range(len(timestamps)): 
-            print(index, len(timestamps))
+            # print(index, len(timestamps))
             dateTimeObj = datetime.fromtimestamp((timestamps[index]/1000))
             t_date = dateTimeObj.strftime("%m/%d/%Y")
-            print('T_DATE: ', t_date)
+            # print('T_DATE: ', t_date)
             if not current_date:
                 current_date = t_date
                 daily_avgs[current_date] = {'total sec':0, 'build count':0, 'avg duration':None}
-            print('Current date: ', current_date)
+            # print('Current date: ', current_date)
             if t_date == current_date:
                 daily_avgs[current_date]['build count'] += 1
                 daily_avgs[current_date]['total sec'] += get_average[index]

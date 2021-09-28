@@ -82,7 +82,7 @@ class JenkinsCalls():
                 # get job data
                 results_counts = pipeline_instance.getResultsCounts()
                 duration_data = pipeline_instance.getBuildDurations()
-
+                failure_rate = pipeline_instance.getFailureRate()
                 # t_stamps = [1627492081074, 1627494991174, 1628290181127, 1628290262920, 1630539628361]
                 # get_avgs = [49.254, 48.432, 48.473, 7.454, 83.574]
                 # dailyA = pipeline_instance.dailyAverage(get_avgs, t_stamps)
@@ -91,6 +91,7 @@ class JenkinsCalls():
                 data = {}
                 data.update(results_counts)
                 data.update(duration_data)
+                data.update(failure_rate)
                 # if len(allJobNames) <= 0:
                 #     error = {"response": "no jobs"}
                 #     return error
