@@ -41,8 +41,7 @@ class BuildMetrics:
         self.server = server
         self.job_name = job_name
         self.results_counts = {'success': 0, 'failure': 0, 'cancel': 0}
-        self.duration_data = {'all data': {},
-                              'total duration': None, 'total build count': None}
+        self.duration_data = {'all data': {}}
         self.total_duration = 0
         self.total_build_count = 0
 
