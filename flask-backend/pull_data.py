@@ -7,7 +7,7 @@ class JobMetrics:
         self.server = jenkins_connection  # jenkinsConnection instance from main.py
         self.limit = limit  # limit on number of jobs
         self.all_job_names = []
-        self.all_job_stats = {}  # summary of all jobs for dashboard
+        self.all_job_stats = {'All Jobs':{}}  # summary of all jobs for dashboard
 
     def getAllJobNames(self):
         ''' Returns names of all jobs '''
@@ -41,10 +41,10 @@ class BuildMetrics:
         self.server = server
         self.job_name = job_name
         self.results_counts = {'success': 0, 'failure': 0, 'cancel': 0}
-        self.duration_data = {'all data': {},
-                              'total duration': None, 'total build count': None}
+        self.duration_data = {'all data': {}}
         self.total_duration = 0
         self.total_build_count = 0
+        self.fail_rates = {}
 
     def getResultsCounts(self):
         # JOB INFO
@@ -71,40 +71,102 @@ class BuildMetrics:
         return {'results': self.results_counts}
 
     def getBuildDurations(self):
+        ''' Should send an array with the daily average durations 
+        for past two weeks'''
         # JOB INFO
         current_job = self.server.get_job_info(str(self.job_name), 0, True)
         # for key,value in current_job.items():
         #     print(key," -> ", value)
 
         # BUILD INFO
+        timestamps = []
+        durations = []
         job_builds = current_job.get('builds')
         for build in job_builds:
             build_number = build.get('number')
             build_info = self.server.get_build_info(
                 self.job_name, build_number)
 
+            # build data for 'all data'
             build_name = build_info.get('fullDisplayName')
-
-            build_timestamp = self.convertTimestamps(
-                build_info.get('timestamp'))
-            build_duration = (build_info.get('duration')) / \
-                1000  # convert to seconds
+            dateTimeObj = datetime.fromtimestamp(build_info.get('timestamp')/1000)
+            build_timestamp = dateTimeObj.strftime("%m/%d/%Y")
+            build_duration = (build_info.get('duration')) / 1000  # convert to seconds
             # new dictionary entry for all durations
             self.duration_data['all data'][build_name] = {
                 'duration': build_duration, 'timestamp': build_timestamp}
+            # accumulate for dailyAverage
+            timestamps.append(build_info.get('timestamp'))
+            durations.append(build_duration)
 
             self.total_duration += int(build_duration)
             self.total_build_count += 1
 
+        dailyAverages = self.dailyAverage(durations, timestamps)
+        self.duration_data['average durations'] = dailyAverages
         self.duration_data['total duration'] = self.total_duration
         self.duration_data['total build count'] = self.total_build_count
         return {'durations': self.duration_data}
 
-    def convertTimestamps(self, timestamp):
-        ''' convert to human readable '''
-        dateTimeObj = datetime.fromtimestamp((timestamp/1000))
-        return dateTimeObj
+    def getFailureRate(self):
+        ''' returns for a job, the number of builds that failed / day '''
+        current_job = self.server.get_job_info(str(self.job_name), 0, True)
+        job_builds = current_job.get('builds')
+        # loop builds for current job
+        for build in job_builds:
+            build_number = build.get('number')
+            build_info = self.server.get_build_info(
+                self.job_name, build_number)
+            # get name, time, result
+            dateTimeObj = datetime.fromtimestamp(build_info.get('timestamp')/1000)
+            build_timestamp = dateTimeObj.strftime("%m/%d/%Y")
+            build_result = build_info.get('result')
+            # print(build_timestamp, build_result)
+            # ADD TO FAIL RATES
+            if build_timestamp not in self.fail_rates.keys():
+                self.fail_rates[build_timestamp] = {'fail rate':None, 'total fails':0, 'total builds':0}
+            if build_result == 'FAILURE':
+                self.fail_rates[build_timestamp]['total fails'] += 1
+            self.fail_rates[build_timestamp]['total builds'] += 1
 
+        # Get failure rate / day
+        for key, value in self.fail_rates.items():
+            # print(key, value)
+            value['fail rate'] = value['total fails'] / value['total builds']
+
+        # print('final fail_rates: ', self.fail_rates)
+        return {'failure rate': self.fail_rates}
+
+    def dailyAverage(self, get_average, timestamps):
+        ''' helper function - takes array of <some value> & timestamp, returns daily average'''
+        # Given [duration : timestamp]
+        # save starting timestamp, and keep a counter
+        # if duration in same day as current timestamp(day), add to running total in dict for that timestamp(day)
+        # if new timestamp (day), save new timestamp in dict and start running total
+        # Now we're left with the total durations for each timestamp(day)
+        daily_avgs = {}
+        current_date = None
+        for index in range(len(timestamps)): 
+            # print(index, len(timestamps))
+            dateTimeObj = datetime.fromtimestamp((timestamps[index]/1000))
+            t_date = dateTimeObj.strftime("%m/%d/%Y")
+            # print('T_DATE: ', t_date)
+            if not current_date:
+                current_date = t_date
+                daily_avgs[current_date] = {'total sec':0, 'build count':0, 'avg duration':None}
+            # print('Current date: ', current_date)
+            if t_date == current_date:
+                daily_avgs[current_date]['build count'] += 1
+                daily_avgs[current_date]['total sec'] += get_average[index]
+            else: # once the date no longer matches the previous /current date
+                # assign the average
+                daily_avgs[current_date]['avg duration'] = \
+                    daily_avgs[current_date]['total sec'] / daily_avgs[current_date]['build count']
+                current_date = t_date 
+                daily_avgs[current_date] = {'total sec':get_average[index], 'build count':1, 'avg duration':None}
+        daily_avgs[current_date]['avg duration'] = \
+                    daily_avgs[current_date]['total sec'] / daily_avgs[current_date]['build count']
+        return daily_avgs
 
 class BuildMetrics_Old:
     server = None

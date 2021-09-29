@@ -60,7 +60,7 @@ class JenkinsCalls():
                     return {"response": "no jobs"}
 
                 allJobStats = jenkinsInstance.getAllJobStats()
-                return {'Job Stats': allJobStats}
+                return allJobStats
             else:
                 raise Exception("Insufficient credentials Jobs")
         else:
@@ -68,7 +68,7 @@ class JenkinsCalls():
                 'getJobs function : Invalid -> request = None (or POST instead of GET request)')
 
     def getJobStats(self):
-        ''' Returns the /stats for a Job (job is based into query argument) '''
+        ''' Returns the /stats for a Job (job is baseed into query argument) : Results counts, Build Durations, soon Failure Rate chart data'''
         if self.request != None and (self.request.method == 'GET'):
             args = self.request.args
             print(args)
@@ -78,19 +78,25 @@ class JenkinsCalls():
                     args["url"], args["username"], args["password"])
                 # establish current job
                 current_job_name = self.request.args["job"]
-                # connect and get all jobs
                 pipeline_instance = BuildMetrics(connection, current_job_name)
                 # get job data
                 results_counts = pipeline_instance.getResultsCounts()
                 duration_data = pipeline_instance.getBuildDurations()
+                failure_rate = pipeline_instance.getFailureRate()
+                # t_stamps = [1627492081074, 1627494991174, 1628290181127, 1628290262920, 1630539628361]
+                # get_avgs = [49.254, 48.432, 48.473, 7.454, 83.574]
+                # dailyA = pipeline_instance.dailyAverage(get_avgs, t_stamps)
+
                 # compile job data
                 data = {}
                 data.update(results_counts)
                 data.update(duration_data)
-
+                data.update(failure_rate)
                 # if len(allJobNames) <= 0:
                 #     error = {"response": "no jobs"}
                 #     return error
+                
+                
 
                 print('BUILD DATA FOR A JOB ---- ')
                 print(data)
