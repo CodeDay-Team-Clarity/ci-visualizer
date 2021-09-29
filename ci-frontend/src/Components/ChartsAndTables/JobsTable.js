@@ -2,16 +2,26 @@ import { useMemo } from 'react';
 import { useTable, usePagination } from 'react-table';
 import { Columns } from './Columns';
 import MOCK_DATA from '../MOCK_DATA';
-// import useFetch from '../useFetch';
-// import {backendUrl} from "../backendRoute";
+import useFetch from '../useFetch';
+import {backendUrl} from "../backendRoute";
 
 const JobsTable = () => {
-    // const { data: stats, error } = useFetch(
-    //     backendUrl("/jobs?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/")
-    //   );
+    const { data: stats, error } = useFetch(
+            backendUrl("/jobs?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/")
+    );
 
-    //   console.log(stats.job);
+    const jobs = stats["Job Stats"];
+    console.log(Object.keys(jobs));
 
+    // let jobs = Object.entries(stats);
+    // console.log(jobs);
+
+    // const map = new Map(Object.entries(stats));
+    // const arr = Array.from(map);
+    // for(let entry in arr){
+    //     console.log(Object.values(entry));
+    // };
+    
     const columns = useMemo(() => Columns, []);
     const data = useMemo(() => MOCK_DATA, []);
 
