@@ -10,8 +10,9 @@ const JobsTable = () => {
             backendUrl("/jobs?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/")
     );
 
-    const jobs = stats["Job Stats"];
-    console.log(Object.keys(jobs));
+    console.log(stats);
+    // const jobs = stats["Job Stats"];
+    // console.log(Object.keys(jobs));
 
     // let jobs = Object.entries(stats);
     // console.log(jobs);
