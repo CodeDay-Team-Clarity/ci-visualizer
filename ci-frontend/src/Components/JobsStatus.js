@@ -7,10 +7,9 @@ export default function JobsDuration({ stats }) {
         <Card.Body>
           <Card.Title>jobs data</Card.Title>
           <Card.Text>
-            <h5>Number of Successes: {stats.stats.Successes}</h5>
-            <h5>Number of Failures: {stats.stats.Failures}</h5>
-            <h5>Number of Cancels: {stats.stats.Cancels}</h5>
-            <h5>Average build time: {stats.stats.Average}</h5>
+            <h5>Number of Successes: {stats.results.successes}</h5>
+            <h5>Number of Failures: {stats.results.failures}</h5>
+            <h5>Number of Cancels: {stats.results.cancels}</h5>
           </Card.Text>
         </Card.Body>
       </Card>{" "}
