@@ -14,7 +14,7 @@ export default function Durartion({ stats }) {
     datasets: [
       {
         label: "Duration",
-        data: [stats.durations.totalbuildcount],
+        // data: [stats.durations.BuildDurations],
         // data: [12, 19, 3, 5, 2, 3], // delet after backend works
         fill: false,
         backgroundColor: "rgb(255, 99, 132)",
@@ -40,6 +40,7 @@ export default function Durartion({ stats }) {
       <>
         <Line data={data} options={options} />
       </>
+      `
     </div>
   );
 }
