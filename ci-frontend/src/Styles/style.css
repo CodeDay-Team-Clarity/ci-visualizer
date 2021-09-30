@@ -1,12 +1,27 @@
 :root {
   --offcanvas-width: 215px;
   --topNavBarHeight: 65px;
-  --red: #d33834;
-  --darkBlue: #335061;
-  --medBlue: #48728b;
-  --lightBlue: #80b0c4;
-  --beige: #f0d6b7;
-  --gray: #6d6b6d;
+  --logoRed: rgb(211, 57, 52);
+  --logoDarkBlue: rgb(51, 80, 97);
+  --logoMedBlue: rgb(72, 114, 139);
+  --logoLightBlue: rgb(128, 176, 196);
+  --logoBeige: rgb(240, 214, 183);
+  --logoGray: rgb(109, 107, 109);
+
+  --colRed: rgb(239, 41, 41);
+  --colYellow: rgb(252, 233, 79);
+  --colBlue: rgb(114, 159, 207);
+  --colGrey: rgb(171, 171, 171);
+  --colDarkGrey: rgb(119, 119, 119);
+  --colLightGrey: rgb(204, 204, 204);
+  --colRED: rgb(204, 0, 0);
+  --colBLUE: rgb(52, 101, 164);
+  --colGREEN: rgb(115, 210, 22);
+  --colYELLOW: rgb(237, 212, 0);
+  --ColBROWN: rgb(184, 119, 0);
+  --ColGRAY: rgb(77, 77, 77);
+  --ColVIOLET: rgb(160, 32, 240);
+  --ColPINK: rgb(255, 151, 128);
 }
 
 /* navigation bars start */
@@ -48,12 +63,12 @@
 
 /* pagination start */
 .page-item .page-link {
-  color: var(--darkBlue);
+  color: var(--logoDarkBlue);
 }
 .page-item.active .page-link {
-  background-color: var(--medBlue);
-  border-color: var(--medBlue);
-  color: var(--beige);
+  background-color: var(--logoMedBlue);
+  border-color: var(--logoMedBlue);
+  color: var(--logoBeige);
 }
 .pagination > li > button:focus {
   box-shadow: none;
