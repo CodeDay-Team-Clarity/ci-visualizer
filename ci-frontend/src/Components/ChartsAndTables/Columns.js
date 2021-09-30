@@ -1,27 +1,27 @@
 export const Columns = [
     {
-        Header:'ID',
-        Footer:'ID',
+        Header:'Job Id',
+        Footer:'Job Id',
         accessor: 'id'
     },
     {
-        Header:'First Name',
-        Footer:'First Name',
-        accessor: 'first_name'
+        Header:'Avg Duration',
+        Footer:'Avg Duration',
+        accessor: 'avg_duration'
     },
     {
-        Header:'Last Name',
-        Footer:'Last Name',
-        accessor: 'last_name'
+        Header:'Successes',
+        Footer:'Successes',
+        accessor: 'results.success'
     },
     {
-        Header:'Email',
-        Footer:'Email',
-        accessor: 'email'
+        Header:'Failures',
+        Footer:'Failures',
+        accessor: 'results.failure'
     },
     {
-        Header:'Gender',
-        Footer:'Gender',
-        accessor: 'gender'
+        Header:'Cancels',
+        Footer:'Cancels',
+        accessor: 'results.cancel'
     }
 ]
