@@ -1,3 +1,4 @@
 venv
-flask-backend/__pycache__
+flask-backend/__pycache__/
 .idea
+__pycache__/

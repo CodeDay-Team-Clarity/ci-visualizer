@@ -135,7 +135,7 @@ class BuildMetrics:
             value['fail rate'] = value['total fails'] / value['total builds']
 
         # print('final fail_rates: ', self.fail_rates)
-        return {'failure rate': self.fail_rates}
+        return {'failure rates': self.fail_rates}
 
     def dailyAverage(self, get_average, timestamps):
         ''' helper function - takes array of <some value> & timestamp, returns daily average'''
