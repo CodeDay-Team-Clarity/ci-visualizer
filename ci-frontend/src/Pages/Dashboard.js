@@ -14,7 +14,9 @@ const Dashboard = () => {
       "/stats?job=sleeper_simulation-2&username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/"
     )
   );
-  console.log("dashboard stats " + stats.results);
+
+  // console.log(stats.durations['average durations']);
+  
   return (
     <div>
       <div>
@@ -24,13 +26,8 @@ const Dashboard = () => {
       <div className="main-content">
         <Switch>
           <Route path="/dashboard/chart">
-            <Card
-              {...{
-                component: <Chart stats={stats} error={error} />,
-                size: 6,
-                title: "Build Status",
-              }}
-            />
+            <Card {...{"component": <Chart stats={stats} error={error}/>, "size": 6, "title": "Build Status"}}/>
+            {/* <Card {...{"component": <JobsDuration stats={stats} error={error}/>, "size": 6, "title": "Build Status"}}/> */}
             <Duration stats={stats} />
           </Route>
           <Route path="/">

@@ -7,7 +7,8 @@ class JobMetrics:
         self.server = jenkins_connection  # jenkinsConnection instance from main.py
         self.limit = limit  # limit on number of jobs
         self.all_job_names = []
-        self.all_job_stats = {'All_Jobs':{}}  # summary of all jobs for dashboard
+        # summary of all jobs for dashboard
+        self.all_job_stats = {}
 
     def getAllJobNames(self):
         ''' Returns names of all jobs '''
@@ -89,9 +90,11 @@ class BuildMetrics:
 
             # build data for 'all data'
             build_name = build_info.get('fullDisplayName')
-            dateTimeObj = datetime.fromtimestamp(build_info.get('timestamp')/1000)
+            dateTimeObj = datetime.fromtimestamp(
+                build_info.get('timestamp')/1000)
             build_timestamp = dateTimeObj.strftime("%m/%d/%Y")
-            build_duration = (build_info.get('duration')) / 1000  # convert to seconds
+            build_duration = (build_info.get('duration')) / \
+                1000  # convert to seconds
             # new dictionary entry for all durations
             self.duration_data['all_data'][build_name] = {
                 'duration': build_duration, 'timestamp': build_timestamp}
@@ -118,7 +121,8 @@ class BuildMetrics:
             build_info = self.server.get_build_info(
                 self.job_name, build_number)
             # get name, time, result
-            dateTimeObj = datetime.fromtimestamp(build_info.get('timestamp')/1000)
+            dateTimeObj = datetime.fromtimestamp(
+                build_info.get('timestamp')/1000)
             build_timestamp = dateTimeObj.strftime("%m/%d/%Y")
             build_result = build_info.get('result')
             # print(build_timestamp, build_result)
@@ -147,7 +151,7 @@ class BuildMetrics:
         # Now we're left with the total durations for each timestamp(day)
         daily_avgs = {}
         current_date = None
-        for index in range(len(timestamps)): 
+        for index in range(len(timestamps)):
             # print(index, len(timestamps))
             dateTimeObj = datetime.fromtimestamp((timestamps[index]/1000))
             t_date = dateTimeObj.strftime("%m/%d/%Y")
@@ -159,16 +163,19 @@ class BuildMetrics:
             if t_date == current_date:
                 daily_avgs[current_date]['build_count'] += 1
                 daily_avgs[current_date]['total_sec'] += get_average[index]
-            else: # once the date no longer matches the previous /current date
+            else:  # once the date no longer matches the previous /current date
                 # assign the average
                 daily_avgs[current_date]['avg_duration'] = \
                     daily_avgs[current_date]['total_sec'] / daily_avgs[current_date]['build_count']
                 current_date = t_date 
-                daily_avgs[current_date] = {'date': current_date, 'total_sec':get_average[index], 'build_count':1, 'avg_duration':None}
+                daily_avgs[current_date] = \
+                    {'date': current_date, 'total_sec':get_average[index], 'build_count':1, 'avg_duration':None}
+                    
         daily_avgs[current_date]['avg_duration'] = \
                     daily_avgs[current_date]['total_sec'] / daily_avgs[current_date]['build_count']
             
         return daily_avgs
+
 
 class BuildMetrics_Old:
     server = None

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useTable, usePagination } from 'react-table';
 import { Columns } from './Columns';
-import MOCK_DATA from '../MOCK_DATA';
 import useFetch from '../useFetch';
 import {backendUrl} from "../backendRoute";
 
@@ -10,21 +9,27 @@ const JobsTable = () => {
             backendUrl("/jobs?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/")
     );
 
-    console.log(stats);
-    // const jobs = stats["Job Stats"];
-    // console.log(Object.keys(jobs));
+    // console.log(Object.entries(stats));
+    // const keys = Object.keys(stats);
 
-    // let jobs = Object.entries(stats);
-    // console.log(jobs);
+    // keys.forEach(key => {
+    //     console.log(stats[key]);
+    // });
 
-    // const map = new Map(Object.entries(stats));
-    // const arr = Array.from(map);
-    // for(let entry in arr){
-    //     console.log(Object.values(entry));
-    // };
-    
+
+    // {id: "sleeper"}
+
+    const allJobs = Object.entries(stats).map(entry => {
+        // const job = {};
+        const job = {'id': entry[0], ...entry[1]}
+
+        return job;
+    });
+
+    console.log(allJobs);
+
     const columns = useMemo(() => Columns, []);
-    const data = useMemo(() => MOCK_DATA, []);
+    const data = useMemo(() => allJobs, []);
 
     const {
         getTableProps,
@@ -70,6 +75,7 @@ const JobsTable = () => {
 
     var pages = [...Array((endPage + 1) - startPage).keys()].map(i => startPage + i);
 
+    
     return (
         <>
             <table {...getTableProps()} className = "table table-striped table-hover">
@@ -98,43 +104,45 @@ const JobsTable = () => {
                 </tbody>
             </table>
             
-            <nav aria-label = "Page navigation pagination">
-                <ul className="pagination justify-content-center">
-                    <li className = {(!canPreviousPage) ? "page-item disabled" : "page-item"}>
-                        <button className = "page-link" onClick = {() => gotoPage(0)}><span aria-hidden="true">&laquo;</span></button>
-                    </li>
-                    <li className = {(!canPreviousPage) ? "page-item disabled" : "page-item"}>
-                        <button className = "page-link" onClick = {() => previousPage()}>Previous</button>
-                    </li>
-                    {pages.map((page) =>
-                        <li className = {pageIndex === (page) ? "page-item active" : "page-item"}>
-                            <button className = "page-link" onClick={() => {gotoPage(page); }}>{page + 1}</button>
+            {data.length <= 10 ? <></> :
+                <nav aria-label = "Page navigation pagination">
+                    <ul className="pagination justify-content-center">
+                        <li className = {(!canPreviousPage) ? "page-item disabled" : "page-item"}>
+                            <button className = "page-link" onClick = {() => gotoPage(0)}><span aria-hidden="true">&laquo;</span></button>
                         </li>
-                    )}
-                    <li className = {(!canNextPage) ? "page-item disabled" : "page-item"}>
-                        <button className = "page-link" onClick = {() => nextPage()}>Next</button>
-                    </li>
-                    <li className = {(!canNextPage) ? "page-item disabled" : "page-item"}>
-                        <button className = "page-link" onClick = {() => gotoPage(pageCount - 1)}><span aria-hidden="true">&raquo;</span></button>
-                    </li>
-                </ul>
-                <span>{' '}<strong>Pages: {pageOptions.length}</strong>{' '}</span>
-                <div>
-                    <span><strong>Results per Page:{' '}</strong>
-                        <select 
-                            value = {pageSize}
-                            onChange = {(e) => setPageSize(Number(e.target.value))}>
-                            {
-                                [10, 25, 50, 100].map(pageSize => (
-                                    <option key = {pageSize} value = {pageSize}>
-                                        {pageSize}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                    </span>
-                </div>
-            </nav>
+                        <li className = {(!canPreviousPage) ? "page-item disabled" : "page-item"}>
+                            <button className = "page-link" onClick = {() => previousPage()}>Previous</button>
+                        </li>
+                        {pages.map((page) =>
+                            <li className = {pageIndex === (page) ? "page-item active" : "page-item"}>
+                                <button className = "page-link" onClick={() => {gotoPage(page); }}>{page + 1}</button>
+                            </li>
+                        )}
+                        <li className = {(!canNextPage) ? "page-item disabled" : "page-item"}>
+                            <button className = "page-link" onClick = {() => nextPage()}>Next</button>
+                        </li>
+                        <li className = {(!canNextPage) ? "page-item disabled" : "page-item"}>
+                            <button className = "page-link" onClick = {() => gotoPage(pageCount - 1)}><span aria-hidden="true">&raquo;</span></button>
+                        </li>
+                    </ul>
+                    <span>{' '}<strong>Pages: {pageOptions.length}</strong>{' '}</span>
+                    <div>
+                        <span><strong>Results per Page:{' '}</strong>
+                            <select 
+                                value = {pageSize}
+                                onChange = {(e) => setPageSize(Number(e.target.value))}>
+                                {
+                                    [10, 25, 50, 100].map(pageSize => (
+                                        <option key = {pageSize} value = {pageSize}>
+                                            {pageSize}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </nav>
+            }
         </>
     )
 }
