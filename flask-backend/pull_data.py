@@ -90,14 +90,15 @@ class BuildMetrics:
 
             # build data for 'all data'
             build_name = build_info.get('fullDisplayName')
-            dateTimeObj = datetime.fromtimestamp(
-                build_info.get('timestamp')/1000)
-            build_timestamp = dateTimeObj.strftime("%m/%d/%Y")
+            timestamp = build_info.get('timestamp')
+            # dateTimeObj = datetime.fromtimestamp(
+                # timestamp/1000)
+            # build_date = dateTimeObj.strftime("%m/%d/%Y")
             build_duration = (build_info.get('duration')) / \
                 1000  # convert to seconds
             # new dictionary entry for all durations
             self.duration_data['all_data'][build_name] = {
-                'duration': build_duration, 'timestamp': build_timestamp}
+                'duration': build_duration, 'timestamp': timestamp}
             # accumulate for dailyAverage
             timestamps.append(build_info.get('timestamp'))
             durations.append(build_duration)
@@ -155,6 +156,7 @@ class BuildMetrics:
             # print(index, len(timestamps))
             dateTimeObj = datetime.fromtimestamp((timestamps[index]/1000))
             t_date = dateTimeObj.strftime("%m/%d/%Y")
+            date = timestamps[index]
             # print('T_DATE: ', t_date)
             if not current_date:
                 current_date = t_date
