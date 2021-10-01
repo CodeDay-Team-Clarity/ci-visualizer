@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import { SideNavData } from "./OffCanvasData";
 import { ReactComponent as JenkinsSvg } from '../../images/jenkins-logo-no-text.svg';
 import Logout from '../logout';
@@ -20,24 +20,25 @@ const OffCanvas = () => {
                                     <JenkinsSvg alt="Jenkins logo" width="50%" height="50%" className="align-self-center my-3"/> 
                                 </div>
                             </li>
-                            {SideNavData.map((val, key) => {
+                            <hr/>
+                            {SideNavData.map((val, index) => {
                                 return (
                                     <li
-                                        key={key}
+                                        className = "d-flex flex-column align-items-end mt-auto mb-3"
+                                        key={index}
                                         onClick={() => {
                                             window.location.pathname = val.link;
                                         }}
                                     >
-                                        <div>
+                                        <button
+                                            type = "button" 
+                                            className = "btn btn-secondary col-6 mx-auto" >
                                             {val.title}
-                                        </div>
+                                        </button>
                                     </li>
                                 );
                             })}
-                            <li>
-                                <NavLink to = "/dashboard/chart">Chart</NavLink>
-                            </li>
-                            <hr/>
+                            
                         </ul>
                     </nav>
                     <div className = "d-flex flex-column align-items-end mt-auto mb-3">

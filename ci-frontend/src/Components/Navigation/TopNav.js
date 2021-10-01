@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const TopNav = () => {
     return (
         <nav className = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -11,7 +13,7 @@ const TopNav = () => {
                 >
                     <span className = "navbar-toggler-icon"/>
                 </button>
-                <a className = "navbar-brand fw-bold text-uppercase me-auto ms-4" href = "#">Ci-Visualizer</a>
+                <NavLink to = "/" className = "navbar-brand fw-bold text-uppercase me-auto ms-4">Ci-Visualizer</NavLink>
                 <button 
                     className = "navbar-toggler" 
                     type = "button" 
@@ -26,21 +28,21 @@ const TopNav = () => {
                 <div className = "collapse navbar-collapse" id = "topNavBar">
                     <ul className = "navbar-nav ms-auto">
                         <li className = "nav-item dropdown">
-                            <a 
-                                className = "nav-link dropdown-toggle" 
-                                href = "#" 
+                            <NavLink 
+                                to = "/" 
+                                className = "nav-link dropdown-toggle"
                                 id = "navbarDropdown" 
                                 role = "button" 
                                 data-bs-toggle = "dropdown" 
                                 aria-expanded = "false"
                             >
                                 Jobs
-                            </a>
+                            </NavLink>
                             <ul className = "dropdown-menu dropdown-menu-end" aria-labelledby = "navbarDropdown">
-                                <li><a className = "dropdown-item" href = "#">Action</a></li>
-                                <li><a className = "dropdown-item" href = "#">Another action</a></li>
+                                <li><NavLink to = "/" className = "dropdown-item">Action</NavLink></li>
+                                <li><NavLink to = "/" className = "dropdown-item">Another action</NavLink></li>
                                 <li><hr className = "dropdown-divider"/></li>
-                                <li><a className = "dropdown-item" href = "#">Something else here</a></li>
+                                <li><NavLink to = "/" className = "dropdown-item">Something else here</NavLink></li>
                             </ul>
                         </li>
                     </ul>

@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { useTable, usePagination } from 'react-table';
 import { Columns } from './Columns';
-import useFetch from '../useFetch';
-import {backendUrl} from "../backendRoute";
+// import useFetch from '../useFetch';
+// import {backendUrl} from "../backendRoute";
 
-const JobsTable = () => {
-    const { data: stats, error } = useFetch(
-            backendUrl("/jobs?username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/")
-    );
+const JobsTable = ({allJobs}) => {
+
 
     // console.log(Object.entries(stats));
     // const keys = Object.keys(stats);
@@ -19,17 +18,17 @@ const JobsTable = () => {
 
     // {id: "sleeper"}
 
-    const allJobs = Object.entries(stats).map(entry => {
-        // const job = {};
-        const job = {'id': entry[0], ...entry[1]}
+    // const allJobs = Object.entries(stats).map(entry => {
+    //     // const job = {};
+    //     const job = {'id': entry[0], ...entry[1]}
 
-        return job;
-    });
+    //     return job;
+    // });
 
-    console.log(allJobs);
+    // console.log(allJobs);
 
     const columns = useMemo(() => Columns, []);
-    const data = useMemo(() => allJobs, []);
+    const data = useMemo(() => allJobs, [allJobs]);
 
     const {
         getTableProps,
@@ -96,11 +95,15 @@ const JobsTable = () => {
                         return (
                             <tr {...row.getRowProps()}>
                                 {row.cells.map( (cell) => {
-                                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                    return (cell.column.Header === "Job Id" ? 
+                                    <td {...cell.getCellProps()}><Link to = {`/jobs/${row.values.id}`}>{cell.render('Cell')}</Link></td> 
+                                    : 
+                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                    )
                                 })}
                             </tr>
                         )
-                    })}  
+                    })}
                 </tbody>
             </table>
             

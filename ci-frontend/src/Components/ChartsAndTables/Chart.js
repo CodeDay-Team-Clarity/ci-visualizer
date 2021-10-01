@@ -1,6 +1,18 @@
 import { Bar } from "react-chartjs-2";
+import { useParams } from "react-router-dom";
+import useFetch from "../useFetch";
+import { backendUrl } from "../backendRoute";
 
-const Chart = ({ stats, error }) => {
+const Chart = () => {
+
+  const { job } = useParams();
+
+  const { data: stats, error } = useFetch(
+    backendUrl(
+      `/stats?job=${job}&username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/`
+    )
+  );
+
   console.log(stats);
 
   const data = {
