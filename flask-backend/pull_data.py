@@ -124,7 +124,8 @@ class BuildMetrics:
             # print(build_timestamp, build_result)
             # ADD TO FAIL RATES
             if build_timestamp not in self.fail_rates.keys():
-                self.fail_rates[build_timestamp] = {'fail_rate':None, 'total_fails':0, 'total_builds':0}
+                self.fail_rates[build_timestamp] = \
+                    {'date': build_timestamp, 'fail_rate':None, 'total_fails':0, 'total_builds':0}
             if build_result == 'FAILURE':
                 self.fail_rates[build_timestamp]['total_fails'] += 1
             self.fail_rates[build_timestamp]['total_builds'] += 1
@@ -153,7 +154,7 @@ class BuildMetrics:
             # print('T_DATE: ', t_date)
             if not current_date:
                 current_date = t_date
-                daily_avgs[current_date] = {'total_sec':0, 'build_count':0, 'avg_duration':None}
+                daily_avgs[current_date] = {'date': current_date, 'total_sec':0, 'build_count':0, 'avg_duration':None}
             # print('Current date: ', current_date)
             if t_date == current_date:
                 daily_avgs[current_date]['build_count'] += 1
@@ -163,9 +164,10 @@ class BuildMetrics:
                 daily_avgs[current_date]['avg_duration'] = \
                     daily_avgs[current_date]['total_sec'] / daily_avgs[current_date]['build_count']
                 current_date = t_date 
-                daily_avgs[current_date] = {'total_sec':get_average[index], 'build_count':1, 'avg_duration':None}
+                daily_avgs[current_date] = {'date': current_date, 'total_sec':get_average[index], 'build_count':1, 'avg_duration':None}
         daily_avgs[current_date]['avg_duration'] = \
                     daily_avgs[current_date]['total_sec'] / daily_avgs[current_date]['build_count']
+            
         return daily_avgs
 
 class BuildMetrics_Old:
