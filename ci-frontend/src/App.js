@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Login, Dashboard } from "./Pages";
+import injectContext from "./Store/appContext";
 
 const App = () => {
   const loggedIn = localStorage.getItem("loggedIn");
@@ -10,13 +11,11 @@ const App = () => {
 
   return (
     <div>
-      <Router>
-          <Route path = "/">
-            <Dashboard />
-          </Route>
-      </Router>
-    </div>
+        <Route exact path = "/">
+          <Dashboard />
+        </Route>
+     </div>
   );
 };
 
-export default App;
+export default injectContext(App);

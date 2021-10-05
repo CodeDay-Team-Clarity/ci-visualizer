@@ -1,34 +1,21 @@
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useTable, usePagination } from 'react-table';
 import { Columns } from './Columns';
-// import useFetch from '../useFetch';
-// import {backendUrl} from "../backendRoute";
+
+import { useState, useEffect, useContext } from 'react';
+import { Context } from '../../Store/appContext';
 
 const JobsTable = ({allJobs}) => {
-
-
-    // console.log(Object.entries(stats));
-    // const keys = Object.keys(stats);
-
-    // keys.forEach(key => {
-    //     console.log(stats[key]);
-    // });
-
-
-    // {id: "sleeper"}
-
-    // const allJobs = Object.entries(stats).map(entry => {
-    //     // const job = {};
-    //     const job = {'id': entry[0], ...entry[1]}
-
-    //     return job;
-    // });
-
-    // console.log(allJobs);
+    const { store, actions } = useContext(Context);
+    const history = useHistory();
 
     const columns = useMemo(() => Columns, []);
     const data = useMemo(() => allJobs, [allJobs]);
+
+    // const getJobInfo = (e) => {
+    //     store.setStore({jobName: e.target.value})
+    // };
 
     const {
         getTableProps,
@@ -96,7 +83,16 @@ const JobsTable = ({allJobs}) => {
                             <tr {...row.getRowProps()}>
                                 {row.cells.map( (cell) => {
                                     return (cell.column.Header === "Job Id" ? 
-                                    <td {...cell.getCellProps()}><Link to = {`/jobs/${row.values.id}`}>{cell.render('Cell')}</Link></td> 
+                                    <td {...cell.getCellProps()}>
+                                        <button onClick = {
+                                            () => actions.getJobStats(row.values.id)
+                                            .then(
+                                                () => history.push({pathname: `/jobs/${row.values.id}`, state: {jobName: row.values.id}})
+                                            )
+                                        }>
+                                            {cell.render('Cell')}
+                                        </button>
+                                    </td> 
                                     : 
                                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                     )

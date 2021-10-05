@@ -1,16 +1,26 @@
-import {useState} from 'react';
+import { useState, useContext } from 'react';
+import { Context } from '../Store/appContext';
+import {  useHistory } from 'react-router-dom';
+
 import {ReactComponent as JenkinsSvg} from '../images/jenkins-logo-no-text.svg';
 import validation from '../Components/validation';
-import {backendUrl} from '../Components/backendRoute'
+// import {backendUrl} from '../Components/backendRoute'
 
 // import '../Styles/login.css';
 
 const Login = () => {
+    const { store, actions } = useContext(Context);
+    const history = useHistory();
+
     const isLoggedIn = localStorage.getItem('loggedIn');
 
+    // const [valid, setValid] = useState(true);
     const [errors, setErrors] = useState({});
 
-// use this for url for now: 'http://builds.ci-visualizer.com:8080'
+    if (isLoggedIn) {
+        actions.getAllJobsStats().then(() => window.location.href = '/')
+    }
+
     const [values, setValues] = useState({
         username: "",
         password: "",
@@ -24,49 +34,43 @@ const Login = () => {
         });
     };
 
-    const [valid, setValid] = useState(true);
+    // const login = async (username, password, jenkinsUrl) => {
+    //     const requestOptions = {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             'username': username,
+    //             'password': password,
+    //             'url': jenkinsUrl
+    //         })
+    //     };
 
-    if (isLoggedIn) {
-        window.location.href = "/dashboard";
-    }
-
-    const login = async (username, password, jenkinsUrl) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'username': username,
-                'password': password,
-                'url': jenkinsUrl
-            })
-        };
-
-        try {
-            const response = await fetch(backendUrl('/login'), requestOptions)
-            if (response.status !== 200) {
-                setValid(_valid => false);
-                console.log({"message": "connection failed"});
-                return false;
-            }
-            const data = await response.json();
-            console.log(data);
-            localStorage.setItem("loggedIn", true);
-            localStorage.setItem("credentials", JSON.stringify({
-                'username': username,
-                'password': password,
-                'url': jenkinsUrl}));
-            window.location.href = "/dashboard";
-            return true;
-        } catch (error) {
-            console.error("There has been an error logging in")
-        }
-    };
+    //     try {
+    //         const response = await fetch(backendUrl('/login'), requestOptions)
+    //         if (response.status !== 200) {
+    //             setValid(_valid => false);
+    //             console.log({"message": "connection failed"});
+    //             return false;
+    //         }
+    //         const data = await response.json();
+    //         console.log(data);
+    //         localStorage.setItem("loggedIn", true);
+    //         localStorage.setItem("credentials", JSON.stringify({
+    //             'username': username,
+    //             'password': password,
+    //             'url': jenkinsUrl}));
+    //         window.location.href = "/dashboard";
+    //         return true;
+    //     } catch (error) {
+    //         console.error("There has been an error logging in")
+    //     }
+    // };
 
     const handleClick = (e) => {
         e.preventDefault();
-        login(values.username, values.password, values.url);
+        actions.login(values.username, values.password, values.url).then(() => history.replace("/"));
         setErrors(validation(values));
     };
 
@@ -84,7 +88,7 @@ const Login = () => {
                 </h2>
                 <div className="col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-2 m-auto text-center">
                     <input
-                        className={`form-control ${valid ? '' : 'is-invalid'}`}
+                        className={`form-control ${store.valid ? '' : 'is-invalid'}`}
                         type="text"
                         name="username"
                         placeholder="Username"
@@ -95,7 +99,7 @@ const Login = () => {
                 </div>
                 <div className="col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-2 m-auto text-center">
                     <input
-                        className={`form-control ${valid ? '' : 'is-invalid'}`}
+                        className={`form-control ${store.valid ? '' : 'is-invalid'}`}
                         type="password"
                         name="password"
                         placeholder="Password"
@@ -106,7 +110,7 @@ const Login = () => {
                 </div>
                 <div className="col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-2 m-auto text-center">
                     <input
-                        className={`form-control ${valid ? '' : 'is-invalid'}`}
+                        className={`form-control ${store.valid ? '' : 'is-invalid'}`}
                         type="text"
                         name="url"
                         placeholder="Jenkins Url"
@@ -114,7 +118,7 @@ const Login = () => {
                         onChange={handleChange}
                     />
                     {errors.url && <p className="error">{errors.url}</p>}
-                    {!valid && <p className="lead text-danger fw-bold">Invalid login credentials</p>}
+                    {!store.valid && <p className="lead text-danger fw-bold">Invalid login credentials</p>}
                 </div>
                 <div className="col-md-2 m-auto p-2">
                     <button

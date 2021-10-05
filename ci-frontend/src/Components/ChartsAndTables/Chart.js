@@ -1,19 +1,11 @@
+import { useContext } from 'react';
+import { useLocation } from "react-router-dom";
+import { Context } from '../../Store/appContext';
 import { Bar } from "react-chartjs-2";
-import { useParams } from "react-router-dom";
-import useFetch from "../useFetch";
-import { backendUrl } from "../backendRoute";
 
-const Chart = () => {
-
-  const { job } = useParams();
-
-  const { data: stats, error } = useFetch(
-    backendUrl(
-      `/stats?job=${job}&username=jenkins&password=codeday&url=http://builds.ci-visualizer.com:8080/`
-    )
-  );
-
-  console.log(stats);
+const Chart = props => {
+  const { store } = useContext(Context);
+  const location = useLocation();
 
   const data = {
     labels: ["Successes", "Failures", "Unstable"],
@@ -21,9 +13,9 @@ const Chart = () => {
       {
         label: ["Number of jobs"],
         data: [
-          stats.results.success,
-          stats.results.failure,
-          stats.results.cancel,
+          store.jobStats.results.success,
+          store.jobStats.results.failure,
+          store.jobStats.results.cancel,
         ],
 
         backgroundColor: [
@@ -60,9 +52,9 @@ const Chart = () => {
 
   return (
     <div className="container-fluid">
+      <h5 className="row justify-content-center">{ location.state.jobName }</h5>
       <div className="row justify-content-start">
         <div className="col align-self-end">
-          {/* <h2 className="chartTitle">Build Status</h2> */}
           <Bar data={data} options={options} />
         </div>
       </div>
