@@ -1,15 +1,15 @@
 import { useState, useEffect, useContext } from 'react';
 import { Context } from '../Store/appContext';
 
-// import useFetch from "../Components/useFetch";
 import { Switch, Route, useParams } from "react-router-dom";
 import { TopNav, OffCanvas } from "../Components/Navigation";
+
 import JobsTable from "../Components/ChartsAndTables/JobsTable";
 import Chart from "../Components/ChartsAndTables/Chart";
-// import LineChart from "../Components/Durartion";
-// import { backendUrl } from "../Components/backendRoute";
+
 import Card from "../Components/Card";
 // import Duration from "../Components/ChartsAndTables/Duration";
+// import LineChart from "../Components/Durartion";
 
 const Dashboard = () => {
   const { store, actions } = useContext(Context);
@@ -28,13 +28,10 @@ const Dashboard = () => {
       </div>
       <div className="main-content">
         <Switch>
-          {/* <Route path="/dashboard/chart"> */}
-            {/* <Card {...{"component": <Chart stats={stats} error={error}/>, "size": 6, "title": "Build Status"}}/> */}
-            {/* <Card {...{"component": <JobsDuration stats={stats} error={error}/>, "size": 6, "title": "Build Status"}}/> */}
-            {/* <Duration stats={stats} /> */}
-          {/* </Route> */}
           <Route path = "/jobs/:job">
             <Card {...{ component: <Chart />, size: 6, title: "Job Stats" }}/>
+            {/* <Card {...{"component": <JobsDuration />, "size": 6, "title": "Build Status"}}/> */}
+            {/* <Duration /> */}
           </Route>
           <Route path = "/">
             <Card
