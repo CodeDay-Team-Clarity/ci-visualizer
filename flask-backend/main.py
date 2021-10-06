@@ -34,19 +34,23 @@ class JenkinsCalls():
 
     def doLogin(self):
         # checks if logged in with POST method -> returns status code
-        args = self.request.args
         if (self.request.method == 'POST'):
+            args = self.request.json
             logging.info(f"Received request with data '{args}'")
             if not ("username" in args and "password" in args and "url" in args):
                 raise Exception("Insufficient credentials")
-        try:
-            self.server = jenkins.Jenkins(args['url'], args['username'], args['password'])
-            user = self.server.get_whoami()
-            version = self.server.get_version()
-            return 'Hello user %s from Jenkins %s' % (user['fullName'], version)
-        except:
-            return 'Authentication Error - could not connect'
-        
+            else: 
+                try:
+                    self.server = jenkins.Jenkins(args['url'], args['username'], args['password'])
+                    user = self.server.get_whoami()
+                    version = self.server.get_version()
+                    print('Hello user %s from Jenkins %s' % (user['fullName'], version))
+                    return 'Hello user %s from Jenkins %s' % (user['fullName'], version)
+                except:
+                    print('Authentication Error - could not connect')
+                    return 'Authentication Error - could not connect'
+        else:
+            return 'Authentication Error: wrong request method - could not connect'
 
     def getAllJobs(self):
         ''' Returns to /jobs a list of all Job names AND their dashboard data ( calls getAllJobStats )
