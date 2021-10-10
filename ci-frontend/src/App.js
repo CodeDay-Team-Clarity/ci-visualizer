@@ -1,20 +1,24 @@
-import { Route } from "react-router-dom";
+import { useEffect } from "react";
 import { Login, Dashboard } from "./Pages";
 import injectContext from "./Store/appContext";
 
 const App = () => {
-  const loggedIn = localStorage.getItem("loggedIn");
-
-  if (!loggedIn) {
-    return <Login />;
-  }
+  const loggedIn = localStorage.getItem('userLoggedIn');
+  
+  useEffect(() => {
+    console.log("useEffect ran on app.js");
+  }, [loggedIn])
 
   return (
-    <div>
-        <Route exact path = "/">
-          <Dashboard />
-        </Route>
-     </div>
+    <>
+      {/* <ApiContextProvider> */}
+        {loggedIn ?
+            <Dashboard/>
+          :
+            <Login/>
+        }
+      {/* </ApiContextProvider> */}
+     </>
   );
 };
 

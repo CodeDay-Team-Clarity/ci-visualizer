@@ -40,13 +40,13 @@ class JenkinsCalls():
             if not ("username" in args and "password" in args and "url" in args):
                 raise Exception("Insufficient credentials")
         try:
-            self.server = jenkins.Jenkins(args['url'], args['username'], args['password'])
+            self.server = jenkins.Jenkins(
+                args['url'], args['username'], args['password'])
             user = self.server.get_whoami()
             version = self.server.get_version()
             return 'Hello user %s from Jenkins %s' % (user['fullName'], version)
         except:
             return 'Authentication Error - could not connect'
-        
 
     def getAllJobs(self):
         ''' Returns to /jobs a list of all Job names AND their dashboard data ( calls getAllJobStats )
@@ -102,8 +102,6 @@ class JenkinsCalls():
                 # if len(allJobNames) <= 0:
                 #     error = {"response": "no jobs"}
                 #     return error
-                
-                
 
                 print('BUILD DATA FOR A JOB ---- ')
                 print(data)
@@ -116,12 +114,14 @@ class JenkinsCalls():
             print(
                 'getStats function : Invalid -> request=None (or POST instead of GET request)')
 
+
 @app.route('/login', methods=['POST'])
 def loginRoute():
     # If this function call fails, the route will throw an exception, and the response won't have status code 200 i.e. login failed.
     # If this function call succeeds, the login succeeded, and we'll return a 200 status code with response body {"response": "ok"}
     connection = JenkinsCalls(request)
     return connection.doLogin()
+
 
 @app.route('/')
 def indexRoute():

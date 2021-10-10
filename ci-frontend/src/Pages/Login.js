@@ -34,40 +34,6 @@ const Login = () => {
         });
     };
 
-    // const login = async (username, password, jenkinsUrl) => {
-    //     const requestOptions = {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             'username': username,
-    //             'password': password,
-    //             'url': jenkinsUrl
-    //         })
-    //     };
-
-    //     try {
-    //         const response = await fetch(backendUrl('/login'), requestOptions)
-    //         if (response.status !== 200) {
-    //             setValid(_valid => false);
-    //             console.log({"message": "connection failed"});
-    //             return false;
-    //         }
-    //         const data = await response.json();
-    //         console.log(data);
-    //         localStorage.setItem("loggedIn", true);
-    //         localStorage.setItem("credentials", JSON.stringify({
-    //             'username': username,
-    //             'password': password,
-    //             'url': jenkinsUrl}));
-    //         window.location.href = "/dashboard";
-    //         return true;
-    //     } catch (error) {
-    //         console.error("There has been an error logging in")
-    //     }
-    // };
-
     const handleClick = (e) => {
         e.preventDefault();
         actions.login(values.username, values.password, values.url).then(() => history.replace("/"));
