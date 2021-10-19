@@ -1,31 +1,29 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Context } from '../Store/appContext';
-import {  useHistory } from 'react-router-dom';
 
 import {ReactComponent as JenkinsSvg} from '../images/jenkins-logo-no-text.svg';
 import validation from '../Components/validation';
-// import {backendUrl} from '../Components/backendRoute'
-
-// import '../Styles/login.css';
 
 const Login = () => {
     const { store, actions } = useContext(Context);
-    const history = useHistory();
 
-    const isLoggedIn = localStorage.getItem('loggedIn');
+    const isLoggedIn = JSON.parse(localStorage.getItem('loggedIn'));
 
     // const [valid, setValid] = useState(true);
     const [errors, setErrors] = useState({});
-
-    if (isLoggedIn) {
-        actions.getAllJobsStats().then(() => window.location.href = '/')
-    }
-
     const [values, setValues] = useState({
         username: "",
         password: "",
         url: "",
     });
+
+    useEffect(() => {
+        console.log('useEffect ran on login.js');
+        (isLoggedIn === true) ?
+            actions.getAllJobsStats().then(() => window.location.href = '/')
+            :
+            console.log('not logged in')
+    }, [isLoggedIn, actions])
 
     const handleChange = (e) => {
         setValues({
@@ -36,7 +34,7 @@ const Login = () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        actions.login(values.username, values.password, values.url).then(() => history.replace("/"));
+        actions.login(values.username, values.password, values.url);
         setErrors(validation(values));
     };
 

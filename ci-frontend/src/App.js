@@ -1,13 +1,13 @@
-import { useEffect } from "react";
 import { Login, Dashboard } from "./Pages";
 import injectContext from "./Store/appContext";
 
+// import { Login, Dashboard } from "./Sandbox/Pages";
+// import ApiContextProvider from "./Sandbox/Contexts/ApiContext";
+
 const App = () => {
-  const loggedIn = localStorage.getItem('userLoggedIn');
-  
-  useEffect(() => {
-    console.log("useEffect ran on app.js");
-  }, [loggedIn])
+  const loggedIn = JSON.parse(localStorage.getItem('loggedIn'));
+
+  // const loggedIn = localStorage.getItem('userLoggedIn');
 
   return (
     <>
@@ -23,3 +23,4 @@ const App = () => {
 };
 
 export default injectContext(App);
+// export default App;

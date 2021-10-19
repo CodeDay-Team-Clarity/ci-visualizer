@@ -3,8 +3,6 @@ import { ApiContext } from '../Contexts/ApiContext';
 
 import { ReactComponent as JenkinsSvg } from '../images/jenkins-logo-no-text.svg';
 
-// import '../Styles/login.css';
-
 const Login = () => {
     const { login } = useContext(ApiContext);
 
@@ -17,11 +15,10 @@ const Login = () => {
     const loggedIn = localStorage.getItem('userLoggedIn');
     useEffect(() => {
         console.log('useEffect ran on login.js');
-        localStorage.setItem('user', JSON.stringify(values));
         if(loggedIn){
             window.location.href = '/';
         };
-    }, [loggedIn]);
+    }, [loggedIn, values]);
 
     // const [valid, setValid] = useState(true);
     // const [errors, setErrors] = useState({});

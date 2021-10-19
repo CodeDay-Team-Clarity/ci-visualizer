@@ -1,7 +1,12 @@
+import { useContext } from 'react';
+import { ApiContext } from '../../Contexts/ApiContext';
 import { useParams } from "react-router-dom";
 
 const Chart = props => {
+  const { jobStats } = useContext(ApiContext);
   const { job } = useParams();
+
+  console.log(jobStats);
 
   return (
     <div className="container-fluid">

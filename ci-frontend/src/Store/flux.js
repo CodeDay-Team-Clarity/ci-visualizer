@@ -11,6 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			allJobsStats: {},
 			jobName: '',
 			jobStats: {},
+			jobDurations: {},
 			message: null,
 			demo: [
 				{
@@ -55,15 +56,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                     const data = await response.json();
                     console.log(data);
-					// setStore({loggedIn: true})
                     localStorage.setItem("loggedIn", true);
-					setStore({username: username, password: password, url: jenkinsUrl});
+                    localStorage.setItem("loading", true);
                     localStorage.setItem("credentials", JSON.stringify({
                         'username': username,
                         'password': password,
                         'url': jenkinsUrl
                         })
                     );
+					getActions().setUser();
 					getActions().getAllJobsStats();
                     return true;
                 }
@@ -78,18 +79,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 
 				try {
-					const response = await fetch(getActions().backendUrl(`/jobs?username=${store.username}&password=${store.password}&url=${store.url}`))
+					const response = await fetch(getActions().backendUrl(`/jobs?username=${store.user.username}&password=${store.user.password}&url=${store.user.url}`))
 					if (!response.ok) {
 						console.error('Could not fetch the data for that resource');
 						return false;
 					}
 					const data = await response.json();
 					setStore({ allJobsStats: data});
+					localStorage.setItem('loading', false)
 					return true;
 				}
 				catch(error) {
 					console.error("There has been an error fetching data")
 				}
+				
 			},
 
 			getJobStats: async (job) => {
@@ -103,8 +106,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return false;
 					}
 					const data = await response.json();
-					setStore({ jobStats: data});
+					setStore({ jobStats: data });
 					console.log(store.jobStats)
+					getActions().getDuration();
 					return true;
 				}
 				catch(error) {
@@ -112,11 +116,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getDuration: () => {
+				const store = getStore();
+				const jobDurations = Object.entries(store.jobStats.durations.all_data).map(entry => {
+					const job = {'id': entry[0], ...entry[1]};
+					return job;
+				})
+				setStore({jobDurations});
+			},
+
+			dateString: (timeStamp) => {
+				var d = new Date(timeStamp);
+    			return ({date: (()=> d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear()), time: (()=> d.getHours() + ":" + d.getMinutes())}
+      				// d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+      				// d.getHours() + ":" + d.getMinutes()
+				)
+			},
+
+			setUser: () => {
+				const creds = JSON.parse(localStorage.getItem('credentials'));
+				setStore({user: creds});
+				return true;
+			},
+
+
+
+
+
+			// examples below
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
 			getMessage: () => {
 				// fetching data from the backend
 				fetch(process.env.BACKEND_URL + "/api/hello")
@@ -127,14 +158,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
-
 				//we have to loop the entire demo array to look for the respective index
 				//and change its color
 				const demo = store.demo.map((elm, i) => {
 					if (i === index) elm.background = color;
 					return elm;
 				});
-
 				//reset the global store
 				setStore({ demo: demo });
 			}
