@@ -23,7 +23,7 @@ const Duration = props => {
   console.log(store.jobDurations);
 
   const data = {
-    labels: [store.jobStats.durations.all_data],
+    labels: store.jobStats.durations.all_data.forEach((entry) => entry),
     // labels: ["5", "2", "3", "4", "5", "6"], // delet after backend works
     datasets: [
       {
