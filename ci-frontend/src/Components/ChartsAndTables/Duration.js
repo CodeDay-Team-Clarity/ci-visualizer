@@ -2,11 +2,6 @@ import { useContext } from "react";
 import { Context } from '../../Store/appContext';
 import { Line } from "react-chartjs-2";
 
-// .map(()=>){
-
-// }
-// const [datas, setData] = [];
-// const [state, setstate] = useState(initialState);
 
 const Duration = props => {
   const { store, actions } = useContext(Context);
@@ -20,15 +15,22 @@ const Duration = props => {
 
   //console.log(dateString(new Date(1628290262920)))   //returns '6-8-2021 15:51'
 
+  const labels = Object.entries(store.jobStats.durations.all_data).map(entry => {
+    const job = entry[0];
+    return job;
+  })
+  const durData = Object.entries(store.jobStats.durations.all_data).map(entry => {
+    const job = entry[1].duration;
+    return job;
+  })
   console.log(store.jobDurations);
 
   const data = {
-    labels: store.jobStats.durations.all_data.forEach((entry) => entry),
-    // labels: ["5", "2", "3", "4", "5", "6"], // delet after backend works
+    labels: labels,
     datasets: [
       {
-        label: "Duration",
-        // data: [stats.durations.BuildDurations],
+        label: "Duration in milliseconds",
+        data: durData,
         fill: false,
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgba(255, 99, 132, 0.2)",

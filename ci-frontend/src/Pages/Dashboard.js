@@ -32,7 +32,7 @@ const Dashboard = () => {
     // loggedIn ? actions.setUser() : console.log('No user loggedIn');
     if(jobsLength === 0 && loading === false) {
       actions.setUser();
-      actions.getAllJobsStats()
+      actions.getAllJobsStats();
     };
   }, []);
 
