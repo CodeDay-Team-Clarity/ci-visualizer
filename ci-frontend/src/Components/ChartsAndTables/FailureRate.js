@@ -3,7 +3,7 @@ import { Context } from '../../Store/appContext';
 import { Line } from "react-chartjs-2";
 
 
-const Duration = props => {
+const FailureRate = props => {
   const { store, actions } = useContext(Context);
 
   // function dateString(timeStamp){
@@ -15,22 +15,34 @@ const Duration = props => {
 
   //console.log(dateString(new Date(1628290262920)))   //returns '6-8-2021 15:51'
 
-  const labels = Object.entries(store.jobStats.durations.all_data).map(entry => {
-    const job = entry[0];
-    return job;
+  const dates = Object.entries(store.jobStats.failure_rates).map(entry => {
+    const date = entry[0];
+    return date;
   });
-  const durData = Object.entries(store.jobStats.durations.all_data).map(entry => {
-    const job = entry[1].duration / 1000;
-    return job;
+  console.log(dates);
+
+  const failRates = Object.entries(store.jobStats.failure_rates).map(entry => {
+    const rate = entry[1].fail_rate;
+    return rate;
   });
-  console.log(store.jobDurations);
+  console.log(failRates);
+
+  // const labels = timeStamp.map(entry => {
+  //   const job = actions.dateString(entry[1].timestamp);
+  //   console.log(job);
+  //   return job;
+  // })
+  // const durData = Object.entries(store.jobStats.durations.all_data).map(entry => {
+  //   const job = entry[1].duration / 1000;
+  //   return job;
+  // })
 
   const data = {
-    labels: labels,
+    labels: dates,
     datasets: [
       {
-        label: "Build time in Seconds",
-        data: durData,
+        label: "Builds/Failures",
+        data: failRates,
         fill: false,
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgba(255, 99, 132, 0.2)",
@@ -40,13 +52,9 @@ const Duration = props => {
 
   const options = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+      y: {
+        beginAtZero: true,
+      },
     },
   };
 
@@ -59,4 +67,4 @@ const Duration = props => {
   );
 }
 
-export default Duration;
+export default FailureRate;

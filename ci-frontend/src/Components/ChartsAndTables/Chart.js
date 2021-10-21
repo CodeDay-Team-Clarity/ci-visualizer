@@ -41,10 +41,6 @@ const Chart = props => {
         type: "linear",
         ticks: {
           stepSize: 1,
-          title: {
-            display: true,
-            text: "Custom Chart Title",
-          },
         },
       },
     },

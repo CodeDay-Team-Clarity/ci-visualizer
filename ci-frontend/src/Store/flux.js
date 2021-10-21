@@ -127,10 +127,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			dateString: (timeStamp) => {
 				var d = new Date(timeStamp);
-    			return ({date: (()=> d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear()), time: (()=> d.getHours() + ":" + d.getMinutes())}
-      				// d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
-      				// d.getHours() + ":" + d.getMinutes()
-				)
+    			// return ({date: (()=> d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear()), time: (()=> d.getHours() + ":" + d.getMinutes())}
+      			// 	// d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+      			// 	// d.getHours() + ":" + d.getMinutes()
+				// )
+				return (
+					d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes())
 			},
 
 			setUser: () => {

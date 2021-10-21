@@ -9,7 +9,7 @@ import Chart from "../Components/ChartsAndTables/Chart";
 
 import Card from "../Components/Card";
 import Duration from "../Components/ChartsAndTables/Duration";
-// import LineChart from "../Components/Durartion";
+import FailureRate from "../Components/ChartsAndTables/FailureRate";
 
 const Dashboard = () => {
   const { store, actions } = useContext(Context);
@@ -56,7 +56,7 @@ const Dashboard = () => {
           <Route path = "/jobs/:job">
             <Card {...{ component: <Chart />, size: 9, title: "Job Stats" }}/>
             <Card {...{ component: <Duration />, size: 9, title: "Build Durations"}}/>
-            {/* <Duration /> */}
+            <Card {...{ component: <FailureRate />, size: 9, title: "Failure Rate"}}/>
           </Route>
           <Route path = "/">
             <Card
