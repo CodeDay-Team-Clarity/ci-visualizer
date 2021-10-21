@@ -54,8 +54,8 @@ const Dashboard = () => {
       <div className="main-content">
         <Switch>
           <Route path = "/jobs/:job">
-            <Card {...{ component: <Chart />, size: 6, title: "Job Stats" }}/>
-            <Card {...{ component: <Duration />, size: 6, title: "Build Status"}}/>
+            <Card {...{ component: <Chart />, size: 9, title: "Job Stats" }}/>
+            <Card {...{ component: <Duration />, size: 9, title: "Build Durations"}}/>
             {/* <Duration /> */}
           </Route>
           <Route path = "/">

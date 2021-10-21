@@ -20,16 +20,15 @@ const Duration = props => {
     return job;
   })
   const durData = Object.entries(store.jobStats.durations.all_data).map(entry => {
-    const job = entry[1].duration;
+    const job = entry[1].duration / 1000;
     return job;
   })
-  console.log(store.jobDurations);
 
   const data = {
     labels: labels,
     datasets: [
       {
-        label: "Duration in milliseconds",
+        label: "Build time in Seconds",
         data: durData,
         fill: false,
         backgroundColor: "rgb(255, 99, 132)",

@@ -1,7 +1,7 @@
 const Card = ({ component, size, title }) => {
   return (
     <>
-      <div className="row">
+      <div className="row justify-content-center">
         <div className={`col-${size} mb-3`}>
           <div className="card bg-light my-2 p-2 h-100">
             <div className="crad-header text-center">
