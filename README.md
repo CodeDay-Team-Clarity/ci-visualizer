@@ -2,6 +2,15 @@
 
 This holds the frontend code and the backend code.
 
+## Demo
+
+1. Go to http://app.ci-visualizer.com
+2. Enter credentials:
+   - username: jenkins
+   - password: codeday
+   - jenkins url: http://builds.ci-visualizer.com:8080/
+3. Use the app!
+
 ## Development setup
 
 In the repository's root directory, run these commands:
