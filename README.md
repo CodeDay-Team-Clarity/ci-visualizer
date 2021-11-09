@@ -1,6 +1,10 @@
 # CI visualizer
 
 This holds the frontend code and the backend code.
+This app gives you details on your jenkins builds like..
+- The daily failure rate of your job builds
+- the daily build durations
+- the total statuses of your builds
 
 ## Demo
 
@@ -11,7 +15,7 @@ This holds the frontend code and the backend code.
    - jenkins url: http://builds.ci-visualizer.com:8080/
 3. Use the app!
 
-Here's what you will see once you login
+## Here's what you will see once you login
 
 ### Jobs Dashboard:
 ![Dashboard](/readme_imgs/dashboard.png)
