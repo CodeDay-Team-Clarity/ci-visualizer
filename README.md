@@ -11,6 +11,17 @@ This holds the frontend code and the backend code.
    - jenkins url: http://builds.ci-visualizer.com:8080/
 3. Use the app!
 
+Here's what you will see once you login
+
+### Jobs Dashboard:
+![Dashboard](/readme_imgs/dashboard.png)
+
+### Job Stats:
+![Job Stats](/readme_imgs/job_stats.png)
+
+### Build Durations and Failure Rate Graphs:
+![Build Durations](/readme_imgs/build_durations.png)
+
 ## Development setup
 
 In the repository's root directory, run these commands:
