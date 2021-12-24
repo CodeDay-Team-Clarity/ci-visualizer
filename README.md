@@ -6,6 +6,9 @@ This app gives you details on your jenkins builds like..
 - the daily build durations
 - the total statuses of your builds
 
+## Presentation
+![Youtube video slide deck](https://youtu.be/bD_nw_itoKg)
+
 ## Demo
 
 1. Go to http://app.ci-visualizer.com
