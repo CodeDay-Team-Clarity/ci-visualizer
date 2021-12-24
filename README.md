@@ -7,7 +7,7 @@ This app gives you details on your jenkins builds like..
 - the total statuses of your builds
 
 ## Presentation
-![Youtube video slide deck](https://youtu.be/bD_nw_itoKg)
+[Youtube video slide deck](https://youtu.be/bD_nw_itoKg)
 
 ## Demo
 
